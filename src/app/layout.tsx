@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "../components/layout/Navbar"; // import Navbar (ao amin'ny src/app/components/Navbar.tsx)
-
+import FooterPage from "../components/layout/Footer";
 // Metadata Next.js
 export const metadata: Metadata = {
   title: "E-Learn Platform",
@@ -23,9 +23,7 @@ export default function RootLayout({
         <main className="pt-20">{children}</main>
 
         {/* Footer */}
-        <footer className="mt-20 py-6 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} E-Learn Platform 🌐 - Tous droits réservés
-        </footer>
+        <FooterPage />
       </body>
     </html>
   );

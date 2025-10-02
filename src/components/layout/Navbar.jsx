@@ -4,7 +4,9 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Home, BookOpen, Users, User, MessageCircle, Globe, PhoneIcon } from "lucide-react";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import LanguageDetector from 'i18next-browser-languagedetector';
+import LanguageSwitcher from "../LanguageSwitcher";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,15 +14,15 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [showLang, setShowLang] = useState(false);
 
-//   const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   // Menu (mampiasa i18next translation keys)
   const links = [
-    { to: "home", label: "Home", icon: Home },
-    { to: "courses", label: "courses", icon: BookOpen },
-    { to: "teachers", label: "Teachers", icon: Users },
-    { to: "about", label: "About", icon: MessageCircle },
-    { to: "contact", label: "Contact", icon: PhoneIcon },
+    { to: "home", label: t("home"), icon: Home },
+    { to: "courses", label: t("cours"), icon: BookOpen },
+    { to: "teachers", label: t("prof"), icon: Users },
+    { to: "about", label: t("apropos"), icon: MessageCircle },
+    { to: "contact", label: t("contact"), icon: PhoneIcon },
     { to: "auth", label: "", icon: User },
     // { to: "contact", label: t("menu.contact"), icon: Globe },
   ];
@@ -50,10 +52,10 @@ export default function Navbar() {
   }, [links]);
 
   // Fonction pour changer de langue
-//   const changeLang = (lang: string) => {
-//     i18n.changeLanguage(lang);
-//     setShowLang(false);
-//   };
+  // const changeLang = (lang: string) => {
+  //   i18n.changeLanguage(lang);
+  //   setShowLang(false);
+  // };
 
   return (
     <>
@@ -61,8 +63,8 @@ export default function Navbar() {
       <header
         className={`w-full fixed top-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "backdrop-blur-lg bg-indigo-900/60 shadow-lg"
-            : "bg-transparent"
+            ? "bg-transparent text-black font-bold"
+            : "backdrop-blur-lg bg-None text-gray-300 font-bold shadow-lg"
         }`}
       >
         <div className="container mx-auto flex items-center justify-between py-4 px-4 lg:px-10">
@@ -95,29 +97,7 @@ export default function Navbar() {
             </ul>
 
             {/* Lang Switcher */}
-            <div className="relative">
-              <button
-                // onClick={() => setShowLang(!showLang)}
-                className="flex items-center gap-2 px-3 py-1 rounded-lg bg-indigo-100 text-indigo-800 hover:bg-indigo-200 transition"
-              >
-                <Globe size={18} />
-                {/* {i18n.language.toUpperCase()} */}
-              </button>
-
-              {showLang && (
-                <div className="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg overflow-hidden">
-                  {["fr", "en", "mg"].map((lng) => (
-                    <button
-                    //   key={lng}
-                    //   onClick={() => changeLang(lng)}
-                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-100"
-                    >
-                      {lng.toUpperCase()}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <LanguageSwitcher />
           </nav>
 
           {/* Mobile toggle */}
@@ -144,13 +124,13 @@ export default function Navbar() {
             <div className="flex flex-col h-full p-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-white">📚 Menu</h2>
-                <button
+                {/* <button
                   type="button"
                   className="text-white"
                   onClick={() => setIsOpen(false)}
                 >
                   <X size={28} />
-                </button>
+                </button> */}
               </div>
 
               <nav className="mt-12 flex-1">
@@ -175,31 +155,7 @@ export default function Navbar() {
               </nav>
 
               {/* Lang Switcher Mobile */}
-              <div className="mt-6">
-                <div className="relative">
-                  <button
-                    onClick={() => setShowLang(!showLang)}
-                    className="flex items-center gap-2 px-3 py-2 w-full rounded-lg bg-indigo-100 text-indigo-800 hover:bg-indigo-200 transition"
-                  >
-                    <Globe size={18} />
-                    {i18n.language.toUpperCase()}
-                  </button>
-
-                  {showLang && (
-                    <div className="absolute left-0 mt-2 w-32 bg-white rounded-lg shadow-lg overflow-hidden">
-                      {["fr", "en", "mg"].map((lng) => (
-                        <button
-                          key={lng}
-                          onClick={() => changeLang(lng)}
-                          className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-100"
-                        >
-                          {lng.toUpperCase()}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
+              <LanguageSwitcher />
 
               <div className="mt-auto text-center text-sm text-white/70">
                 © {new Date().getFullYear()} E-Learn Platform 🌐
