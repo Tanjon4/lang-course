@@ -6,7 +6,7 @@ import HeroSection from "@/components/sections/HeroSection";
 import useLanguageStore from "@/store/languageStore";
 import { useEffect } from "react";
 import i18n from "@/translations/i18next";
-
+import DashboardPage from "./dashboard/DashboardPage";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -20,7 +20,6 @@ export default function Home() {
   return (
     <main className="p-6">
       <HeroSection />
-      
     </main>
   );
 }
