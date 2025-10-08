@@ -43,7 +43,6 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
-    // Redirection vers l'authentification Google
     window.location.href = '/api/auth/google';
   };
 
