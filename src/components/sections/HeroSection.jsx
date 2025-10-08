@@ -1,19 +1,23 @@
 import React from 'react';
 import { Box, Typography, Button, Container, Grid, Card, CardContent, Chip } from '@mui/material';
 import { PlayArrow, Star, Groups, School, Translate, Language, EmojiPeople } from '@mui/icons-material';
+import { Play } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import Image from 'next/image';
 
 const HeroSection = () => {
+  const { t, i18n } = useTranslation();
   return (
     <section className="relative min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 overflow-hidden rounded-2xl shadow-lg">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute -top-40 -right-20 w-50 h-50 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-40 left-40 w-80 h-80 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-40 left-40 w-60 h-60 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
 
       {/* Floating elements */}
-      <div className="absolute top-1/4 left-10 animate-float-slow">
+      {/* <div className="absolute top-1/4 left-10 animate-float-slow">
         <div className="bg-white/80 backdrop-blur-sm rounded-full p-3 shadow-lg">
           <Language className="text-blue-600 text-2xl" />
         </div>
@@ -35,36 +39,36 @@ const HeroSection = () => {
         <div className="bg-red-400/80 backdrop-blur-sm rounded-full p-3 shadow-lg">
           <Groups className="text-white text-2xl" />
         </div>
-      </div>
+      </div> */}
 
       {/* Floating text elements */}
-      <div className="absolute top-20 right-1/4 animate-float-slow">
+      {/* <div className="absolute top-20 right-1/4 animate-float-slow">
         <span className="bg-white/90 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-          🇫🇷 Français
+          {t('french')}
         </span>
       </div>
       
       <div className="absolute bottom-40 right-60 animate-float-medium">
         <span className="bg-white/90 text-green-600 text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-          🇬🇧 Anglais
+          {t('english')}
         </span>
       </div>
       
       <div className="absolute top-40 right-40 animate-float-fast">
         <span className="bg-white/90 text-purple-600 text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-          🇪🇸 Espagnol
+          {t('spanish')}
         </span>
-      </div>
+      </div> */}
 
       <Container maxWidth="lg" className="relative z-10">
-        <Grid container spacing={6} className="min-h-screen items-center py-8">
+        <div className="flex flex-col md:flex-row items-center justify-between min-h-screen py-8 gap-8">
           {/* Left Content */}
-          <Grid item xs={12} md={6}>
+          <div className="flex-1 space-y-6">
             <Box className="space-y-6">
               {/* Badge */}
               <Chip
                 icon={<Star className="text-yellow-500" />}
-                label="Plateforme N°1 d'apprentissage des langues"
+                label={t('text')}
                 className="bg-white shadow-md rounded-full px-4 py-2 mb-4 animate-pulse-slow"
                 sx={{
                   '& .MuiChip-label': {
@@ -75,75 +79,94 @@ const HeroSection = () => {
               />
 
               {/* Main Heading */}
-              <Typography 
-                variant="h1" 
-                className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight"
+              <h1 
+                className="text-4xl lg:text-5xl font-extrabold mt-4 text-gray-900 leading-tight"
               >
-                Parlez couramment{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 animate-gradient">
-                  n'importe quelle langue
+                {t('line1')}{' '} <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-orange-200 animate-gradient">
+                  {t('line2')}
                 </span>
-              </Typography>
+              </h1>
 
               {/* Subtitle */}
-              <Typography 
-                variant="h5" 
-                className="text-xl md:text-2xl text-gray-600 font-light leading-relaxed"
+              <p 
+                className="text-xl md:text-2xl text-gray-600  leading-relaxed"
               >
-                Apprenez avec des professeurs natifs, des méthodes innovantes 
-                et une communauté mondiale. Parlez comme un local dès le premier jour.
-              </Typography>
+                {t('subtitle')}
+              </p>
 
               {/* Stats */}
               <Box className="flex flex-wrap gap-6 pt-4">
                 <Box className="text-center transform hover:scale-105 transition-transform duration-300">
-                  <Typography variant="h4" className="font-bold text-blue-600 animate-count-up">
+                  <Typography variant="p" className="font-bold text-3xl text-blue-700 animate-count-up">
                     50K+
                   </Typography>
                   <Typography variant="body2" className="text-gray-600">
-                    Étudiants actifs
+                    {t('label1')}
                   </Typography>
                 </Box>
                 <Box className="text-center transform hover:scale-105 transition-transform duration-300">
-                  <Typography variant="h4" className="font-bold text-purple-600 animate-count-up">
+                  <Typography variant="p" className="font-bold text-3xl text-yellow-500 animate-count-up">
                     15+
                   </Typography>
                   <Typography variant="body2" className="text-gray-600">
-                    Langues disponibles
+                    {t('label2')}
                   </Typography>
                 </Box>
                 <Box className="text-center transform hover:scale-105 transition-transform duration-300">
-                  <Typography variant="h4" className="font-bold text-green-600 animate-count-up">
+                  <Typography variant="p" className="font-bold text-3xl text-green-600 animate-count-up">
                     98%
                   </Typography>
                   <Typography variant="body2" className="text-gray-600">
-                    Taux de satisfaction
+                    {t('label3')}
                   </Typography>
                 </Box>
               </Box>
 
-              {/* CTA Buttons */}
-              <Box className="flex flex-col sm:flex-row gap-4 pt-6">
-                <Button
-                  variant="contained"
-                  size="large"
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 animate-pulse-soft"
-                  startIcon={<PlayArrow />}
+              <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                <button
+                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-400 to-purple-400 px-2 py-1 rounded-md shadow-lg transform hover:scale-105 transition-all duration-200 animate-pulse"
                 >
-                  Commencer gratuitement
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  className="border-2 border-gray-300 text-gray-700 px-8 py-3 rounded-full hover:border-blue-500 hover:text-blue-600 transition-all duration-200"
-                >
-                  Voir la démo
-                </Button>
-              </Box>
-            </Box>
-          </Grid>
+                  <Play className="w-5 h-5" />
+                  {t('ariaLabel')}
+                </button>
 
-        </Grid>
+                <button
+                  className="px-2 py-1 border-2 border-gray-300 text-gray-700 rounded-md hover:border-blue-500 hover:text-blue-600 transition-all duration-200"
+                >
+                  {t('text3')}
+                </button>
+              </div>
+            </Box>
+          </div>
+
+          {/* Right Content - Image */}
+          <div className="flex-1 flex justify-center items-center">
+            <Box className="relative w-full max-w-lg">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src="/assets/img/img1.jpg"
+                  alt="Hero Image"
+                  width={500}
+                  height={400}
+                  className="w-full h-auto object-cover"
+                  priority
+                />
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              </div>
+
+              
+              {/* Floating elements around image */}
+              <div className="absolute -top-4 -right-4 bg-white rounded-full p-3 shadow-lg animate-float-slow">
+                <Translate className="text-blue-600 text-xl" />
+              </div>
+              <div className="absolute -bottom-4 -left-4 bg-yellow-400 rounded-full p-3 shadow-lg animate-float-medium">
+                <School className="text-white text-xl" />
+              </div>
+            </Box>
+          </div>
+        </div>
       </Container>
 
       {/* Animated Wave Divider */}
