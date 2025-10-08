@@ -37,7 +37,7 @@ export default function Footer() {
             
             {/* Newsletter subscription */}
             <Box className="mt-6">
-              <Typography variant="subtitle2" className="text-white mb-3 font-semibold">
+              <Typography variant="subtitle2" className=" mb-3 font-semibold">
                 {t("newsletter", "Restez informé")}
               </Typography>
               <Box className="flex flex-col sm:flex-row gap-2 max-w-md">
@@ -55,7 +55,7 @@ export default function Footer() {
 
           {/* Quick links */}
           <Box>
-            <Typography variant="h6" className="text-white mb-6 font-semibold relative inline-block">
+            <Typography variant="h6" className="mb-6 font-semibold relative inline-block">
               {t("lienRappide")}
               <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400"></span>
             </Typography>
@@ -82,7 +82,7 @@ export default function Footer() {
 
           {/* Contact & Social */}
           <Box>
-            <Typography variant="h6" className="text-white mb-6 font-semibold relative inline-block">
+            <Typography variant="h6" className=" mb-6 font-semibold relative inline-block">
               {t("follow")}
               <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400"></span>
             </Typography>
