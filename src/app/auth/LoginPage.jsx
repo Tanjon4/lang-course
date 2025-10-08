@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-export default function Login() {
+export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
