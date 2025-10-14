@@ -7,8 +7,7 @@ import { useEffect } from "react";
 import i18n from "@/translations/i18next";
 import HeroSection from "@/components/sections/HeroSection";
 import About from "@/components/sections/About";
-import loginPage from "@/app/auth/LoginPage"
-import LoginPage from "@/app/auth/LoginPage";
+
 
 export default function Home() {
   const { t } = useTranslation();
@@ -23,7 +22,6 @@ export default function Home() {
     <main className="p-6">
       <HeroSection />
       <About />
-      <LoginPage />
     </main>
   );
 }
