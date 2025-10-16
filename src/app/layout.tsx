@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "../components/layout/Navbar";
 import FooterPage from "../components/layout/Footer";
 import { AuthProvider } from '@/app/contexts/AuthContext'
+import "@/translations/i18next";
+
 
 export const metadata: Metadata = {
   title: "E-Learn Platform",
