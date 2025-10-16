@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-
-  // ✅ Ignore les erreurs ESLint pendant le build
+  experimental: {
+    appDir: true,
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -12,6 +12,13 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  images: {
+    domains: ['localhost', 'your-domain.com'],
+  },
+  env: {
+    API_BASE_URL: process.env.API_BASE_URL,
+  },
+
 
   // ✅ Optimisations recommandées
   reactStrictMode: true,
@@ -20,5 +27,21 @@ const nextConfig: NextConfig = {
 
 
 export default nextConfig;
+
+// next.config.js
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//   experimental: {
+//     appDir: true,
+//   },
+//   images: {
+//     domains: ['localhost', 'your-domain.com'],
+//   },
+//   env: {
+//     API_BASE_URL: process.env.API_BASE_URL,
+//   },
+// }
+
+// module.exports = nextConfig
 
 

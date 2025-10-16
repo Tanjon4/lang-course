@@ -82,7 +82,7 @@ const sections = [
 
 const About: React.FC = () => {
   return (
-    <section className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-16 px-4 md:px-8">
+    <section id="about" className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-16 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
