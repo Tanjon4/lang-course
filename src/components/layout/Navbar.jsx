@@ -7,9 +7,11 @@ import { Menu, X, Home, BookOpen, Users, User, MessageCircle, Globe, PhoneIcon }
 import { useTranslation } from "react-i18next";
 import LanguageDetector from 'i18next-browser-languagedetector';
 import LanguageSwitcher from "../LanguageSwitcher";
+import AuthantificationModal from "../sections/AuthModal";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const [showLang, setShowLang] = useState(false);
@@ -63,8 +65,8 @@ export default function Navbar() {
       <header
         className={`w-full fixed top-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-transparent text-black font-bold"
-            : "backdrop-blur-lg bg-None text-gray-800 font-bold shadow-lg"
+            ? "bg-transparent text-black font-extratbold"
+            : "backdrop-blur-lg bg-None text-gray-800 font-extratbold shadow-lg"
         }`}
       >
         <div className="container mx-auto flex items-center justify-between py-4 px-4 lg:px-10">
@@ -81,19 +83,31 @@ export default function Navbar() {
             <ul className="flex space-x-8 font-medium ">
               {links.map(({ to, label, icon: Icon }) => (
                 <li key={to} className="flex items-center space-x-2">
-                  <a
-                    href={`#${to}`}
-                    className={`flex items-center gap-2 transition-colors duration-300 ${
-                      activeSection === to
-                        ? "text-blue-300 border-b-2 border-blue-400 pb-1"
-                        : "hover:text-indigo-300"
-                    }`}
-                  >
-                    <Icon size={18} />
-                    {label}
-                  </a>
+                  {to === "auth" ? (
+                    <button
+                      onClick={() => setIsAuthOpen(true)}
+                      className="flex items-center gap-2 hover:text-indigo-300"
+                    >
+                      <Icon size={18} />
+                      {label}
+                    </button>
+                  ) : (
+                    <a
+                      href={`#${to}`}
+                      className={`flex items-center gap-2 transition-colors duration-300 ${
+                        activeSection === to
+                          ? "text-blue-300 border-b-2 border-blue-400 pb-1"
+                          : "hover:text-indigo-300"
+                      }`}
+                    >
+                      <Icon size={18} />
+                      {label}
+                    </a>
+                  )}
                 </li>
               ))}
+              {/* ✅ Auth modal */}
+                <AuthantificationModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
             </ul>
 
             {/* Lang Switcher */}
@@ -119,7 +133,7 @@ export default function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", stiffness: 80 }}
-            className="fixed top-0 left-0 w-3/4 max-w-sm h-full z-40 bg-gradient-to-b from-blue-900 to-purple-900 shadow-xl lg:hidden"
+            className="fixed top-0 left-0 w-3/4 max-w-sm h-full z-40  bg-gradient-to-b from-zinc-200 to-orange-200 shadow-xl lg:hidden"
           >
             <div className="flex flex-col h-full p-6">
               <div className="flex justify-between items-center">
@@ -134,24 +148,35 @@ export default function Navbar() {
               </div>
 
               <nav className="mt-12 flex-1">
-                <ul className="flex flex-col space-y-6 text-lg font-medium text-white">
+                <ul className="flex flex-col space-y-6 text-lg font-medium text-gray-800">
                   {links.map(({ to, label, icon: Icon }) => (
-                    <li key={to}>
-                      <a
-                        href={`#${to}`}
-                        className={`flex items-center gap-3 transition-colors duration-300 ${
-                          activeSection === to
-                            ? "text-indigo-300 font-semibold"
-                            : "hover:text-blue-300"
-                        }`}
-                        onClick={() => setIsOpen(false)}
-                      >
-                        <Icon size={20} />
-                        {label}
-                      </a>
+                    <li key={to} className="flex items-center space-x-2">
+                      {to === "auth" ? (
+                        <button
+                          onClick={() => setIsAuthOpen(true)}
+                          className="flex items-center gap-2 hover:text-indigo-300"
+                        >
+                          <Icon size={18} />
+                          {label}
+                        </button>
+                      ) : (
+                        <a
+                          href={`#${to}`}
+                          className={`flex items-center gap-2 transition-colors duration-300 ${
+                            activeSection === to
+                              ? "text-blue-300 border-b-2 border-blue-400 pb-1"
+                              : "hover:text-indigo-300"
+                          }`}
+                        >
+                          <Icon size={18} />
+                          {label}
+                        </a>
+                      )}
                     </li>
                   ))}
                 </ul>
+                {/* ✅ Auth modal */}
+                <AuthantificationModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
               </nav>
 
               {/* Lang Switcher Mobile */}
