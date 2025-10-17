@@ -150,6 +150,7 @@ const HeroSection = () => {
                   width={500}
                   height={400}
                   className="w-full h-auto object-cover"
+                  quality={70}
                   priority
                 />
                 {/* Overlay gradient */}

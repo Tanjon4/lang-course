@@ -5,6 +5,8 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Home, BookOpen, Users, User, MessageCircle, Globe, PhoneIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import {useLangStore} from '../../store/languageStore';
+import i18n from "@/translations/i18next"; // 👈 import stable
 import LanguageDetector from 'i18next-browser-languagedetector';
 import LanguageSwitcher from "../LanguageSwitcher";
 import AuthantificationModal from "../sections/AuthModal";
@@ -17,6 +19,12 @@ export default function Navbar() {
   const [showLang, setShowLang] = useState(false);
 
   const { t, i18n } = useTranslation();
+  const { lang, setLang } = useLangStore();
+  
+  // Mampifanaraka ny lang amin'ny i18n rehefa miova ny store
+  useEffect(() => {
+    i18n.changeLanguage(lang);
+  }, [lang]);
 
   // Menu (mampiasa i18next translation keys)
   const links = [
