@@ -49,5 +49,26 @@
   "submit": "Submit",
   "loading": "Loading...",
   "error": "Error",
-  "success": "Success"
+  "success": "Success",
+  "about_title": "Who are we?",
+  "about_description": "Hoavi is an edtech startup reinventing language learning by combining online courses, in-person training (middle → high school), and immersive technologies (mobile, VR). Our programs are certifying: each learner can obtain verifiable digital certificates and badges proving linguistic and professional skills.",
+
+  "section_histoire_title": "History",
+  "section_histoire_content": "Launched in late August 2025 by a passionate team, Hoavi was born from the ambition to make linguistic and academic education useful, modern, and accessible — with concrete certificates that open academic and professional opportunities.",
+
+  "section_vision_title": "Vision",
+  "section_vision_content": "To be the global benchmark of a hybrid educational model where learning means accreditation: programs aligned with international standards (e.g., CEFR for languages) and recognized by academic and corporate partners, preparing learners for real careers.",
+
+  "section_mission_title": "Mission",
+  "section_mission_content": "• Offer certifying, personalized, and measurable learning paths (online, in-person, mobile, VR)\n• Provide transferable skills: language + professional know-how\n• Deliver verifiable certificates (exams, portfolios, digital badges)\n• Expand certifying course offerings internationally by 2026",
+
+  "section_offres_title": "Offers & Strategic Project",
+  "section_offres_content": "• Language certification paths: progressive modules, continuous assessment, final exam, digital certificate (aligned CEFR A1→C2)\n• In-person: integrated curricula with internal certificates and national/partner certifications\n• Technology: website, mobile app, VR platform\n• Global expansion: deployment in several countries by 2026\n• Quality & accreditation: partnerships with universities and recognized institutions",
+
+  "section_organisation_title": "Organization & Resources",
+  "section_organisation_content": "• Educational Team: course designers and assessors\n• Certification & Quality Office: frameworks, exam boards, issuance\n• Institutional Relations: partnerships, accreditations\n• Tech & Product: exam management, digital badges, blockchain-ready verification\n• Support & Careers: assistance in promoting certificates to employers and institutions",
+
+  "section_role_title": "Hoavi’s Role",
+  "section_role_content": "Hoavi designs, implements, evaluates, and delivers useful, verifiable certifications while supporting learners to make those certificates valuable on the job market."
+
 }

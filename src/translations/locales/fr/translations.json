@@ -49,6 +49,26 @@
   "submit": "Soumettre",
   "loading": "Chargement...",
   "error": "Erreur",
-  "success": "Succès"
+  "success": "Succès",
+  "about_title": "Qui sommes-nous ?",
+  "about_description": "Hoavi est une startup edtech qui réinvente l'apprentissage des langues en combinant cours en ligne, formations présentielle (collège → lycée) et technologies immersives (mobile, VR). Nos parcours sont certifiants : chaque apprenant peut obtenir des certificats et badges numériques vérifiables attestant de compétences linguistiques et professionnelles.",
+  
+  "section_histoire_title": "Histoire",
+  "section_histoire_content": "Lancée fin août 2025 par une équipe passionnée, Hoavi est née de l'ambition de rendre l'éducation linguistique et scolaire utile, moderne et accessible — avec des certificats concrets qui ouvrent des portes académiques et professionnelles.",
+
+  "section_vision_title": "Vision",
+  "section_vision_content": "Être la référence mondiale d'un modèle éducatif hybride où apprendre rime avec accréditation : des parcours alignés sur des référentiels internationaux (ex. CEFR pour les langues) et reconnus par des partenaires académiques et entreprises, préparant les apprenants à des carrières réelles.",
+
+  "section_mission_title": "Mission",
+  "section_mission_content": "• Proposer des parcours certifiants, personnalisés et mesurables (en ligne, présentiel, mobile, VR)\n• Fournir des compétences transférables : langue + savoir-faire métier\n• Délivrer des certificats vérifiables (examens, portfolios, badges numériques)\n• Étendre l'offre de cours certifiants à l'international d'ici 2026",
+
+  "section_offres_title": "Offres & Projet Stratégique",
+  "section_offres_content": "• Parcours certifiants linguistiques : modules progressifs, évaluations continues, examen final, certificat numérique (aligné CEFR A1→C2)\n• Présentiel : cursus intégrés avec délivrance de certificats internes et articulation avec certifications partenaires\n• Technologie : site, app mobile, plateforme VR\n• Expansion mondiale : déploiement dans plusieurs pays d'ici 2026\n• Qualité & accréditation : conventions avec universités et organismes reconnus",
+
+  "section_organisation_title": "Organisation & Ressources",
+  "section_organisation_content": "• Équipe Pédagogique : concepteurs de cours et évaluateurs\n• Bureau Certification & Qualité : création de référentiels, jurys d'examen, délivrance\n• Relations Institutionnelles : partenariats, accréditations\n• Tech & Produit : gestion des examens, badges numériques, vérification blockchain-ready\n• Support & Carrières : accompagnement à la valorisation des certificats",
+
+  "section_role_title": "Rôle de Hoavi",
+  "section_role_content": "Hoavi conçoit, met en œuvre, évalue et délivre des certifications utiles et vérifiables, tout en accompagnant les apprenants pour rendre ces certificats opérationnels sur le marché du travail."
 
 }
