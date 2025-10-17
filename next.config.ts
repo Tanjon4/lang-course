@@ -1,14 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-<<<<<<< HEAD
-  experimental: {
-    appDir: true,
-  },
-=======
   /* config options here */
   // ✅ Ignore les erreurs ESLint pendant le build
->>>>>>> main
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -27,10 +21,6 @@ const nextConfig: NextConfig = {
 
   // ✅ Optimisations recommandées
   reactStrictMode: true,
-<<<<<<< HEAD
-  swcMinify: true,
-=======
->>>>>>> main
 };
 
 
