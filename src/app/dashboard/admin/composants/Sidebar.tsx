@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation"; // ✅ import du router
 import { useThemeMode } from "./ThemeProvider";
 import {
   Dashboard,
@@ -40,6 +41,15 @@ export default function Sidebar({
   onSelect: (index: number) => void;
 }) {
   const { mode, setMode } = useThemeMode();
+  const router = useRouter(); // ✅ initialisation du router
+
+  const handleLogout = () => {
+    // (optionnel) supprime les infos de session
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("user");
+
+    router.push("/"); // ✅ redirection vers la page d'accueil
+  };
 
   return (
     <div className="flex flex-col justify-between h-full bg-white dark:bg-gray-900 shadow-lg p-4 border-r border-gray-100 dark:border-gray-700">
@@ -48,7 +58,7 @@ export default function Sidebar({
         <div className="flex items-center gap-2 mb-8 px-3">
           <School className="text-blue-600 dark:text-blue-400" />
           <h1 className="text-lg font-semibold text-gray-800 dark:text-white">
-            SCHOOL
+            E-LEARNING
           </h1>
         </div>
 
@@ -62,25 +72,25 @@ export default function Sidebar({
           />
           <SidebarItem
             icon={People}
-            label="Students"
+            label="Gestion utilisateurs"
             active={selected === 1}
             onClick={() => onSelect(1)}
           />
           <SidebarItem
             icon={MenuBook}
-            label="Courses"
+            label="Cours"
             active={selected === 2}
             onClick={() => onSelect(2)}
           />
           <SidebarItem
             icon={Event}
-            label="Attendance"
+            label="Inscription et progression"
             active={selected === 3}
             onClick={() => onSelect(3)}
           />
           <SidebarItem
             icon={Payment}
-            label="Payment"
+            label="Parametre"
             active={selected === 4}
             onClick={() => onSelect(4)}
           />
@@ -110,8 +120,20 @@ export default function Sidebar({
           />
         </div>
 
-        <SidebarItem icon={Settings} label="Settings" active={false} onClick={() => {}} />
-        <SidebarItem icon={Logout} label="Logout" active={false} onClick={() => {}} />
+        <SidebarItem
+          icon={Settings}
+          label="Settings"
+          active={false}
+          onClick={() => {}}
+        />
+
+        {/* ✅ Logout redirige vers la page d'accueil */}
+        <SidebarItem
+          icon={Logout}
+          label="Logout"
+          active={false}
+          onClick={handleLogout}
+        />
       </div>
     </div>
   );

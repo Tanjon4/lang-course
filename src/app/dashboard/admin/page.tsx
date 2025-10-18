@@ -118,7 +118,7 @@ export default function DashboardAdmin() {
               <>
                 <StatsOverview stats={stats} />
 
-                <div className="mt-6 grid gap-6 lg:grid-cols-3">
+                {/* <div className="mt-6 grid gap-6 lg:grid-cols-3">
                   <div className="lg:col-span-2">
         
                   </div>
@@ -126,7 +126,7 @@ export default function DashboardAdmin() {
                   <div className="flex flex-col gap-6">
                     
                   </div>
-                </div>
+                </div> */}
 
                 <div className="mt-6 grid gap-6 lg:grid-cols-3">
                   <div className="lg:col-span-2">
