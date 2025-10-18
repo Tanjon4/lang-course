@@ -26,6 +26,6 @@
       "@/services/*": ["./src/services/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/dashboard/admin/components/CoursesManagements.js"],
   "exclude": ["node_modules"]
 }
