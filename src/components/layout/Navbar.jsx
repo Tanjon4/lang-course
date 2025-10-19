@@ -125,7 +125,7 @@ export default function Navbar() {
           {/* Mobile toggle */}
           <button
             type="button"
-            className="lg:hidden text-white"
+            className="lg:hidden text-zinc-800"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X size={30} /> : <Menu size={30} />}
@@ -145,7 +145,7 @@ export default function Navbar() {
           >
             <div className="flex flex-col h-full p-6">
               <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-white">📚 Menu</h2>
+                <h2 className="text-2xl font-bold">📚 Menu</h2>
                 {/* <button
                   type="button"
                   className="text-white"

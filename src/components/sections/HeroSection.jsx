@@ -4,9 +4,12 @@ import { PlayArrow, Star, Groups, School, Translate, Language, EmojiPeople } fro
 import { Play } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
+import { useAuth } from '@/app/contexts/AuthContext';
 
 const HeroSection = () => {
   const { t, i18n } = useTranslation();
+  const { isAuthenticated, user } = useAuth();
+
   return (
     <section id='home' className="relative min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 overflow-hidden rounded-2xl shadow-lg">
       {/* Background decorative elements */}
@@ -15,50 +18,6 @@ const HeroSection = () => {
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
         <div className="absolute top-40 left-40 w-60 h-60 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
-
-      {/* Floating elements */}
-      {/* <div className="absolute top-1/4 left-10 animate-float-slow">
-        <div className="bg-white/80 backdrop-blur-sm rounded-full p-3 shadow-lg">
-          <Language className="text-blue-600 text-2xl" />
-        </div>
-      </div>
-      
-      <div className="absolute top-1/3 right-20 animate-float-medium">
-        <div className="bg-yellow-400/80 backdrop-blur-sm rounded-full p-3 shadow-lg">
-          <School className="text-white text-2xl" />
-        </div>
-      </div>
-      
-      <div className="absolute bottom-1/3 left-20 animate-float-fast">
-        <div className="bg-green-400/80 backdrop-blur-sm rounded-full p-3 shadow-lg">
-          <EmojiPeople className="text-white text-2xl" />
-        </div>
-      </div>
-      
-      <div className="absolute top-1/2 right-10 animate-float-slow">
-        <div className="bg-red-400/80 backdrop-blur-sm rounded-full p-3 shadow-lg">
-          <Groups className="text-white text-2xl" />
-        </div>
-      </div> */}
-
-      {/* Floating text elements */}
-      {/* <div className="absolute top-20 right-1/4 animate-float-slow">
-        <span className="bg-white/90 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-          {t('french')}
-        </span>
-      </div>
-      
-      <div className="absolute bottom-40 right-60 animate-float-medium">
-        <span className="bg-white/90 text-green-600 text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-          {t('english')}
-        </span>
-      </div>
-      
-      <div className="absolute top-40 right-40 animate-float-fast">
-        <span className="bg-white/90 text-purple-600 text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-          {t('spanish')}
-        </span>
-      </div> */}
 
       <Container maxWidth="lg" className="relative z-10">
         <div className="flex flex-col md:flex-row items-center justify-between min-h-screen py-8 gap-8">
@@ -123,27 +82,65 @@ const HeroSection = () => {
                 </Box>
               </Box>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                <button
-                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-400 to-purple-400 px-2 py-1 rounded-md shadow-lg transform hover:scale-105 transition-all duration-200 animate-pulse"
-                >
-                  <Play className="w-5 h-5" />
-                  {t('ariaLabel')}
-                </button>
+              {/* Authentication Buttons */}
+              {!isAuthenticated ? (
+                <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                  <a 
+                    href="/login"
+                    className="group flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-4 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
+                  >
+                    <svg className="w-5 h-5 transform group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                    </svg>
+                    {t('login')}
+                  </a>
 
-                <button
-                  className="px-2 py-1 border-2 border-gray-300 text-gray-700 rounded-md hover:border-blue-500 hover:text-blue-600 transition-all duration-200"
-                >
-                  {t('text3')}
-                </button>
-              </div>
+                  <a 
+                    href="/register"
+                    className="group flex items-center justify-center gap-3 border-2 border-blue-500 text-blue-600 hover:bg-blue-500 hover:text-white px-8 py-4 rounded-xl transform hover:scale-105 transition-all duration-300 font-semibold"
+                  >
+                    <svg className="w-5 h-5 transform group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                    {t('register')}
+                  </a>
+                </div>
+              ) : (
+                <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                  <a 
+                    href="/profile"
+                    className="group flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-8 py-4 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
+                  >
+                    <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+                      <span className="text-sm font-bold">{user?.username?.charAt(0).toUpperCase()}</span>
+                    </div>
+                    {t('viewProfile')}
+                  </a>
+
+                  <button
+                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 text-white px-6 py-4 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
+                  >
+                    <Play className="w-5 h-5" />
+                    {t('ariaLabel')}
+                  </button>
+                </div>
+              )}
+
+              {/* Additional CTA for authenticated users */}
+              {isAuthenticated && (
+                <div className="pt-4">
+                  <p className="text-gray-600 text-sm">
+                    {t('welcomeBack')}, <span className="font-semibold text-blue-600">{user?.username}</span>! {t('continueLearning')}
+                  </p>
+                </div>
+              )}
             </Box>
           </div>
 
           {/* Right Content - Image */}
           <div className="flex-1 flex justify-center items-center">
             <Box className="relative w-full max-w-lg">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-500">
                 <Image
                   src="/assets/img/img1.jpg"
                   alt="Hero Image"
@@ -155,15 +152,29 @@ const HeroSection = () => {
                 />
                 {/* Overlay gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                
+                {/* Floating authentication badge */}
+                {!isAuthenticated && (
+                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg animate-pulse-slow">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span className="text-sm font-semibold text-gray-700">{t('joinNow')}</span>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              
               {/* Floating elements around image */}
               <div className="absolute -top-4 -right-4 bg-white rounded-full p-3 shadow-lg animate-float-slow">
                 <Translate className="text-blue-600 text-xl" />
               </div>
               <div className="absolute -bottom-4 -left-4 bg-yellow-400 rounded-full p-3 shadow-lg animate-float-medium">
                 <School className="text-white text-xl" />
+              </div>
+              
+              {/* New floating element for authentication */}
+              <div className="absolute top-1/2 -left-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full p-3 shadow-lg animate-float-fast">
+                <Groups className="text-white text-xl" />
               </div>
             </Box>
           </div>

@@ -23,7 +23,7 @@ export default function RootLayout({
           <Navbar />
 
           {/* Main content */}
-          <main className="pt-20 min-h-screen">{children}</main>
+          <main className="pt-3 min-h-screen">{children}</main>
 
           {/* Footer */}
           <FooterPage />
