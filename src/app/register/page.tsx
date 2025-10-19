@@ -159,7 +159,7 @@ export default function RegisterPage() {
           <div className="lg:w-1/2 p-12 flex flex-col justify-center">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-3">Créer un compte</h2>
-              <p className="text-gray-600">Rejoignez notre communauté d'apprenants</p>
+              <p className="text-gray-700">Rejoignez notre communauté d'apprenants</p>
             </div>
 
             <form className="space-y-6" onSubmit={handleSubmit}>
