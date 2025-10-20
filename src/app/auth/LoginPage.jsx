@@ -1,6 +1,8 @@
 import { useState } from 'react';
 // import { useRouter } from 'next/router';
 import Head from 'next/head';
+export const dynamic = "force-dynamic";
+
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
