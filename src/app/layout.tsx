@@ -20,13 +20,13 @@ export default function RootLayout({
       <body className="bg-gray-50">
         <AuthProvider>
           {/* Navbar fixée en haut */}
-          <Navbar />
+          {/* <Navbar /> */}
 
           {/* Main content */}
           <main className="pt-3 min-h-screen">{children}</main>
 
           {/* Footer */}
-          <FooterPage />
+          {/* <FooterPage /> */}
         </AuthProvider>
       </body>
     </html>
