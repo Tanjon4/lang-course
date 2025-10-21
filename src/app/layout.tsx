@@ -1,8 +1,6 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "../components/layout/Navbar";
-import FooterPage from "../components/layout/Footer";
 import { AuthProvider } from '@/app/contexts/AuthContext'
 
 export const metadata: Metadata = {

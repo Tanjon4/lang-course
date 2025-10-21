@@ -9,6 +9,8 @@ import i18n from "@/translations/i18next";
 import HeroSection from "@/components/sections/HeroSection";
 import About from "@/components/sections/About";
 import { useAuth } from "@/app/contexts/AuthContext";
+import Navbar from "../components/layout/Navbar";
+import FooterPage from "../components/layout/Footer";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -23,6 +25,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Hero Section avec les boutons d'authentification intégrés */}
+      <Navbar />
       <HeroSection />
       
       <div className="container mx-auto px-4 py-8">
@@ -172,6 +175,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <FooterPage />
     </main>
   );
 }
