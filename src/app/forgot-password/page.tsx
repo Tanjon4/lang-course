@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { Mail, ArrowLeft, CheckCircle, Sparkles, Languages, Shield } from 'lucide-react';
 import Link from 'next/link';
-import Layout from '@/components/layout/Layout';
 import Navbar from '@/components/layout/Navbar';
 import FooterPage from '@/components/layout/Footer';
 
