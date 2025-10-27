@@ -86,7 +86,9 @@ const HeroSection = () => {
 
               {/* Authentication Buttons */}
               {!isAuthenticated ? (
-                <div className="flex flex-col sm:flex-row gap-4 pt-6">
+              
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                
                   <a 
                     href="/login"
                     className="group flex items-center justify-center gap-3 bg-gradient-to-r from-orange-400 via-amber-500 hover:from-orange-400 hover:to-amber-700 text-white px-8 py-4 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"

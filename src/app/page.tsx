@@ -12,7 +12,7 @@ import Contact from "@/components/sections/Contact";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/app/contexts/AuthContext";
-import FooterPage from "../components/layout/Footer";
+
 
 export default function Home() {
   const { t } = useTranslation();
