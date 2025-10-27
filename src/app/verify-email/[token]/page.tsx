@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, Mail, Sparkles, Languages, ArrowRight, Shield } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import Layout from '@/components/layout/Layout';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 
