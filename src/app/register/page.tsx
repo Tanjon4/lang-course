@@ -5,11 +5,10 @@ import { Mail, Lock, User, Eye, EyeOff, UserPlus, CheckCircle, Sparkles, Languag
 import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import FooterPage from '@/components/layout/Footer';
-import { useRouter } from 'next/router';
-
+import { useRouter } from 'next/navigation'; // Correction ici
 
 export default function RegisterPage() {
-  const router = useRouter();
+  const router = useRouter(); // Maintenant ça fonctionnera correctement
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -60,6 +59,13 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validation supplémentaire
+    if (!isFormValid) {
+      alert('Veuillez corriger les erreurs dans le formulaire');
+      return;
+    }
+    
     setIsLoading(true);
     
     try {
@@ -73,25 +79,25 @@ export default function RegisterPage() {
       
       if (response.ok) {
         console.log('Inscription réussie');
-        // Redirection ou message de succès
-        alert('Inscription réussie ! Verifier vos E-mail pour confirmer votre compte et seconnecter après.');
+        alert('Inscription réussie ! Vérifiez vos emails pour confirmer votre compte et vous connecter après.');
         router.push('/login');
-      
-      }else if (response.status === 400) {
-        alert('Erreur : Vérifiez vos informations d\'inscription.');
-      }
-      else {
+      } else if (response.status === 400) {
+        const errorData = await response.json();
+        alert(`Erreur : ${errorData.message || 'Vérifiez vos informations d\'inscription.'}`);
+      } else {
         const error = await response.json();
         console.error('Erreur d\'inscription:', error);
+        alert('Une erreur est survenue lors de l\'inscription.');
       }
     } catch (error) {
       console.error('Erreur d\'inscription:', error);
+      alert('Erreur de connexion. Vérifiez votre connexion internet.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const isFormValid = passwordStrength >= 3 && formData.password === formData.password2;
+  const isFormValid = passwordStrength >= 3 && formData.password === formData.password2 && formData.username && formData.email;
 
   return (
     <main>
