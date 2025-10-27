@@ -3,11 +3,16 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Home, BookOpen, Users, User, MessageCircle, Globe, PhoneIcon } from "lucide-react";
-import { useTranslation } from "react-i18next";
-import {useLangStore} from '../../store/languageStore';
-import i18n from "@/translations/i18next"; // 👈 import stable
-import LanguageDetector from 'i18next-browser-languagedetector';
+import {
+  Menu,
+  X,
+  Home,
+  BookOpen,
+  Users,
+  User,
+  MessageCircle,
+  PhoneIcon,
+} from "lucide-react";
 import LanguageSwitcher from "../LanguageSwitcher";
 
 export default function Navbar() {
@@ -15,26 +20,31 @@ export default function Navbar() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [scrolled, setScrolled] = useState(false);
-  const [showLang, setShowLang] = useState(false);
+  const [user, setUser] = useState(null); // JS, tsy misy type
 
-  const { t, i18n } = useTranslation();
-  const { lang, setLang } = useLangStore();
-  
-  // Mampifanaraka ny lang amin'ny i18n rehefa miova ny store
-  useEffect(() => {
-    i18n.changeLanguage(lang);
-  }, [lang]);
-
-  // Menu (mampiasa i18next translation keys)
   const links = [
-    { to: "/", label: t("home"), icon: Home },
-    { to: "courses", label: t("cours"), icon: BookOpen },
-    { to: "teachers", label: t("prof"), icon: Users },
-    { to: "about", label: t("apropos"), icon: MessageCircle },
-    { to: "contact", label: t("contact"), icon: PhoneIcon },
+    { to: "/", label: "Home", icon: Home },
+    { to: "courses", label: "Cours", icon: BookOpen },
+    { to: "teachers", label: "Prof", icon: Users },
+    { to: "about", label: "A Propos", icon: MessageCircle },
+    { to: "contact", label: "Contact", icon: PhoneIcon },
     { to: "auth", label: "", icon: User },
-    // { to: "contact", label: t("menu.contact"), icon: Globe },
   ];
+
+  // Fetch user avy amin'ny API
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("https://lang-courses-api.onrender.com/api/users/"); // ohatra API
+        if (!res.ok) return;
+        const data = await res.json();
+        setUser(data);
+      } catch (err) {
+        console.error("Erreur fetch user:", err);
+      }
+    };
+    fetchUser();
+  }, []);
 
   // Scroll spy
   useEffect(() => {
@@ -42,10 +52,7 @@ export default function Navbar() {
       const scrollY = window.scrollY;
       setScrolled(scrollY > 50);
 
-      const sections = links.map((link) =>
-        document.getElementById(link.to)
-      );
-
+      const sections = links.map((link) => document.getElementById(link.to));
       for (let sec of sections) {
         if (sec) {
           const rect = sec.getBoundingClientRect();
@@ -60,44 +67,48 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [links]);
 
-  // Fonction pour changer de langue
-  // const changeLang = (lang: string) => {
-  //   i18n.changeLanguage(lang);
-  //   setShowLang(false);
-  // };
-
   return (
     <>
-      {/* Main navbar */}
       <header
         className={`w-full fixed top-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-transparent text-black font-extratbold"
-            : "backdrop-blur-lg bg-None text-gray-800 font-extratbold shadow-lg"
+            ? "bg-transparent text-black font-extrabold"
+            : "backdrop-blur-lg bg-none text-gray-800 font-extrabold shadow-lg"
         }`}
       >
         <div className="container mx-auto flex items-center justify-between py-4 px-4 lg:px-10">
           {/* Logo */}
           <Link
             href="/"
-            className="text-3xl font-extrabold   racking-tight hover:scale-105 transition-transform"
+            className="text-3xl font-extrabold tracking-tight hover:scale-105 transition-transform"
           >
-            E-Learning 
+            E-Learning
           </Link>
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-6">
-            <ul className="flex space-x-8 font-medium ">
+            <ul className="flex space-x-8 font-medium">
               {links.map(({ to, label, icon: Icon }) => (
                 <li key={to} className="flex items-center space-x-2">
                   {to === "auth" ? (
-                    <button
-                      onClick={() => setIsAuthOpen(true)}
-                      className="flex items-center gap-2 hover:text-amber-600"
-                    >
-                      <Icon size={18} />
-                      {label}
-                    </button>
+                    user ? (
+                      <div className="flex items-center gap-2">
+                        <img
+                          src={user.avatar || "/default-avatar.png"}
+                          alt="avatar"
+                          className="w-8 h-8 rounded-full object-cover"
+                        />
+                        <span className="font-medium">{user.username}</span>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setIsAuthOpen(true)}
+                        className="flex items-center gap-2 hover:text-amber-600"
+                      >
+                        <Icon size={18} />
+                        {label}
+                      </button>
+                    )
                   ) : (
                     <a
                       href={`${to}`}
@@ -115,7 +126,6 @@ export default function Navbar() {
               ))}
             </ul>
 
-            {/* Lang Switcher */}
             <LanguageSwitcher />
           </nav>
 
@@ -138,18 +148,11 @@ export default function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", stiffness: 80 }}
-            className="fixed top-0 left-0 w-3/4 max-w-sm h-full z-40  bg-gradient-to-b from-zinc-200 to-orange-200 shadow-xl lg:hidden"
+            className="fixed top-0 left-0 w-3/4 max-w-sm h-full z-40 bg-gradient-to-b from-zinc-200 to-orange-200 shadow-xl lg:hidden"
           >
             <div className="flex flex-col h-full p-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">📚 Menu</h2>
-                {/* <button
-                  type="button"
-                  className="text-white"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <X size={28} />
-                </button> */}
               </div>
 
               <nav className="mt-12 flex-1">
@@ -157,13 +160,24 @@ export default function Navbar() {
                   {links.map(({ to, label, icon: Icon }) => (
                     <li key={to} className="flex items-center space-x-2">
                       {to === "auth" ? (
-                        <button
-                          onClick={() => setIsAuthOpen(true)}
-                          className="flex items-center gap-2 hover:text-indigo-300"
-                        >
-                          <Icon size={18} />
-                          {label}
-                        </button>
+                        user ? (
+                          <div className="flex items-center gap-2">
+                            <img
+                              src={user.avatar || "/default-avatar.png"}
+                              alt="avatar"
+                              className="w-8 h-8 rounded-full object-cover"
+                            />
+                            <span className="font-medium">{user.username}</span>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => setIsAuthOpen(true)}
+                            className="flex items-center gap-2 hover:text-indigo-300"
+                          >
+                            <Icon size={18} />
+                            {label}
+                          </button>
+                        )
                       ) : (
                         <a
                           href={`#${to}`}
@@ -180,11 +194,8 @@ export default function Navbar() {
                     </li>
                   ))}
                 </ul>
-                {/* ✅ Auth modal */}
-                {/* <AuthantificationModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} /> */}
               </nav>
 
-              {/* Lang Switcher Mobile */}
               <LanguageSwitcher />
 
               <div className="mt-auto text-center text-sm text-white/70">

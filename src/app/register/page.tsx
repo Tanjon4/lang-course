@@ -73,7 +73,7 @@ export default function RegisterPage() {
       if (response.ok) {
         console.log('Inscription réussie');
         // Redirection ou message de succès
-        alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+        alert('Inscription réussie ! Verifier vos E-mail pour confirmer votre compte et seconnecter après.');
         Router.push('/login');
       
       }else if (response.status === 400) {
