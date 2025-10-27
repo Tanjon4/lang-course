@@ -6,11 +6,28 @@ import Link from 'next/link';
 import Layout from '@/components/layout/Layout';
 import { auth } from '@/lib/firebase';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import Navbar from '@/components/layout/Navbar';
+import FooterPage from '@/components/layout/Footer';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+
+  // ✅ Fonction de redirection selon le rôle
+  const redirectByRole = (role: string) => {
+    if (role === "admin") {
+      router.push("/dashboard/admin");
+    } else if (role === "student") {
+      router.push("/dashboard/user");
+    } else {
+      alert("Rôle inconnu. Contactez l’administrateur.");
+      router.push("/");
+    }
+  };
 
   // Login avec email/password backend
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,19 +40,26 @@ export default function LoginPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-
+      const data = await res.json();
       if (res.ok) {
-        const data = await res.json();
         localStorage.setItem('access', data.access);
         localStorage.setItem('refresh', data.refresh);
         console.log('Connexion réussie:', data);
         // router.push('/dashboard')
-      } else {
+        alert("✅ Connexion réussie !");
+        redirectByRole(data.role);
+      } 
+      else if(res.status === 401) {
+        alert("❌ Email ou mot de passe incorrect !");
+      }
+      else {
         const err = await res.json();
         console.error('Erreur login:', err);
+        alert(`❌ Erreur de connexion : ${data.detail || "Identifiants invalides"}`);
       }
     } catch (error) {
       console.error('Erreur login:', error);
+      alert("❌ Erreur de réseau ou serveur. Veuillez réessayer.");
     } finally {
       setIsLoading(false);
     }
@@ -56,27 +80,34 @@ export default function LoginPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token }),
       });
+      const data = await res.json();
       if (res.ok) {
-        const data = await res.json();
+        
         localStorage.setItem('access', data.access);
         localStorage.setItem('refresh', data.refresh);
         console.log('Login Google backend réussi:', data);
+        alert("✅ Connexion Google réussie !");
+        redirectByRole(data.role);
       } else {
         const err = await res.json();
         console.error('Erreur login Google backend:', err);
+        alert(`❌ Erreur Google backend : ${data.detail || "Connexion échouée"}`);
       }
     } catch (error) {
       console.error('Erreur login Google Firebase:', error);
+      alert("❌ Erreur de connexion Google. Veuillez réessayer.");
     }
   };
 
   return (
-    <Layout>
-      <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
+    <main >
+      <Navbar />
+      <br /> <br />
+      <div className="min-h-[80vh] flex items-center justify-center px-4 py-8 mb-5">
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
           {/* Section de bienvenue - Côté gauche */}
-          <div className="lg:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
+          <div className="lg:w-1/2 bg-gradient-to-br from-indigo-400 to-purple-500 text-white p-12 flex flex-col justify-center">
             <div className="space-y-8">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-white/20 rounded-xl">
@@ -220,6 +251,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-    </Layout>
+      <FooterPage />
+    </main>
   );
 }

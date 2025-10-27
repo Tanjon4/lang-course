@@ -3,6 +3,8 @@ import React from 'react';
 import { User as UserIcon, Mail, Shield, Calendar, Edit } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { useAuth } from '@/app/contexts/AuthContext'
+import Navbar from '@/components/layout/Navbar';
+import FooterPage from '@/components/layout/Footer';
 
 export default function ProfilePage() {
   const { user } = useAuth(); // Maka ny user connecté avy amin'ny AuthContext
@@ -17,6 +19,7 @@ export default function ProfilePage() {
 
   return (
     <Layout user={user}>
+      <Navbar/>
       <div className="max-w-4xl mx-auto py-8 px-4">
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
 
@@ -113,6 +116,7 @@ export default function ProfilePage() {
 
         </div>
       </div>
+      <FooterPage/>
     </Layout>
   );
 }

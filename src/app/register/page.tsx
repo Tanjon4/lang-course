@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 import { Mail, Lock, User, Eye, EyeOff, UserPlus, CheckCircle, Sparkles, Languages } from 'lucide-react';
 import Link from 'next/link';
 import Layout from '@/components/layout/Layout';
+import Navbar from '@/components/layout/Navbar';
+import FooterPage from '@/components/layout/Footer';
+import Router from 'next/router';
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -70,7 +73,13 @@ export default function RegisterPage() {
       if (response.ok) {
         console.log('Inscription réussie');
         // Redirection ou message de succès
-      } else {
+        alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+        Router.push('/login');
+      
+      }else if (response.status === 400) {
+        alert('Erreur : Vérifiez vos informations d\'inscription.');
+      }
+      else {
         const error = await response.json();
         console.error('Erreur d\'inscription:', error);
       }
@@ -84,7 +93,9 @@ export default function RegisterPage() {
   const isFormValid = passwordStrength >= 3 && formData.password === formData.password2;
 
   return (
-    <Layout>
+    <main>
+      <Navbar/>
+      <br /> <br />
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
@@ -317,6 +328,7 @@ export default function RegisterPage() {
           </div>
         </div>
       </div>
-    </Layout>
+      <FooterPage/>
+    </main>
   );
 }

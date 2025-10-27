@@ -27,7 +27,7 @@ export default function Footer() {
           <Box className="md:col-span-2">
             <Typography 
               variant="h4" 
-              className="font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
+              className="font-bold mb-4 bg-gradient-to-r from-orange-400 to-amber-600 bg-clip-text text-transparent"
             >
               {t("coursLang")}
             </Typography>
@@ -44,9 +44,9 @@ export default function Footer() {
                 <input 
                   type="email" 
                   placeholder={t("yourEmail", "Votre email")}
-                  className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+                  className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-white placeholder-gray-400"
                 />
-                <button className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all duration-300 font-medium shadow-lg hover:shadow-blue-500/25">
+                <button className="px-6 py-2 bg-gradient-to-r from-orange-400 to-amber-600 text-white rounded-lg hover:from-amber-400 hover:to-orange-600 transition-all duration-300 font-medium shadow-lg hover:shadow-blue-500/25">
                   {t("subscribe", "S'abonner")}
                 </button>
               </Box>
@@ -57,7 +57,7 @@ export default function Footer() {
           <Box>
             <Typography variant="h6" className="mb-6 font-semibold relative inline-block">
               {t("lienRappide")}
-              <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400"></span>
+              <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-gradient-to-r from-orange-400 to-amber-400"></span>
             </Typography>
             <ul className="space-y-3">
               {[
@@ -84,7 +84,7 @@ export default function Footer() {
           <Box>
             <Typography variant="h6" className=" mb-6 font-semibold relative inline-block">
               {t("follow")}
-              <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400"></span>
+              <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-gradient-to-r from-orange-400 to-amber-400"></span>
             </Typography>
             
             {/* Social media */}
@@ -141,7 +141,7 @@ export default function Footer() {
             {/* Scroll to top button */}
             <IconButton 
               onClick={scrollToTop}
-              className="bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-blue-500/25"
+              className="bg-gradient-to-r from-yellow-200 to-amber-500 text-white hover:from-orange-400 hover:to-amber-600 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-blue-500/25"
               size="medium"
             >
               <ArrowUp className="w-5 h-5" />

@@ -8,8 +8,10 @@ import { useEffect } from "react";
 import i18n from "@/translations/i18next";
 import HeroSection from "@/components/sections/HeroSection";
 import About from "@/components/sections/About";
+import Contact from "@/components/sections/Contact";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/app/contexts/AuthContext";
-import Navbar from "../components/layout/Navbar";
 import FooterPage from "../components/layout/Footer";
 
 export default function Home() {
@@ -24,9 +26,11 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <Navbar />
       {/* Hero Section avec les boutons d'authentification intégrés */}
       <Navbar />
       <HeroSection />
+      
       
       <div className="container mx-auto px-4 py-8">
         {/* Section de bienvenue personnalisée (optionnelle - peut être supprimée si redondante) */}
@@ -61,6 +65,8 @@ export default function Home() {
 
         {/* Section About */}
         <About />
+
+        <Contact/>
 
         {/* Section des fonctionnalités d'authentification */}
         <div className="max-w-7xl mx-auto mt-20">
@@ -151,31 +157,8 @@ export default function Home() {
           </div>
         )}
 
-        {/* Section de témoignages ou statistiques supplémentaires */}
-        <div className="max-w-6xl mx-auto mt-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { number: '50K+', label: t('activeUsers'), color: 'from-blue-500 to-blue-600' },
-              { number: '15+', label: t('languages'), color: 'from-green-500 to-green-600' },
-              { number: '98%', label: t('satisfaction'), color: 'from-purple-500 to-purple-600' },
-              { number: '24/7', label: t('support'), color: 'from-orange-500 to-orange-600' }
-            ].map((stat, index) => (
-              <div 
-                key={index}
-                className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/60 text-center transform hover:scale-105 transition-all duration-300"
-              >
-                <div className={`text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2`}>
-                  {stat.number}
-                </div>
-                <div className="text-gray-600 font-medium">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
-      <FooterPage />
+      <Footer />
     </main>
   );
 }
