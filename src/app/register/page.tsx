@@ -3,12 +3,13 @@
 import React, { useState } from 'react';
 import { Mail, Lock, User, Eye, EyeOff, UserPlus, CheckCircle, Sparkles, Languages } from 'lucide-react';
 import Link from 'next/link';
-import Layout from '@/components/layout/Layout';
 import Navbar from '@/components/layout/Navbar';
 import FooterPage from '@/components/layout/Footer';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
+
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -74,7 +75,7 @@ export default function RegisterPage() {
         console.log('Inscription réussie');
         // Redirection ou message de succès
         alert('Inscription réussie ! Verifier vos E-mail pour confirmer votre compte et seconnecter après.');
-        Router.push('/login');
+        router.push('/login');
       
       }else if (response.status === 400) {
         alert('Erreur : Vérifiez vos informations d\'inscription.');

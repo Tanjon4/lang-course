@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Lock, CheckCircle, ArrowLeft, Sparkles, Languages, Shield, Key } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import Layout from '@/components/layout/Layout';
 import Navbar from '@/components/layout/Navbar';
 import FooterPage from '@/components/layout/Footer';
 
