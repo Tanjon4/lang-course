@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { Mail, ArrowLeft, CheckCircle, Sparkles, Languages, Shield } from 'lucide-react';
 import Link from 'next/link';
 import Layout from '@/components/layout/Layout';
+import Navbar from '@/components/layout/Navbar';
+import FooterPage from '@/components/layout/Footer';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -35,7 +37,9 @@ export default function ForgotPasswordPage() {
 
   if (isSubmitted) {
     return (
-      <Layout>
+      <main >
+        <Navbar />
+        <br /> <br />
         <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
           <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
             
@@ -125,12 +129,15 @@ export default function ForgotPasswordPage() {
             </div>
           </div>
         </div>
-      </Layout>
+        <FooterPage/>
+      </main>
     );
   }
 
   return (
-    <Layout>
+    <main>
+      <Navbar />
+      <br /> <br />
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
@@ -268,6 +275,7 @@ export default function ForgotPasswordPage() {
           </div>
         </div>
       </div>
-    </Layout>
+      <FooterPage/>
+    </main>
   );
 }

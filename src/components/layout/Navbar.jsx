@@ -9,7 +9,6 @@ import {useLangStore} from '../../store/languageStore';
 import i18n from "@/translations/i18next"; // 👈 import stable
 import LanguageDetector from 'i18next-browser-languagedetector';
 import LanguageSwitcher from "../LanguageSwitcher";
-import AuthantificationModal from "../sections/AuthModal";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +27,7 @@ export default function Navbar() {
 
   // Menu (mampiasa i18next translation keys)
   const links = [
-    { to: "home", label: t("home"), icon: Home },
+    { to: "/", label: t("home"), icon: Home },
     { to: "courses", label: t("cours"), icon: BookOpen },
     { to: "teachers", label: t("prof"), icon: Users },
     { to: "about", label: t("apropos"), icon: MessageCircle },
@@ -83,7 +82,7 @@ export default function Navbar() {
             href="/"
             className="text-3xl font-extrabold   racking-tight hover:scale-105 transition-transform"
           >
-            E-Learn 🌍
+            E-Learning 
           </Link>
 
           {/* Desktop nav */}
@@ -94,18 +93,18 @@ export default function Navbar() {
                   {to === "auth" ? (
                     <button
                       onClick={() => setIsAuthOpen(true)}
-                      className="flex items-center gap-2 hover:text-indigo-300"
+                      className="flex items-center gap-2 hover:text-amber-600"
                     >
                       <Icon size={18} />
                       {label}
                     </button>
                   ) : (
                     <a
-                      href={`#${to}`}
+                      href={`${to}`}
                       className={`flex items-center gap-2 transition-colors duration-300 ${
                         activeSection === to
-                          ? "text-blue-300 border-b-2 border-blue-400 pb-1"
-                          : "hover:text-indigo-300"
+                          ? "text-amber-600 border-b-2 border-amber-600 pb-1"
+                          : "hover:text-orange-300"
                       }`}
                     >
                       <Icon size={18} />
@@ -114,8 +113,6 @@ export default function Navbar() {
                   )}
                 </li>
               ))}
-              {/* ✅ Auth modal */}
-                <AuthantificationModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
             </ul>
 
             {/* Lang Switcher */}
@@ -172,8 +169,8 @@ export default function Navbar() {
                           href={`#${to}`}
                           className={`flex items-center gap-2 transition-colors duration-300 ${
                             activeSection === to
-                              ? "text-blue-300 border-b-2 border-blue-400 pb-1"
-                              : "hover:text-indigo-300"
+                              ? "text-amber-600 border-b-2 border-amber-600 pb-1"
+                              : "hover:text-yellow-400"
                           }`}
                         >
                           <Icon size={18} />
@@ -184,7 +181,7 @@ export default function Navbar() {
                   ))}
                 </ul>
                 {/* ✅ Auth modal */}
-                <AuthantificationModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+                {/* <AuthantificationModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} /> */}
               </nav>
 
               {/* Lang Switcher Mobile */}

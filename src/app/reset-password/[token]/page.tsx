@@ -4,6 +4,8 @@ import { Lock, CheckCircle, ArrowLeft, Sparkles, Languages, Shield, Key } from '
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import Layout from '@/components/layout/Layout';
+import Navbar from '@/components/layout/Navbar';
+import FooterPage from '@/components/layout/Footer';
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -97,7 +99,9 @@ export default function ResetPasswordPage() {
 
   if (isSubmitted) {
     return (
-      <Layout>
+      <main>
+        <Navbar/>
+        <br /> <br />
         <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
           <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
             
@@ -188,12 +192,15 @@ export default function ResetPasswordPage() {
             </div>
           </div>
         </div>
-      </Layout>
+        <FooterPage/>
+      </main>
     );
   }
 
   return (
-    <Layout>
+    <main>
+      <Navbar/>
+      <br /> <br />
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
@@ -390,6 +397,7 @@ export default function ResetPasswordPage() {
           </div>
         </div>
       </div>
-    </Layout>
+      <FooterPage/>
+    </main>
   );
 }
