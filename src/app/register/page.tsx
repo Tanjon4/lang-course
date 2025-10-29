@@ -1,6 +1,6 @@
 // app/register/page.tsx
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Lock, User, Eye, EyeOff, UserPlus, CheckCircle, Sparkles, Languages } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
@@ -8,7 +8,7 @@ import FooterPage from '@/components/layout/Footer';
 import { useRouter } from 'next/navigation'; // Correction ici
 
 export default function RegisterPage() {
-  const router = useRouter(); // Maintenant ça fonctionnera correctement
+  const router = useRouter();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -19,20 +19,28 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
 
-  const checkPasswordStrength = (password: string) => {
-    let strength = 0;
-    if (password.length >= 8) strength++;
-    if (/[A-Z]/.test(password)) strength++;
-    if (/[a-z]/.test(password)) strength++;
-    if (/[0-9]/.test(password)) strength++;
-    if (/[^A-Za-z0-9]/.test(password)) strength++;
-    setPasswordStrength(strength);
-  };
+  // Utilisation de useEffect pour calculer la force du mot de passe
+  useEffect(() => {
+    const checkPasswordStrength = (password: string) => {
+      let strength = 0;
+      if (password.length >= 8) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[a-z]/.test(password)) strength++;
+      if (/[0-9]/.test(password)) strength++;
+      if (/[^A-Za-z0-9]/.test(password)) strength++;
+      setPasswordStrength(strength);
+    };
+
+    if (formData.password) {
+      checkPasswordStrength(formData.password);
+    } else {
+      setPasswordStrength(0);
+    }
+  }, [formData.password]);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = e.target.value;
     setFormData({ ...formData, password: newPassword });
-    checkPasswordStrength(newPassword);
   };
 
   const getStrengthColor = (strength: number) => {
@@ -97,8 +105,10 @@ export default function RegisterPage() {
     }
   };
 
-  const isFormValid = passwordStrength >= 3 && formData.password === formData.password2 && formData.username && formData.email;
-
+  const isFormValid = passwordStrength >= 3 && 
+                      formData.password === formData.password2 && 
+                      formData.username.trim() !== '' && 
+                      formData.email.trim() !== '';
   return (
     <main>
       <Navbar/>
