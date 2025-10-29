@@ -25,8 +25,7 @@ export default function Home() {
   }, [language]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <Navbar />
+    <main className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100">
       {/* Hero Section avec les boutons d'authentification intégrés */}
       <Navbar />
       <HeroSection />
@@ -37,12 +36,12 @@ export default function Home() {
         {isAuthenticated && (
           <div className="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-xl border border-white/60 mb-16 transform transition-all duration-300 hover:shadow-2xl">
             <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+              <div className="w-20 h-20 bg-linear-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <span className="text-2xl font-bold text-white">
                   {user?.username?.charAt(0).toUpperCase()}
                 </span>
               </div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-primary-600 bg-clip-text text-transparent mb-4">
+              <h1 className="text-4xl font-bold bg-linear-to-r from-gray-900 to-primary-600 bg-clip-text text-transparent mb-4">
                 {t('welcome')}, {user?.username}!
               </h1>
               <p className="text-gray-600 text-lg mb-8 leading-relaxed">
@@ -51,7 +50,7 @@ export default function Home() {
               <div className="flex justify-center">
                 <a 
                   href="/profile" 
-                  className="group bg-gradient-to-r from-primary-600 to-primary-700 text-white px-8 py-4 rounded-2xl hover:shadow-xl transition-all duration-300 font-semibold transform hover:-translate-y-1 flex items-center space-x-3"
+                  className="group bg-linear-to-r from-primary-600 to-primary-700 text-white px-8 py-4 rounded-2xl hover:shadow-xl transition-all duration-300 font-semibold transform hover:-translate-y-1 flex items-center space-x-3"
                 >
                   <span>{t('viewProfile')}</span>
                   <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -71,7 +70,7 @@ export default function Home() {
         {/* Section des fonctionnalités d'authentification */}
         <div className="max-w-7xl mx-auto mt-20">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-primary-600 bg-clip-text text-transparent mb-4">
+            <h2 className="text-4xl font-bold bg-linear-to-r from-gray-900 to-primary-600 bg-clip-text text-transparent mb-4">
               {t('authFeatures')}
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -113,7 +112,7 @@ export default function Home() {
                 key={index}
                 className="group bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-lg border border-white/60 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
               >
-                <div className="h-16 w-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <div className="h-16 w-16 bg-linear-to-br from-primary-500 to-primary-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <div className="text-white">
                     {feature.icon}
                   </div>
@@ -132,7 +131,7 @@ export default function Home() {
         {/* Section d'appel à l'action supplémentaire pour les non-authentifiés */}
         {!isAuthenticated && (
           <div className="max-w-4xl mx-auto mt-20 text-center">
-            <div className="bg-gradient-to-r from-primary-500 to-purple-600 rounded-3xl p-12 shadow-2xl">
+            <div className="bg-linear-to-r from-primary-500 to-purple-600 rounded-3xl p-12 shadow-2xl">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
                 {t('readyToGetStarted')}
               </h2>

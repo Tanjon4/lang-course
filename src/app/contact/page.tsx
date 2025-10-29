@@ -9,7 +9,7 @@ export default function ContactUs() {
     <main>
         <Navbar/>
         <br /> <br />
-        <div className="min-h-screen bg-gradient-to-br from-white to-gray-50">
+        <div className="min-h-screen bg-linear-to-br from-white to-gray-50">
             <Contact />
         </div>
         <Footer/>

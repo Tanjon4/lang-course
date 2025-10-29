@@ -12,7 +12,7 @@ const HeroSection = () => {
 
   return (
     
-    <section id='/' className="relative min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 overflow-hidden rounded-2xl shadow-lg">
+    <section id='/' className="relative min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 overflow-hidden rounded-2xl shadow-lg">
       <br /><br />
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
@@ -44,7 +44,7 @@ const HeroSection = () => {
                 className="text-4xl lg:text-5xl font-extrabold mt-4 text-gray-900 leading-tight"
               >
                 {t('line1')}{' '} <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-orange-200 animate-gradient">
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-gray-600 to-orange-200 animate-linear">
                   {t('line2')}
                 </span>
               </h1>
@@ -91,7 +91,7 @@ const HeroSection = () => {
                 
                   <a 
                     href="/login"
-                    className="group flex items-center justify-center gap-3 bg-gradient-to-r from-orange-400 via-amber-500 hover:from-orange-400 hover:to-amber-700 text-white px-8 py-4 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
+                    className="group flex items-center justify-center gap-3 bg-linear-to-r from-orange-400 via-amber-500 hover:from-orange-400 hover:to-amber-700 text-white px-8 py-4 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
                   >
                     <svg className="w-5 h-5 transform group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
@@ -113,7 +113,7 @@ const HeroSection = () => {
                 <div className="flex flex-col sm:flex-row gap-4 pt-6">
                   <a 
                     href="/profile"
-                    className="group flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-8 py-4 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
+                    className="group flex items-center justify-center gap-3 bg-linear-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-8 py-4 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
                   >
                     <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
                       <span className="text-sm font-bold">{user?.username?.charAt(0).toUpperCase()}</span>
@@ -122,7 +122,7 @@ const HeroSection = () => {
                   </a>
 
                   <button
-                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 text-white px-6 py-4 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
+                    className="flex items-center justify-center gap-2 bg-linear-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 text-white px-6 py-4 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
                   >
                     <Play className="w-5 h-5" />
                     {t('ariaLabel')}
@@ -154,8 +154,8 @@ const HeroSection = () => {
                   quality={70}
                   priority
                 />
-                {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                {/* Overlay linear */}
+                <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent"></div>
                 
                 {/* Floating authentication badge */}
                 {!isAuthenticated && (
@@ -177,7 +177,7 @@ const HeroSection = () => {
               </div>
               
               {/* New floating element for authentication */}
-              <div className="absolute top-1/2 -left-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full p-3 shadow-lg animate-float-fast">
+              <div className="absolute top-1/2 -left-4 bg-linear-to-r from-blue-500 to-purple-500 rounded-full p-3 shadow-lg animate-float-fast">
                 <Groups className="text-white text-xl" />
               </div>
             </Box>
@@ -253,7 +253,7 @@ const HeroSection = () => {
           50% { opacity: 0.9; }
         }
         
-        @keyframes gradient {
+        @keyframes linear {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }

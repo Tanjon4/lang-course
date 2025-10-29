@@ -100,14 +100,13 @@ export default function LoginPage() {
   };
 
   return (
-    <main >
-      <Navbar />
+    <Layout >
       <br /> <br />
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-8 mb-5">
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
           {/* Section de bienvenue - Côté gauche */}
-          <div className="lg:w-1/2 bg-gradient-to-br from-indigo-400 to-purple-500 text-white p-12 flex flex-col justify-center">
+          <div className="lg:w-1/2 bg-linear-to-br from-indigo-400 to-purple-500 text-white p-12 flex flex-col justify-center">
             <div className="space-y-8">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-white/20 rounded-xl">
@@ -226,7 +225,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
+                className="w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
               >
                 <LogIn className="h-5 w-5" />
                 <span className="font-semibold">
@@ -251,7 +250,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-      <FooterPage />
-    </main>
+      {/* <FooterPage /> */}
+    </Layout>
   );
 }

@@ -3,8 +3,7 @@
 import React, { useState } from 'react';
 import { Mail, ArrowLeft, CheckCircle, Sparkles, Languages, Shield } from 'lucide-react';
 import Link from 'next/link';
-import Navbar from '@/components/layout/Navbar';
-import FooterPage from '@/components/layout/Footer';
+import Layout from '@/components/layout/Layout';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -36,14 +35,14 @@ export default function ForgotPasswordPage() {
 
   if (isSubmitted) {
     return (
-      <main >
-        <Navbar />
+      <Layout >
+        
         <br /> <br />
         <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
           <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
             
             {/* Section de confirmation - Côté gauche */}
-            <div className="lg:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
+            <div className="lg:w-1/2 bg-linear-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
               <div className="space-y-8">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white/20 rounded-xl">
@@ -119,7 +118,7 @@ export default function ForgotPasswordPage() {
 
                 <Link
                   href="/login"
-                  className="inline-flex items-center justify-center space-x-3 w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center justify-center space-x-3 w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
                   <ArrowLeft className="h-5 w-5" />
                   <span className="font-semibold">Retour à la connexion</span>
@@ -128,20 +127,19 @@ export default function ForgotPasswordPage() {
             </div>
           </div>
         </div>
-        <FooterPage/>
-      </main>
+        
+      </Layout>
     );
   }
 
   return (
-    <main>
-      <Navbar />
+    <Layout>
       <br /> <br />
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
           {/* Section de bienvenue - Côté gauche */}
-          <div className="lg:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
+          <div className="lg:w-1/2 bg-linear-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
             <div className="space-y-8">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-white/20 rounded-xl">
@@ -238,7 +236,7 @@ export default function ForgotPasswordPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
+                className="w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
               >
                 <Mail className="h-5 w-5" />
                 <span className="font-semibold">
@@ -274,7 +272,7 @@ export default function ForgotPasswordPage() {
           </div>
         </div>
       </div>
-      <FooterPage/>
-    </main>
+
+    </Layout>
   );
 }

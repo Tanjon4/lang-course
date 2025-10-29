@@ -4,8 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, Mail, Sparkles, Languages, ArrowRight, Shield } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import Footer from '@/components/layout/Footer';
-import Navbar from '@/components/layout/Navbar';
+import Layout from '@/components/layout/Layout';
 
 export default function EmailVerifiedPage() {
   const router = useRouter();
@@ -50,14 +49,13 @@ export default function EmailVerifiedPage() {
 
   if (status === 'loading') {
     return (
-      <main>
-        <Navbar />
+      <Layout>
         <br /> <br />
         <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
           <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
             
             {/* Section de chargement - Côté gauche */}
-            <div className="lg:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
+            <div className="lg:w-1/2 bg-linear-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
               <div className="space-y-8">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white/20 rounded-xl">
@@ -135,21 +133,19 @@ export default function EmailVerifiedPage() {
             </div>
           </div>
         </div>
-        <Footer />
-      </main>
+      </Layout>
     );
   }
 
   if (status === 'error') {
     return (
-      <main>
-        <Navbar />
+      <Layout>
         <br /> <br />
         <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
           <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
             
             {/* Section d'erreur - Côté gauche */}
-            <div className="lg:w-1/2 bg-gradient-to-br from-red-600 to-orange-700 text-white p-12 flex flex-col justify-center">
+            <div className="lg:w-1/2 bg-linear-to-br from-red-600 to-orange-700 text-white p-12 flex flex-col justify-center">
               <div className="space-y-8">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white/20 rounded-xl">
@@ -221,7 +217,7 @@ export default function EmailVerifiedPage() {
                 <div className="space-y-4">
                   <Link
                     href="/login"
-                    className="inline-flex items-center justify-center space-x-3 w-full bg-gradient-to-r from-red-600 to-orange-600 text-white py-4 px-6 rounded-xl hover:from-red-700 hover:to-orange-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
+                    className="inline-flex items-center justify-center space-x-3 w-full bg-linear-to-r from-red-600 to-orange-600 text-white py-4 px-6 rounded-xl hover:from-red-700 hover:to-orange-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
                   >
                     <ArrowRight className="h-5 w-5" />
                     <span className="font-semibold">Aller à la connexion</span>
@@ -239,20 +235,19 @@ export default function EmailVerifiedPage() {
             </div>
           </div>
         </div>
-        <Footer />
-      </main>
+      </Layout>
     );
   }
 
   // Success state
   return (
-    <main>
+    <Layout>
       <br /> <br />
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
           {/* Section de succès - Côté gauche */}
-          <div className="lg:w-1/2 bg-gradient-to-br from-green-600 to-emerald-700 text-white p-12 flex flex-col justify-center">
+          <div className="lg:w-1/2 bg-linear-to-br from-green-600 to-emerald-700 text-white p-12 flex flex-col justify-center">
             <div className="space-y-8">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-white/20 rounded-xl">
@@ -327,7 +322,7 @@ export default function EmailVerifiedPage() {
 
               <Link
                 href="/login"
-                className="inline-flex items-center justify-center space-x-3 w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 px-6 rounded-xl hover:from-green-700 hover:to-emerald-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="inline-flex items-center justify-center space-x-3 w-full bg-linear-to-r from-green-600 to-emerald-600 text-white py-4 px-6 rounded-xl hover:from-green-700 hover:to-emerald-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <ArrowRight className="h-5 w-5" />
                 <span className="font-semibold">Commencer maintenant</span>
@@ -344,7 +339,6 @@ export default function EmailVerifiedPage() {
           </div>
         </div>
       </div>
-      <Footer />
-    </main>
+    </Layout>
   );
 }
