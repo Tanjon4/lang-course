@@ -91,7 +91,7 @@ export default function RegisterPage() {
       if (response.ok) {
         console.log('Inscription réussie');
         alert('Inscription réussie ! Vérifiez vos emails pour confirmer votre compte et vous connecter après.');
-        router.push('/login');
+        router.push(`/${lang}/auth/login`);
       } else if (response.status === 400) {
         const errorData = await response.json();
         alert(`Erreur : ${errorData.message || 'Vérifiez vos informations d\'inscription.'}`);
