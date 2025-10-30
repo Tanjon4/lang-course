@@ -31,7 +31,7 @@ export default function EmailVerifiedPage() {
           setStatus('success');
           setMessage(data.message || 'Votre email a été vérifié avec succès !');
           // Redirection automatique après 3 secondes
-          setTimeout(() => router.push('/login'), 3000);
+          setTimeout(() => router.push(`/${lang}/auth/login`), 3000);
         } else {
           setStatus('error');
           setMessage(data.error || 'Erreur lors de la vérification de l\'email');
