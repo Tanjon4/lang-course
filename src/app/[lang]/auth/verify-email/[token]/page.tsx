@@ -25,7 +25,31 @@ export default function EmailVerifiedPage() {
           },
         });
 
-        const data = await response.json();
+        // Vérifier d'abord le type de contenu
+        const contentType = response.headers.get('content-type');
+        
+        let data;
+        if (contentType && contentType.includes('application/json')) {
+          data = await response.json();
+        } else {
+          // Si ce n'est pas du JSON, lire en texte
+          const text = await response.text();
+          console.warn('Réponse non-JSON reçue:', text);
+          
+          // Essayer de parser comme JSON si possible, sinon créer un objet d'erreur
+          try {
+            data = JSON.parse(text);
+          } catch {
+            // Si le parsing échoue, créer un objet d'erreur basé sur le statut HTTP
+            if (response.ok) {
+              data = { message: 'Email vérifié avec succès' };
+            } else {
+              data = { 
+                error: `Erreur ${response.status}: ${response.statusText}` 
+              };
+            }
+          }
+        }
 
         if (response.ok) {
           setStatus('success');
@@ -34,20 +58,24 @@ export default function EmailVerifiedPage() {
           setTimeout(() => router.push(`/${lang}/auth/login`), 3000);
         } else {
           setStatus('error');
-          setMessage(data.error || 'Erreur lors de la vérification de l\'email');
+          setMessage(data.error || data.message || `Erreur ${response.status} lors de la vérification de l'email`);
         }
       } catch (err) {
+        console.error('Erreur lors de la vérification:', err);
         setStatus('error');
         setMessage('Erreur réseau. Veuillez réessayer.');
-        console.error(err);
       }
     };
 
     if (token) {
       verifyEmail();
+    } else {
+      setStatus('error');
+      setMessage('Token de vérification manquant.');
     }
-  }, [token, router]);
+  }, [token, router, lang]);
 
+  // Reste du code inchangé...
   if (status === 'loading') {
     return (
       <Layout>
@@ -56,7 +84,7 @@ export default function EmailVerifiedPage() {
           <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
             
             {/* Section de chargement - Côté gauche */}
-            <div className="lg:w-1/2 bg-linear-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
+            <div className="lg:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
               <div className="space-y-8">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white/20 rounded-xl">
@@ -72,7 +100,7 @@ export default function EmailVerifiedPage() {
                   </div>
                   <p className="text-indigo-100 text-lg leading-relaxed">
                     Nous vérifions votre adresse email pour sécuriser votre compte. 
-                        Cette opération ne prendra que quelques instants.
+                    Cette opération ne prendra que quelques instants.
                   </p>
                 </div>
 
@@ -146,7 +174,7 @@ export default function EmailVerifiedPage() {
           <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
             
             {/* Section d'erreur - Côté gauche */}
-            <div className="lg:w-1/2 bg-linear-to-br from-red-600 to-orange-700 text-white p-12 flex flex-col justify-center">
+            <div className="lg:w-1/2 bg-gradient-to-br from-red-600 to-orange-700 text-white p-12 flex flex-col justify-center">
               <div className="space-y-8">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white/20 rounded-xl">
@@ -218,7 +246,7 @@ export default function EmailVerifiedPage() {
                 <div className="space-y-4">
                   <Link
                     href={`/${lang}/auth/login`}
-                    className="inline-flex items-center justify-center space-x-3 w-full bg-linear-to-r from-red-600 to-orange-600 text-white py-4 px-6 rounded-xl hover:from-red-700 hover:to-orange-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
+                    className="inline-flex items-center justify-center space-x-3 w-full bg-gradient-to-r from-red-600 to-orange-600 text-white py-4 px-6 rounded-xl hover:from-red-700 hover:to-orange-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
                   >
                     <ArrowRight className="h-5 w-5" />
                     <span className="font-semibold">Aller à la connexion</span>
@@ -248,7 +276,7 @@ export default function EmailVerifiedPage() {
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
           {/* Section de succès - Côté gauche */}
-          <div className="lg:w-1/2 bg-linear-to-br from-green-600 to-emerald-700 text-white p-12 flex flex-col justify-center">
+          <div className="lg:w-1/2 bg-gradient-to-br from-green-600 to-emerald-700 text-white p-12 flex flex-col justify-center">
             <div className="space-y-8">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-white/20 rounded-xl">
@@ -323,7 +351,7 @@ export default function EmailVerifiedPage() {
 
               <Link
                 href={`/${lang}/auth/login`}
-                className="inline-flex items-center justify-center space-x-3 w-full bg-linear-to-r from-green-600 to-emerald-600 text-white py-4 px-6 rounded-xl hover:from-green-700 hover:to-emerald-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="inline-flex items-center justify-center space-x-3 w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 px-6 rounded-xl hover:from-green-700 hover:to-emerald-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <ArrowRight className="h-5 w-5" />
                 <span className="font-semibold">Commencer maintenant</span>
