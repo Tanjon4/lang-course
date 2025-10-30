@@ -3,18 +3,19 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, LogIn, Sparkles, Languages } from 'lucide-react';
 import Link from 'next/link';
-import Layout from '@/components/layout/Layout';
+import Layout from '@/components/layout/BaseLayout';
 import { auth } from '@/lib/firebase';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import Navbar from '@/components/layout/Navbar';
-import FooterPage from '@/components/layout/Footer';
 import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const params = useParams();
+  const lang = params.lang as string;
 
 
   // ✅ Fonction de redirection selon le rôle
@@ -146,7 +147,7 @@ export default function LoginPage() {
                 {/* Forgot Password Link */}
                 <div className="text-center">
                   <Link 
-                    href="/forgot-password" 
+                    href={`/${lang}/auth/forgot-password`} 
                     className="text-indigo-200 hover:text-white transition-colors duration-300 text-sm font-medium inline-flex items-center space-x-1"
                   >
                     <Lock className="h-4 w-4" />
@@ -238,7 +239,7 @@ export default function LoginPage() {
                 <p className="text-gray-600">
                   Pas encore de compte ?{' '}
                   <Link 
-                    href="/register" 
+                    href={`/${lang}/auth/register`}
                     className="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors duration-300 inline-flex items-center space-x-1"
                   >
                     <span>Créer un compte</span>

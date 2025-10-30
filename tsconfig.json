@@ -26,6 +26,6 @@
       "@/services/*": ["./src/services/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/dashboard/admin/components/CoursesManagements.js", "src/components/layout/Navbar.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/dashboard/admin/components/CoursesManagements.js", "src/components/layout/Navbar.tsx", "src/components/sections/HeroSection.jsx"],
   "exclude": ["node_modules"]
 }

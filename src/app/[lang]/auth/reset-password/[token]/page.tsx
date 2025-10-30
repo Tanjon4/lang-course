@@ -3,12 +3,15 @@ import React, { useState } from 'react';
 import { Lock, CheckCircle, ArrowLeft, Sparkles, Languages, Shield, Key } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import Layout from '@/components/layout/Layout';
+import Layout from '@/components/layout/BaseLayout';
+
 
 export default function ResetPasswordPage() {
   const router = useRouter();
   const params = useParams();
   const token = params.token as string;
+
+  const lang = params.lang as string;
 
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
@@ -180,7 +183,7 @@ export default function ResetPasswordPage() {
                 </p>
 
                 <Link
-                  href="/login"
+                  href={`/${lang}/auth/login`}
                   className="inline-flex items-center justify-center space-x-3 w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
                   <ArrowLeft className="h-5 w-5" />
@@ -242,7 +245,7 @@ export default function ResetPasswordPage() {
                   <p className="text-indigo-200">
                     Vous vous souvenez de votre mot de passe ?{' '}
                     <Link 
-                      href="/login" 
+                      href={`/${lang}/auth/login`}
                       className="text-white font-semibold hover:text-yellow-200 transition-colors duration-300 inline-flex items-center space-x-1"
                     >
                       <span>Se connecter</span>
@@ -368,7 +371,7 @@ export default function ResetPasswordPage() {
               {/* Back to Login */}
               <div className="text-center pt-6">
                 <Link 
-                  href="/login" 
+                  href={`/${lang}/auth/login`}
                   className="inline-flex items-center space-x-2 text-gray-600 hover:text-indigo-600 transition-colors duration-300 font-medium"
                 >
                   <ArrowLeft className="h-4 w-4" />

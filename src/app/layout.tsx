@@ -1,6 +1,7 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
+import "@/translations/i18next"; // ⚡ Initialisation i18next
 import { AuthProvider } from '@/app/contexts/AuthContext'
 
 export const metadata: Metadata = {
@@ -14,17 +15,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr">
+    <html>
       <body className="bg-gray-50">
         <AuthProvider>
-          {/* Navbar fixée en haut */}
-          {/* <Navbar /> */}
+        
 
           {/* Main content */}
-          <main className="pt-3 min-h-screen">{children}</main>
+          <main>{children}</main>
 
-          {/* Footer */}
-          {/* <FooterPage /> */}
+          
         </AuthProvider>
       </body>
     </html>

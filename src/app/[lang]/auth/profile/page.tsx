@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { User as UserIcon, Mail, Shield, Calendar, Edit } from 'lucide-react';
-import Layout from '@/components/layout/Layout';
+import Layout from '@/components/layout/BaseLayout';
 import { useAuth } from '@/app/contexts/AuthContext'
 
 export default function ProfilePage() {

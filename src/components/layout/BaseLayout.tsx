@@ -1,6 +1,5 @@
 // components/Layout.tsx
 import React from 'react';
-import { Shield, User, LogOut } from 'lucide-react';
 import type { User as UserType } from '@/types/auth';
 import Navbar from './Navbar'; 
 import Footer from './Footer';
@@ -16,7 +15,7 @@ export default function Layout({ children, user }: LayoutProps) {
         
       <Navbar />      
       
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <main className="grow">
         {children}
       </main>
       <Footer />

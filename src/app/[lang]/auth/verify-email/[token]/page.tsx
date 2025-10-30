@@ -4,12 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, Mail, Sparkles, Languages, ArrowRight, Shield } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import Layout from '@/components/layout/Layout';
+import Layout from '@/components/layout/BaseLayout';
 
 export default function EmailVerifiedPage() {
   const router = useRouter();
   const params = useParams();
   const token = params.token as string;
+  const lang = params.lang as string;
 
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('');
@@ -216,7 +217,7 @@ export default function EmailVerifiedPage() {
 
                 <div className="space-y-4">
                   <Link
-                    href="/login"
+                    href={`/${lang}/auth/login`}
                     className="inline-flex items-center justify-center space-x-3 w-full bg-linear-to-r from-red-600 to-orange-600 text-white py-4 px-6 rounded-xl hover:from-red-700 hover:to-orange-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
                   >
                     <ArrowRight className="h-5 w-5" />
@@ -224,7 +225,7 @@ export default function EmailVerifiedPage() {
                   </Link>
 
                   <Link
-                    href="/register"
+                    href={`/${lang}/auth/register`}
                     className="inline-flex items-center justify-center space-x-3 w-full bg-gray-100 text-gray-700 py-4 px-6 rounded-xl hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-300 border border-gray-300"
                   >
                     <Mail className="h-5 w-5" />
@@ -321,7 +322,7 @@ export default function EmailVerifiedPage() {
               </p>
 
               <Link
-                href="/login"
+                href={`/${lang}/auth/login`}
                 className="inline-flex items-center justify-center space-x-3 w-full bg-linear-to-r from-green-600 to-emerald-600 text-white py-4 px-6 rounded-xl hover:from-green-700 hover:to-emerald-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <ArrowRight className="h-5 w-5" />

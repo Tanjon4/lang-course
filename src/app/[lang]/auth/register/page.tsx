@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Lock, User, Eye, EyeOff, UserPlus, CheckCircle, Sparkles, Languages } from 'lucide-react';
 import Link from 'next/link';
-import Navbar from '@/components/layout/Navbar';
-import FooterPage from '@/components/layout/Footer';
 import { useRouter } from 'next/navigation'; // Correction ici
+import { useParams } from 'next/navigation';
+import Layout from '@/components/layout/BaseLayout';
+
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -18,6 +19,8 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
+  const params = useParams();
+  const lang = params.lang as string;
 
   // Utilisation de useEffect pour calculer la force du mot de passe
   useEffect(() => {
@@ -110,8 +113,7 @@ export default function RegisterPage() {
                       formData.username.trim() !== '' && 
                       formData.email.trim() !== '';
   return (
-    <main>
-      <Navbar/>
+    <Layout>
       <br /> <br />
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
@@ -164,7 +166,7 @@ export default function RegisterPage() {
                   <p className="text-indigo-200">
                     Déjà membre ?{' '}
                     <Link 
-                      href="/login" 
+                      href={`/${lang}/auth/login`} 
                       className="text-white font-semibold hover:text-yellow-200 transition-colors duration-300 inline-flex items-center space-x-1"
                     >
                       <span>Se connecter</span>
@@ -345,7 +347,6 @@ export default function RegisterPage() {
           </div>
         </div>
       </div>
-      <FooterPage/>
-    </main>
+    </Layout>
   );
 }
