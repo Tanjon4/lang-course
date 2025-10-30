@@ -1,194 +1,218 @@
-import React from 'react';
-import { Box, Typography, Button, Container, Grid, Card, CardContent, Chip } from '@mui/material';
-import { PlayArrow, Star, Groups, School, Translate, Language, EmojiPeople } from '@mui/icons-material';
+import React, { useState } from 'react';
+import { Box, Typography, Container, Chip } from '@mui/material';
+import { Star, Groups, School, Translate } from '@mui/icons-material';
 import { Play } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import Image from 'next/image';
 import { useAuth } from '@/app/contexts/AuthContext';
+import { useParams } from 'next/navigation';
 
 const HeroSection = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { isAuthenticated, user } = useAuth();
+  const [imageError, setImageError] = useState(false);
+  const params = useParams();
+  const lang = params.lang || 'en';
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  const handleImageLoad = () => {
+    setImageError(false);
+  };
 
   return (
     
-    <section id='/' className="relative min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 overflow-hidden rounded-2xl shadow-lg">
-      <br /><br />
-      {/* Background decorative elements */}
+    <section 
+      id="/" 
+      className="relative min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-100 overflow-hidden rounded-2xl shadow-xl"
+    >
+      
+      {/* Background decorative elements - améliorés */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-50 h-50 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-20 left-40 w-60 h-60 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        <div className="absolute -top-10 -right-10 w-60 h-60 bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-float-slow"></div>
+        <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-float-medium animation-delay-2000"></div>
+        <div className="absolute top-40 left-20 w-70 h-70 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-float-fast animation-delay-4000"></div>
       </div>
 
       <Container maxWidth="lg" className="relative z-10">
-        <div className="flex flex-col md:flex-row items-center justify-between min-h-screen py-8 gap-8">
+        <div className="flex flex-col md:flex-row items-center justify-between min-h-screen py-12 md:py-8 gap-8 md:gap-12">
+          
           {/* Left Content */}
-          <div className="flex-1 space-y-6">
+          <div className="flex-1 space-y-8 max-w-2xl">
             <Box className="space-y-6">
               {/* Badge */}
               <Chip
                 icon={<Star className="text-yellow-500" />}
                 label={t('text')}
-                className="bg-white shadow-md rounded-full px-4 py-2 mb-4 animate-pulse-slow"
+                className="bg-white/80 backdrop-blur-sm shadow-lg rounded-full px-4 py-3 mb-2 hover:shadow-xl transition-all duration-300 border border-gray-100"
                 sx={{
                   '& .MuiChip-label': {
-                    fontWeight: 600,
-                    color: 'green'
+                    fontWeight: 700,
+                    color: 'rgb(34 197 94)',
+                    fontSize: '0.875rem'
                   }
                 }}
               />
 
               {/* Main Heading */}
-              <h1 
-                className="text-4xl lg:text-5xl font-extrabold mt-4 text-gray-900 leading-tight"
-              >
-                {t('line1')}{' '} <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-orange-200 animate-gradient">
-                  {t('line2')}
-                </span>
-              </h1>
+              <div className="space-y-4">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight">
+                  {t('line1')}{' '}
+                  <span className="block text-transparent bg-clip-text bg-linear-to-r from-orange-300 to-amber-600 animate-linear-x">
+                    {t('line2')}
+                  </span>
+                </h1>
 
-              {/* Subtitle */}
-              <p 
-                className="text-xl md:text-2xl text-gray-600  leading-relaxed"
-              >
-                {t('subtitle')}
-              </p>
+                {/* Subtitle */}
+                <p className="text-lg md:text-xl lg:text-2xl text-gray-600 leading-relaxed font-light">
+                  {t('subtitle')}
+                </p>
+              </div>
 
               {/* Stats */}
-              <Box className="flex flex-wrap gap-6 pt-4">
-                <Box className="text-center transform hover:scale-105 transition-transform duration-300">
-                  <Typography variant="p" className="font-bold text-3xl text-blue-700 animate-count-up">
-                    50K+
-                  </Typography>
-                  <Typography variant="body2" className="text-gray-600">
-                    {t('label1')}
-                  </Typography>
-                </Box>
-                <Box className="text-center transform hover:scale-105 transition-transform duration-300">
-                  <Typography variant="p" className="font-bold text-3xl text-yellow-500 animate-count-up">
-                    15+
-                  </Typography>
-                  <Typography variant="body2" className="text-gray-600">
-                    {t('label2')}
-                  </Typography>
-                </Box>
-                <Box className="text-center transform hover:scale-105 transition-transform duration-300">
-                  <Typography variant="p" className="font-bold text-3xl text-green-600 animate-count-up">
-                    98%
-                  </Typography>
-                  <Typography variant="body2" className="text-gray-600">
-                    {t('label3')}
-                  </Typography>
-                </Box>
+              <Box className="flex flex-wrap gap-8 pt-6">
+                {[
+                  { value: "50K+", label: t('label1'), color: "text-blue-600" },
+                  { value: "15+", label: t('label2'), color: "text-yellow-500" },
+                  { value: "98%", label: t('label3'), color: "text-green-600" }
+                ].map((stat, index) => (
+                  <Box 
+                    key={index}
+                    className="text-center transform hover:scale-110 transition-transform duration-300 bg-white/50 backdrop-blur-sm rounded-2xl p-4 min-w-[100px] shadow-md hover:shadow-lg"
+                  >
+                    <Typography variant="h4" className={`font-black ${stat.color} animate-count-up`}>
+                      {stat.value}
+                    </Typography>
+                    <Typography variant="body2" className="text-gray-600 font-medium text-sm">
+                      {stat.label}
+                    </Typography>
+                  </Box>
+                ))}
               </Box>
 
               {/* Authentication Buttons */}
-              {!isAuthenticated ? (
-              
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                
-                  <a 
-                    href="/login"
-                    className="group flex items-center justify-center gap-3 bg-gradient-to-r from-orange-400 via-amber-500 hover:from-orange-400 hover:to-amber-700 text-white px-8 py-4 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
-                  >
-                    <svg className="w-5 h-5 transform group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                    </svg>
-                    {t('login')}
-                  </a>
+              <div className="space-y-4 pt-6">
+                {!isAuthenticated ? (
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <a 
+                      href={`/${lang}/auth/login`}
+                      className="group flex items-center justify-center gap-3 bg-linear-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white px-8 py-4 rounded-2xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold hover:shadow-xl"
+                    >
+                      <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                      </svg>
+                      {t('login')}
+                    </a>
 
-                  <a 
-                    href="/register"
-                    className="group flex items-center justify-center gap-3 border-2 border-orange-500 text-orange-600 hover:bg-orange-500 hover:text-white px-8 py-4 rounded-xl transform hover:scale-105 transition-all duration-300 font-semibold"
-                  >
-                    <svg className="w-5 h-5 transform group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                    </svg>
-                    {t('register')}
-                  </a>
-                </div>
-              ) : (
-                <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                  <a 
-                    href="/profile"
-                    className="group flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-8 py-4 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
-                  >
-                    <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
-                      <span className="text-sm font-bold">{user?.username?.charAt(0).toUpperCase()}</span>
+                    <a 
+                      href={`/${lang}/auth/register`}
+                      className="group flex items-center justify-center gap-3 border-2 border-orange-500 text-orange-600 hover:bg-orange-500 hover:text-white px-8 py-4 rounded-2xl transform hover:scale-105 transition-all duration-300 font-semibold hover:shadow-lg backdrop-blur-sm bg-white/50"
+                    >
+                      <svg className="w-5 h-5 transform group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                      </svg>
+                      {t('register')}
+                    </a>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <a 
+                        href={`/${lang}/auth/profile`}
+                        className="group flex items-center justify-center gap-3 bg-linear-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
+                      >
+                        <div className="w-6 h-6 bg-white/30 rounded-full flex items-center justify-center backdrop-blur-sm">
+                          <span className="text-sm font-bold text-white">
+                            {user?.username?.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                        {t('viewProfile')}
+                      </a>
+
+                      <button className="group flex items-center justify-center gap-2 bg-linear-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-6 py-4 rounded-2xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold">
+                        <Play className="w-5 h-5 transform group-hover:scale-110 transition-transform" />
+                        {t('ariaLabel')}
+                      </button>
                     </div>
-                    {t('viewProfile')}
-                  </a>
 
-                  <button
-                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 text-white px-6 py-4 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
-                  >
-                    <Play className="w-5 h-5" />
-                    {t('ariaLabel')}
-                  </button>
-                </div>
-              )}
-
-              {/* Additional CTA for authenticated users */}
-              {isAuthenticated && (
-                <div className="pt-4">
-                  <p className="text-gray-600 text-sm">
-                    {t('welcomeBack')}, <span className="font-semibold text-blue-600">{user?.username}</span>! {t('continueLearning')}
-                  </p>
-                </div>
-              )}
+                    {/* Welcome message */}
+                    <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 shadow-md">
+                      <p className="text-gray-700 text-sm text-center">
+                        {t('welcomeBack')}, <span className="font-semibold text-blue-600">{user?.username}</span>! {t('continueLearning')}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </Box>
           </div>
 
           {/* Right Content - Image */}
-          <div className="flex-1 flex justify-center items-center">
-            <Box className="relative w-full max-w-lg">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-500">
-                <Image
-                  src="/assets/img/img1.jpg"
-                  alt="Hero Image"
-                  width={500}
-                  height={400}
-                  className="w-full h-auto object-cover"
-                  quality={70}
-                  priority
-                />
-                {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+          <div className="flex-1 flex justify-center items-center w-full max-w-xl">
+            <Box className="relative w-full">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-500 hover:shadow-3xl">
+                
+                {imageError ? (
+                  <div className="w-full h-80 bg-linear-to-br from-blue-200 to-purple-200 flex flex-col items-center justify-center rounded-3xl p-6">
+                    <School className="text-gray-400 text-5xl mb-4" />
+                    <p className="text-gray-600 font-semibold text-lg">Image non disponible</p>
+                    <p className="text-gray-500 text-sm mt-2 text-center">public/img/img1.jpg</p>
+                    <button 
+                      onClick={() => setImageError(false)}
+                      className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition-colors shadow-md"
+                    >
+                      Réessayer
+                    </button>
+                  </div>
+                ) : (
+                  <img
+                    src="/img/img1.jpg"
+                    alt="Apprentissage des langues"
+                    className="w-full h-auto object-cover min-h-[450px]"
+                    onError={handleImageError}
+                    onLoad={handleImageLoad}
+                  />
+                )}
+                
+                {/* Overlay linear */}
+                <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent"></div>
                 
                 {/* Floating authentication badge */}
                 {!isAuthenticated && (
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg animate-pulse-slow">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                      <span className="text-sm font-semibold text-gray-700">{t('joinNow')}</span>
+                  <div className="absolute top-6 right-6 bg-white/95 backdrop-blur-md rounded-2xl px-4 py-3 shadow-2xl animate-pulse-slow border border-gray-100">
+                    <div className="flex items-center gap-3">
+                      <div className="w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+                      <span className="text-sm font-bold text-gray-800">{t('joinNow')}</span>
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Floating elements around image */}
-              <div className="absolute -top-4 -right-4 bg-white rounded-full p-3 shadow-lg animate-float-slow">
-                <Translate className="text-blue-600 text-xl" />
+              {/* Enhanced floating elements */}
+              <div className="absolute -top-6 -right-6 bg-white/90 backdrop-blur-lg rounded-2xl p-4 shadow-2xl animate-float-slow hover:scale-110 transition-transform duration-300 border border-gray-100">
+                <Translate className="text-blue-600 text-2xl" />
               </div>
-              <div className="absolute -bottom-4 -left-4 bg-yellow-400 rounded-full p-3 shadow-lg animate-float-medium">
-                <School className="text-white text-xl" />
+              <div className="absolute -bottom-6 -left-6 bg-yellow-400/90 backdrop-blur-lg rounded-2xl p-4 shadow-2xl animate-float-medium hover:scale-110 transition-transform duration-300">
+                <School className="text-white text-2xl" />
               </div>
-              
-              {/* New floating element for authentication */}
-              <div className="absolute top-1/2 -left-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full p-3 shadow-lg animate-float-fast">
-                <Groups className="text-white text-xl" />
+              <div className="absolute top-1/2 -left-8 bg-linear-to-r from-blue-500 to-purple-500 rounded-2xl p-4 shadow-2xl animate-float-fast hover:scale-110 transition-transform duration-300">
+                <Groups className="text-white text-2xl" />
+              </div>
+
+              {/* Additional floating element */}
+              <div className="absolute bottom-10 -right-8 bg-linear-to-r from-green-400 to-emerald-500 rounded-2xl p-3 shadow-2xl animate-float-slow animation-delay-1000 hover:scale-110 transition-transform duration-300">
+                <Star className="text-white text-xl" />
               </div>
             </Box>
           </div>
         </div>
       </Container>
 
-      {/* Animated Wave Divider */}
-      <div className="absolute bottom-0 left-0 right-0 overflow-hidden">
+      {/* Enhanced Wave Divider */}
+      <div className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none">
         <svg 
-          className="w-full h-24 text-white animate-wave" 
+          className="w-full h-20 md:h-24 text-white animate-wave-slow" 
           viewBox="0 0 1200 120" 
           preserveAspectRatio="none"
         >
@@ -208,8 +232,7 @@ const HeroSection = () => {
           ></path>
         </svg>
       </div>
-
-      <style jsx global>{`
+       <style jsx global>{`
         @keyframes blob {
           0% { transform: translate(0px, 0px) scale(1); }
           33% { transform: translate(30px, -50px) scale(1.1); }
@@ -253,7 +276,7 @@ const HeroSection = () => {
           50% { opacity: 0.9; }
         }
         
-        @keyframes gradient {
+        @keyframes linear {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
@@ -300,9 +323,9 @@ const HeroSection = () => {
           animation: pulse-slow 4s ease-in-out infinite;
         }
         
-        .animate-gradient {
+        .animate-linear {
           background-size: 200% 200%;
-          animation: gradient 3s ease infinite;
+          animation: linear 3s ease infinite;
         }
         
         .animate-count-up {

@@ -146,9 +146,8 @@ export default function Contact() {
   };
 
   return (
-    <div ref={ref} id='contact' className="min-h-screen bg-gradient-to-br from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div ref={ref} id='contact' className="min-h-screen bg-linear-to-br from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-grid-gray-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]" />
       
       {/* Floating Elements */}
       <motion.div
@@ -179,7 +178,7 @@ export default function Contact() {
             initial={{ scale: 0 }}
             animate={inView ? { scale: 1 } : {}}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="w-20 h-20 bg-gradient-to-br from-orange-400 to-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg"
+            className="w-20 h-20 bg-linear-to-br from-orange-400 to-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg"
           >
             <MessageCircle className="w-10 h-10 text-white" />
           </motion.div>
@@ -189,7 +188,7 @@ export default function Contact() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.3 }}
           >
-            Contactez-<span className="bg-gradient-to-r from-orange-400 to-amber-600 bg-clip-text text-transparent">Nous</span>
+            Contactez-<span className="bg-linear-to-r from-orange-400 to-amber-600 bg-clip-text text-transparent">Nous</span>
           </motion.h1>
           <motion.p 
             className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed"
@@ -220,10 +219,10 @@ export default function Contact() {
                 }}
                 className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-500 border border-gray-100 relative overflow-hidden"
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
+                <div className={`absolute inset-0 bg-linear-to-br ${item.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
                 <div className="flex items-start space-x-4 relative z-10">
-                  <div className="flex-shrink-0">
-                    <div className={`w-14 h-14 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md`}>
+                  <div className="shrink-0">
+                    <div className={`w-14 h-14 bg-linear-to-br ${item.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md`}>
                       <item.icon className="w-7 h-7 text-white" />
                     </div>
                   </div>
@@ -242,7 +241,7 @@ export default function Contact() {
             <motion.div
               variants={fadeInUp}
               whileHover={{ scale: 1.02 }}
-              className="bg-gradient-to-br from-yellow-200 to-orange-300 rounded-2xl p-6 text-white relative overflow-hidden group"
+              className="bg-linear-to-br from-yellow-200 to-orange-300 rounded-2xl p-6 text-white relative overflow-hidden group"
             >
               <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300" />
               <div className="relative z-10">
@@ -297,7 +296,7 @@ export default function Contact() {
             className="lg:col-span-2"
           >
             <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-linear-to-br from-blue-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative z-10">
                 {isSubmitted ? (
                   <motion.div
@@ -442,7 +441,7 @@ export default function Contact() {
                         disabled={isSubmitting}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="w-full bg-gradient-to-r from-orange-400 to-amber-600 text-white py-4 px-6 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 group"
+                        className="w-full bg-linear-to-r from-orange-400 to-amber-600 text-white py-4 px-6 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 group"
                       >
                         {isSubmitting ? (
                           <>

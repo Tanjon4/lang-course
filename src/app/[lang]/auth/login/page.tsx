@@ -3,18 +3,19 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, LogIn, Sparkles, Languages } from 'lucide-react';
 import Link from 'next/link';
-import Layout from '@/components/layout/Layout';
+import Layout from '@/components/layout/BaseLayout';
 import { auth } from '@/lib/firebase';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import Navbar from '@/components/layout/Navbar';
-import FooterPage from '@/components/layout/Footer';
 import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const params = useParams();
+  const lang = params.lang as string;
 
 
   // ✅ Fonction de redirection selon le rôle
@@ -100,14 +101,13 @@ export default function LoginPage() {
   };
 
   return (
-    <main >
-      <Navbar />
+    <Layout >
       <br /> <br />
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-8 mb-5">
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
           {/* Section de bienvenue - Côté gauche */}
-          <div className="lg:w-1/2 bg-gradient-to-br from-indigo-400 to-purple-500 text-white p-12 flex flex-col justify-center">
+          <div className="lg:w-1/2 bg-linear-to-br from-indigo-400 to-purple-500 text-white p-12 flex flex-col justify-center">
             <div className="space-y-8">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-white/20 rounded-xl">
@@ -147,7 +147,7 @@ export default function LoginPage() {
                 {/* Forgot Password Link */}
                 <div className="text-center">
                   <Link 
-                    href="/forgot-password" 
+                    href={`/${lang}/auth/forgot-password`} 
                     className="text-indigo-200 hover:text-white transition-colors duration-300 text-sm font-medium inline-flex items-center space-x-1"
                   >
                     <Lock className="h-4 w-4" />
@@ -226,7 +226,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
+                className="w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
               >
                 <LogIn className="h-5 w-5" />
                 <span className="font-semibold">
@@ -239,7 +239,7 @@ export default function LoginPage() {
                 <p className="text-gray-600">
                   Pas encore de compte ?{' '}
                   <Link 
-                    href="/register" 
+                    href={`/${lang}/auth/register`}
                     className="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors duration-300 inline-flex items-center space-x-1"
                   >
                     <span>Créer un compte</span>
@@ -251,7 +251,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-      <FooterPage />
-    </main>
+      {/* <FooterPage /> */}
+    </Layout>
   );
 }

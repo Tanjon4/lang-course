@@ -136,14 +136,14 @@ const About: React.FC = () => {
   return (
     <section
       id="about"
-      className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-red-50 py-20 px-4 md:px-8 relative overflow-hidden"
+      className="min-h-screen bg-linear-to-br from-orange-50 via-amber-50 to-red-50 py-20 px-4 md:px-8 relative overflow-hidden"
     >
       {/* Background Texture */}
       <div className="absolute inset-0 " />
       
       {/* Accent Elements */}
-      <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-orange-200 to-amber-200 rounded-full blur-3xl opacity-20 mix-blend-multiply" />
-      <div className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-r from-red-200 to-orange-200 rounded-full blur-3xl opacity-30 mix-blend-multiply" />
+      <div className="absolute top-20 left-10 w-96 h-96 bg-linear-to-r from-orange-200 to-amber-200 rounded-full blur-3xl opacity-20 mix-blend-multiply" />
+      <div className="absolute bottom-20 right-10 w-80 h-80 bg-linear-to-r from-red-200 to-orange-200 rounded-full blur-3xl opacity-30 mix-blend-multiply" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Magazine Header */}
@@ -160,18 +160,18 @@ const About: React.FC = () => {
             className="inline-block mb-8"
           >
             <div className="flex items-center justify-center gap-4 mb-6">
-              <div className="w-16 h-0.5 bg-gradient-to-r from-orange-400 to-transparent" />
+              <div className="w-16 h-0.5 bg-linear-to-r from-orange-400 to-transparent" />
               <span className="text-orange-600 font-semibold tracking-widest text-sm uppercase">
                 Édition Spéciale
               </span>
-              <div className="w-16 h-0.5 bg-gradient-to-r from-transparent to-amber-400" />
+              <div className="w-16 h-0.5 bg-linear-to-r from-transparent to-amber-400" />
             </div>
             
-            <h1 className="text-6xl md:text-8xl font-black mb-6 tracking-tight bg-gradient-to-r from-orange-600 via-amber-600 to-red-600 bg-clip-text text-transparent leading-tight">
+            <h1 className="text-6xl md:text-8xl font-black mb-6 tracking-tight bg-linear-to-r from-orange-600 via-amber-600 to-red-600 bg-clip-text text-transparent leading-tight">
               {t("about_title")}
             </h1>
             
-            <div className="w-32 h-1 bg-gradient-to-r from-orange-400 via-amber-500 to-red-400 rounded-full mx-auto mb-6" />
+            <div className="w-32 h-1 bg-linear-to-r from-orange-400 via-amber-500 to-red-400 rounded-full mx-auto mb-6" />
           </motion.div>
 
           <motion.div
@@ -233,10 +233,10 @@ const About: React.FC = () => {
                   {/* Featured Badge */}
                   
                   {/* Article Header */}
-                  <div className="p-6 md:p-8 border-b border-orange-100/50 bg-gradient-to-r from-orange-50/50 to-amber-50/50">
+                  <div className="p-6 md:p-8 border-b border-orange-100/50 bg-linear-to-r from-orange-50/50 to-amber-50/50">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-xl bg-gradient-to-br from-orange-500/10 to-amber-500/10 border border-orange-200/50">
+                        <div className="p-2 rounded-xl bg-linear-to-br from-orange-500/10 to-amber-500/10 border border-orange-200/50">
                           <IconComponent className="w-5 h-5 text-orange-600" />
                         </div>
                         <span className="text-orange-600 font-semibold text-sm uppercase tracking-wide">
@@ -292,7 +292,7 @@ const About: React.FC = () => {
                   </div>
 
                   {/* Hover Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-amber-500/0 rounded-2xl transition-all duration-500 group-hover:from-orange-500/5 group-hover:to-amber-500/5" />
+                  <div className="absolute inset-0 bg-linear-to-br from-orange-500/0 to-amber-500/0 rounded-2xl transition-all duration-500 group-hover:from-orange-500/5 group-hover:to-amber-500/5" />
                 </div>
               </motion.article>
             );
@@ -311,7 +311,7 @@ const About: React.FC = () => {
             {[1, 2, 3, 4, 5].map((dot) => (
               <div
                 key={dot}
-                className="w-2 h-2 bg-gradient-to-r from-orange-400 to-amber-400 rounded-full"
+                className="w-2 h-2 bg-linear-to-r from-orange-400 to-amber-400 rounded-full"
               />
             ))}
           </div>
@@ -320,7 +320,7 @@ const About: React.FC = () => {
             Continuez votre lecture • Édition {new Date().getFullYear()}
           </p>
           
-          <div className="w-24 h-0.5 bg-gradient-to-r from-orange-400 to-amber-400 rounded-full mx-auto mt-4" />
+          <div className="w-24 h-0.5 bg-linear-to-r from-orange-400 to-amber-400 rounded-full mx-auto mt-4" />
         </motion.footer>
       </div>
     </section>

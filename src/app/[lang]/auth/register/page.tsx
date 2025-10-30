@@ -1,14 +1,15 @@
 // app/register/page.tsx
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Lock, User, Eye, EyeOff, UserPlus, CheckCircle, Sparkles, Languages } from 'lucide-react';
 import Link from 'next/link';
-import Navbar from '@/components/layout/Navbar';
-import FooterPage from '@/components/layout/Footer';
 import { useRouter } from 'next/navigation'; // Correction ici
+import { useParams } from 'next/navigation';
+import Layout from '@/components/layout/BaseLayout';
+
 
 export default function RegisterPage() {
-  const router = useRouter(); // Maintenant ça fonctionnera correctement
+  const router = useRouter();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -18,21 +19,31 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
+  const params = useParams();
+  const lang = params.lang as string;
 
-  const checkPasswordStrength = (password: string) => {
-    let strength = 0;
-    if (password.length >= 8) strength++;
-    if (/[A-Z]/.test(password)) strength++;
-    if (/[a-z]/.test(password)) strength++;
-    if (/[0-9]/.test(password)) strength++;
-    if (/[^A-Za-z0-9]/.test(password)) strength++;
-    setPasswordStrength(strength);
-  };
+  // Utilisation de useEffect pour calculer la force du mot de passe
+  useEffect(() => {
+    const checkPasswordStrength = (password: string) => {
+      let strength = 0;
+      if (password.length >= 8) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[a-z]/.test(password)) strength++;
+      if (/[0-9]/.test(password)) strength++;
+      if (/[^A-Za-z0-9]/.test(password)) strength++;
+      setPasswordStrength(strength);
+    };
+
+    if (formData.password) {
+      checkPasswordStrength(formData.password);
+    } else {
+      setPasswordStrength(0);
+    }
+  }, [formData.password]);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = e.target.value;
     setFormData({ ...formData, password: newPassword });
-    checkPasswordStrength(newPassword);
   };
 
   const getStrengthColor = (strength: number) => {
@@ -97,17 +108,18 @@ export default function RegisterPage() {
     }
   };
 
-  const isFormValid = passwordStrength >= 3 && formData.password === formData.password2 && formData.username && formData.email;
-
+  const isFormValid = passwordStrength >= 3 && 
+                      formData.password === formData.password2 && 
+                      formData.username.trim() !== '' && 
+                      formData.email.trim() !== '';
   return (
-    <main>
-      <Navbar/>
+    <Layout>
       <br /> <br />
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
           {/* Section de bienvenue - Côté gauche */}
-          <div className="lg:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
+          <div className="lg:w-1/2 bg-linear-to-b from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
             <div className="space-y-8">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-white/20 rounded-xl">
@@ -154,7 +166,7 @@ export default function RegisterPage() {
                   <p className="text-indigo-200">
                     Déjà membre ?{' '}
                     <Link 
-                      href="/login" 
+                      href={`/${lang}/auth/login`} 
                       className="text-white font-semibold hover:text-yellow-200 transition-colors duration-300 inline-flex items-center space-x-1"
                     >
                       <span>Se connecter</span>
@@ -324,7 +336,7 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={isLoading || !isFormValid}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
+                className="w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
               >
                 <UserPlus className="h-5 w-5" />
                 <span className="font-semibold">
@@ -335,7 +347,6 @@ export default function RegisterPage() {
           </div>
         </div>
       </div>
-      <FooterPage/>
-    </main>
+    </Layout>
   );
 }
