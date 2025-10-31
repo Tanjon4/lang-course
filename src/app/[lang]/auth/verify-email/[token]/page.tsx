@@ -1,4 +1,4 @@
-// app/email-verified/[token]/page.tsx
+// app/[lang]/auth/email-verified/[token]/page.tsx
 'use client';
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, Mail, Sparkles, Languages, ArrowRight, Shield } from 'lucide-react';
@@ -7,73 +7,58 @@ import Link from 'next/link';
 import Layout from '@/components/layout/BaseLayout';
 
 export default function EmailVerifiedPage() {
-  const router = useRouter();
-  const params = useParams();
-  const token = params.token as string;
-  const lang = params.lang as string;
+    const router = useRouter();
+    const { token, lang } = useParams() as { token: string; lang: string };
+    const decodedToken = decodeURIComponent(token);
 
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
-  const [message, setMessage] = useState('');
+    const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
+    const [message, setMessage] = useState<string>('');
 
-  useEffect(() => {
-    const verifyEmail = async () => {
-      try {
-        const response = await fetch(`https://lang-courses-api.onrender.com/api/users/verify-email/${token}/`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+    useEffect(() => {
+      let isMounted = true;
 
-        // Vérifier d'abord le type de contenu
-        const contentType = response.headers.get('content-type');
-        
-        let data;
-        if (contentType && contentType.includes('application/json')) {
-          data = await response.json();
-        } else {
-          // Si ce n'est pas du JSON, lire en texte
-          const text = await response.text();
-          console.warn('Réponse non-JSON reçue:', text);
-          
-          // Essayer de parser comme JSON si possible, sinon créer un objet d'erreur
-          try {
-            data = JSON.parse(text);
-          } catch {
-            // Si le parsing échoue, créer un objet d'erreur basé sur le statut HTTP
-            if (response.ok) {
-              data = { message: 'Email vérifié avec succès' };
-            } else {
-              data = { 
-                error: `Erreur ${response.status}: ${response.statusText}` 
-              };
-            }
+      const verifyEmail = async () => {
+        try {
+          const res = await fetch(
+            `https://lang-courses-api.onrender.com/api/users/verify-email/${decodedToken}/`,
+            { method: 'GET', headers: { 'Content-Type': 'application/json' } }
+          );
+
+          let data;
+          const contentType = res.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+            data = await res.json();
+          } else {
+            const text = await res.text();
+            try { data = JSON.parse(text); } catch { data = { message: res.ok ? 'Email vérifié avec succès' : `Erreur ${res.status}` }; }
           }
-        }
 
-        if (response.ok) {
-          setStatus('success');
-          setMessage(data.message || 'Votre email a été vérifié avec succès !');
-          // Redirection automatique après 3 secondes
-          setTimeout(() => router.push(`/${lang}/auth/login`), 3000);
-        } else {
+          if (!isMounted) return;
+
+          if (res.ok) {
+            setStatus('success');
+            setMessage(data.message || 'Votre email a été vérifié avec succès !');
+            setTimeout(() => router.push(`/${lang}/auth/login`), 3000);
+          } else {
+            setStatus('error');
+            setMessage(data.error || data.message || `Erreur ${res.status} lors de la vérification`);
+          }
+        } catch (err) {
+          if (!isMounted) return;
+          console.error(err);
           setStatus('error');
-          setMessage(data.error || data.message || `Erreur ${response.status} lors de la vérification de l'email`);
+          setMessage('Erreur réseau. Veuillez réessayer.');
         }
-      } catch (err) {
-        console.error('Erreur lors de la vérification:', err);
-        setStatus('error');
-        setMessage('Erreur réseau. Veuillez réessayer.');
-      }
-    };
+      };
 
-    if (token) {
-      verifyEmail();
-    } else {
-      setStatus('error');
-      setMessage('Token de vérification manquant.');
-    }
-  }, [token, router, lang]);
+      if (token) verifyEmail();
+      else {
+        setStatus('error');
+        setMessage('Token de vérification manquant.');
+      }
+
+      return () => { isMounted = false; };
+    }, [decodedToken, router, lang, token]);
 
   // Reste du code inchangé...
   if (status === 'loading') {
