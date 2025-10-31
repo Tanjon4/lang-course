@@ -15,18 +15,49 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const params = useParams();
-  const lang = params.lang as string;
-
+  const lang = params?.lang as string;
 
   // ✅ Fonction de redirection selon le rôle
-  const redirectByRole = (role: string) => {
-    if (role === "admin") {
-      router.push("/dashboard/admin");
-    } else if (role === "student") {
-      router.push("/dashboard/user");
-    } else {
-      alert("Rôle inconnu. Contactez l’administrateur.");
-      router.push("/");
+  const redirectByRole = async () => {
+    try {
+      const accessToken = localStorage.getItem('access');
+      
+      if (!accessToken) {
+        console.error("Aucun token d'accès trouvé");
+        router.push(`/${lang}/auth/login`);
+        return;
+      }
+
+      const res = await fetch("https://lang-courses-api.onrender.com/api/users/me/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`
+        },
+      });
+
+      if (!res.ok) {
+        console.error("Erreur lors de la récupération du profil:", res.status);
+        router.push(`/${lang}/auth/login`);
+        return;
+      }
+
+      const data = await res.json();
+      const role = data.role;
+      console.log("Role de l'utilisateur:", role);
+
+      // Utilisation de lang dans les routes
+      if (role === "admin") {
+        router.push(`/${lang}/dashboard/admin`);
+      } else if (role === "student") {
+        router.push(`/${lang}/dashboard/user`);
+      } else {
+        alert("Rôle inconnu. Contactez l'administrateur.");
+        router.push(`/${lang}`);
+      }
+    } catch (err) {
+      console.error("Erreur réseau lors de la récupération du profil:", err);
+      router.push(`/${lang}/auth/login`);
     }
   };
 
@@ -41,22 +72,20 @@ export default function LoginPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
+      
       const data = await res.json();
+      
       if (res.ok) {
         localStorage.setItem('access', data.access);
         localStorage.setItem('refresh', data.refresh);
         console.log('Connexion réussie:', data);
-        // router.push('/dashboard')
         alert("✅ Connexion réussie !");
-        redirectByRole(data.role);
-      } 
-      else if(res.status === 401) {
+        await redirectByRole();
+      } else if (res.status === 401) {
         alert("❌ Email ou mot de passe incorrect !");
-      }
-      else {
-        const err = await res.json();
-        console.error('Erreur login:', err);
-        alert(`❌ Erreur de connexion : ${data.detail || "Identifiants invalides"}`);
+      } else {
+        console.error('Erreur login:', data);
+        alert(`❌ Erreur de connexion : ${data.detail || data.message || "Identifiants invalides"}`);
       }
     } catch (error) {
       console.error('Erreur login:', error);
@@ -74,25 +103,24 @@ export default function LoginPage() {
       const user = result.user;
       console.log('Firebase Google User:', user);
 
-      // Alefa any backend raha mila JWT
       const token = await user.getIdToken();
       const res = await fetch('https://lang-courses-api.onrender.com/api/users/login/firebase/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token }),
       });
+      
       const data = await res.json();
+      
       if (res.ok) {
-        
         localStorage.setItem('access', data.access);
         localStorage.setItem('refresh', data.refresh);
         console.log('Login Google backend réussi:', data);
         alert("✅ Connexion Google réussie !");
-        redirectByRole(data.role);
+        await redirectByRole();
       } else {
-        const err = await res.json();
-        console.error('Erreur login Google backend:', err);
-        alert(`❌ Erreur Google backend : ${data.detail || "Connexion échouée"}`);
+        console.error('Erreur login Google backend:', data);
+        alert(`❌ Erreur Google backend : ${data.detail || data.message || "Connexion échouée"}`);
       }
     } catch (error) {
       console.error('Erreur login Google Firebase:', error);
@@ -101,13 +129,13 @@ export default function LoginPage() {
   };
 
   return (
-    <Layout >
+    <Layout>
       <br /> <br />
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-8 mb-5">
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
           {/* Section de bienvenue - Côté gauche */}
-          <div className="lg:w-1/2 bg-linear-to-br from-indigo-400 to-purple-500 text-white p-12 flex flex-col justify-center">
+          <div className="lg:w-1/2 bg-gradient-to-br from-indigo-400 to-purple-500 text-white p-12 flex flex-col justify-center">
             <div className="space-y-8">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-white/20 rounded-xl">
@@ -226,7 +254,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
+                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
               >
                 <LogIn className="h-5 w-5" />
                 <span className="font-semibold">
@@ -251,7 +279,6 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-      {/* <FooterPage /> */}
     </Layout>
   );
 }
