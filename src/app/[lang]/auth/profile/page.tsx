@@ -3,9 +3,12 @@ import React, { useEffect } from 'react';
 import { User as UserIcon, Mail, Shield, Calendar, Edit } from 'lucide-react';
 import Layout from '@/components/layout/BaseLayout';
 import { useAuth } from '@/app/contexts/AuthContext'
+import { useParams } from 'next/navigation';
 
 export default function ProfilePage() {
   const { user, isAuthenticated, loading } = useAuth();
+  const params = useParams();
+  const lang = params.lng ;
 
   // Debug
   useEffect(() => {
@@ -29,7 +32,7 @@ export default function ProfilePage() {
           <div className="text-center">
             <p className="text-gray-500 mb-4">Utilisateur non connecté</p>
             <a 
-              href="/auth/login" 
+              href="/auth/login"
               className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
             >
               Se connecter

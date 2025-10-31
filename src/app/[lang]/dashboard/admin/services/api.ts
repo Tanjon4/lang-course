@@ -157,7 +157,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: "https://lang-courses-api.onrender.com/api",
   headers: { "Content-Type": "application/json" },
-  withCredentials: true, // ✅ nécessaire pour CORS + cookies
+  withCredentials: false, // ✅ nécessaire pour CORS + cookies
 });
 
 /* -------------------------------------------------------------------------- */

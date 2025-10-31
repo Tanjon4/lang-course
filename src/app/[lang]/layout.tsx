@@ -9,19 +9,10 @@ interface LangLayoutProps {
 }
 
 // Métadonnées dynamiques basées sur la langue
-export async function generateMetadata({ params }: { params: { lng: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { lng: string } }) {
   const { lng } = params;
   
-  const titles = {
-    fr: 'Mon Application',
-    en: 'My Application', 
-    mg: 'Ny My Application'
-  };
-
-  return {
-    title: titles[lng as keyof typeof titles] || titles.fr,
-    description: 'Application d\'apprentissage de langues'
-  };
+  
 }
 
 export default function LangLayout({
@@ -29,18 +20,15 @@ export default function LangLayout({
   params: { lng }
 }: LangLayoutProps) {
   return (
-    <html lang={lng} dir={lng === 'ar' ? 'rtl' : 'ltr'}>
-      <head>
-        {/* Vous pouvez ajouter des balises meta supplémentaires ici */}
-      </head>
-      <body style={{ margin: 0, padding: 0 }}>
-        <AuthProvider>
-          <ClientInitializer >
-            {children}
-          </ClientInitializer>
-        </AuthProvider>
-      </body>
-    </html>
+
+    <div style={{ margin: 0, padding: 0 }}>
+      <AuthProvider>
+        <ClientInitializer >
+          {children}
+        </ClientInitializer>
+      </AuthProvider>
+    </div>
+
   );
 }
 

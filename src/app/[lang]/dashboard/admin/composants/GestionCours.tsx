@@ -25,26 +25,22 @@ export default function GestionCours() {
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 5;
 
-  // Theme
-  const [mounted, setMounted] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark" | "system">("system");
+  // Theme - SIMPLIFIEZ cette partie
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
-  // ⚡ Initialisation
-  useEffect(() => setMounted(true), []);
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | "system";
-    if (savedTheme) setTheme(savedTheme);
-  }, []);
-  useEffect(() => {
-    if (!mounted) return;
-    if (theme === "system") {
-      document.documentElement.classList.remove("light", "dark");
-    } else {
-      document.documentElement.classList.add(theme);
-      document.documentElement.classList.remove(theme === "light" ? "dark" : "light");
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark";
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.className = savedTheme;
     }
-    localStorage.setItem("theme", theme);
-  }, [theme, mounted]);
+  }, []);
+
+  const toggleTheme = (newTheme: "light" | "dark") => {
+    setTheme(newTheme);
+    document.documentElement.className = newTheme;
+    localStorage.setItem("theme", newTheme);
+  };
 
   // 🔹 Charger les cours
   const fetchCourses = async () => {
@@ -61,7 +57,9 @@ export default function GestionCours() {
     }
   };
 
-  useEffect(() => { fetchCourses(); }, []);
+  useEffect(() => { 
+    fetchCourses(); 
+  }, []);
 
   // 🔹 Rechercher un cours
   useEffect(() => {
@@ -122,7 +120,7 @@ export default function GestionCours() {
       setNewDescription("");
       fetchCourses();
     } catch (error) {
-      toast.error("Erreur lors de l’enregistrement du cours.");
+      toast.error("Erreur lors de l'enregistrement du cours.");
       console.error(error);
     }
   };
@@ -141,7 +139,7 @@ export default function GestionCours() {
   };
 
   return (
-    <div className="space-y-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-xl relative">
+    <div className="space-y-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-xl">
       <Toaster position="top-right" reverseOrder={false} />
 
       <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Gestion des Cours</h2>
@@ -162,20 +160,20 @@ export default function GestionCours() {
         </button>
       </div>
 
-      {/* Theme buttons */}
-      {mounted && (
-        <div className="flex gap-2">
-          {["light","dark","system"].map((t) => (
-            <button
-              key={t}
-              onClick={() => setTheme(t as "light" | "dark" | "system")}
-              className={`px-3 py-1 rounded-md text-sm ${theme===t?"bg-gray-100":"bg-transparent"}`}
-            >
-              {t[0].toUpperCase() + t.slice(1)}
-            </button>
-          ))}
-        </div>
-      )}
+      {/* Theme buttons - SIMPLIFIE */}
+      <div className="flex gap-2">
+        {["light", "dark"].map((t) => (
+          <button
+            key={t}
+            onClick={() => toggleTheme(t as "light" | "dark")}
+            className={`px-3 py-1 rounded-md text-sm ${
+              theme === t ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
+            }`}
+          >
+            {t === "light" ? "Clair" : "Sombre"}
+          </button>
+        ))}
+      </div>
 
       {/* Liste des cours */}
       <div className="p-4 border rounded-lg bg-white dark:bg-gray-800 shadow-md">
@@ -193,17 +191,23 @@ export default function GestionCours() {
               >
                 <div>
                   <p className="font-semibold text-gray-800 dark:text-gray-200">{course.title}</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{course.description || "Pas de description"}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    {course.description || "Pas de description"}
+                  </p>
                 </div>
                 <div className="flex gap-2">
                   <button
                     onClick={() => openModal(course)}
                     className="px-3 py-1 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
-                  >Modifier</button>
+                  >
+                    Modifier
+                  </button>
                   <button
                     onClick={() => handleDeleteCourse(course.id)}
                     className="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700"
-                  >Supprimer</button>
+                  >
+                    Supprimer
+                  </button>
                 </div>
               </motion.li>
             ))}
@@ -218,13 +222,19 @@ export default function GestionCours() {
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
             className="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg disabled:opacity-50"
-          >Précédent</button>
-          <span className="text-gray-700 dark:text-gray-300">Page {currentPage} / {totalPages}</span>
+          >
+            Précédent
+          </button>
+          <span className="text-gray-700 dark:text-gray-300">
+            Page {currentPage} / {totalPages}
+          </span>
           <button
             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages}
             className="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg disabled:opacity-50"
-          >Suivant</button>
+          >
+            Suivant
+          </button>
         </div>
       )}
 
@@ -244,7 +254,9 @@ export default function GestionCours() {
               transition={{ duration: 0.25 }}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-[90%] max-w-md p-6"
             >
-              <h3 className="text-xl font-semibold mb-3 dark:text-white">{selectedCourse ? "Modifier le cours" : "Ajouter un cours"}</h3>
+              <h3 className="text-xl font-semibold mb-3 dark:text-white">
+                {selectedCourse ? "Modifier le cours" : "Ajouter un cours"}
+              </h3>
               <input
                 type="text"
                 placeholder="Titre du cours"
@@ -263,11 +275,15 @@ export default function GestionCours() {
                 <button
                   onClick={() => setModalOpen(false)}
                   className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
-                >Annuler</button>
+                >
+                  Annuler
+                </button>
                 <button
                   onClick={saveCourse}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                >{selectedCourse ? "Enregistrer" : "Ajouter"}</button>
+                >
+                  {selectedCourse ? "Enregistrer" : "Ajouter"}
+                </button>
               </div>
             </motion.div>
           </motion.div>
