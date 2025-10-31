@@ -1,17 +1,42 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { User as UserIcon, Mail, Shield, Calendar, Edit } from 'lucide-react';
 import Layout from '@/components/layout/BaseLayout';
 import { useAuth } from '@/app/contexts/AuthContext'
 
 export default function ProfilePage() {
-  const { user } = useAuth(); // Maka ny user connecté avy amin'ny AuthContext
+  const { user, isAuthenticated, loading } = useAuth();
+
+  // Debug
+  useEffect(() => {
+    console.log('Profile Page - User:', user);
+    console.log('Profile Page - isAuthenticated:', isAuthenticated);
+    console.log('Profile Page - Loading:', loading);
+  }, [user, isAuthenticated, loading]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <p>Chargement du profil...</p>
-      </div>
+      <Layout>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <p className="text-gray-500 mb-4">Utilisateur non connecté</p>
+            <a 
+              href="/auth/login" 
+              className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              Se connecter
+            </a>
+          </div>
+        </div>
+      </Layout>
     );
   }
 
@@ -21,7 +46,7 @@ export default function ProfilePage() {
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
 
           {/* En-tête du profil */}
-          <div className="bg-linear-to-r from-indigo-500 to-purple-600 px-8 py-12 text-white">
+          <div className="bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-12 text-white">
             <div className="flex items-center space-x-6">
               <div className="h-24 w-24 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                 {user.avatar ? (
@@ -87,7 +112,7 @@ export default function ProfilePage() {
                   </div>
                   <div>
                     <dt className="text-sm font-medium text-gray-500">Méthode d'authentification</dt>
-                    <dd className="text-gray-900 capitalize">{user.provider}</dd>
+                    <dd className="text-gray-900 capitalize">{user.provider || 'Email'}</dd>
                   </div>
                 </dl>
               </div>
@@ -102,7 +127,7 @@ export default function ProfilePage() {
                   <div>
                     <dt className="text-sm font-medium text-gray-500">Membre depuis</dt>
                     <dd className="text-gray-900">
-                      {user.date_joined ? new Date(user.date_joined).toLocaleDateString('fr-FR') : '-'}
+                      {user.date_joined ? new Date(user.date_joined).toLocaleDateString('fr-FR') : 'N/A'}
                     </dd>
                   </div>
                 </dl>

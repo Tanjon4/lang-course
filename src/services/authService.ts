@@ -1,10 +1,12 @@
-import { LoginData, RegisterData, AuthResponse, User, ApiError } from '@/types/auth';
+import { LoginData, RegisterData, AuthResponse, User, ApiError, ResetPasswordData } from '@/types/auth';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
 
 class AuthService {
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`;
+    
+    // Configuration par défaut
     const config: RequestInit = {
       headers: {
         'Content-Type': 'application/json',
@@ -14,7 +16,12 @@ class AuthService {
     };
 
     // Ajouter le token d'authentification si disponible
-    const token = localStorage.getItem('accessToken');
+    // Vérification de l'existence de localStorage (pour compatibilité SSR)
+    let token: string | null = null;
+    if (typeof window !== 'undefined') {
+      token = localStorage.getItem('accessToken');
+    }
+    
     if (token) {
       config.headers = {
         ...config.headers,
@@ -24,10 +31,20 @@ class AuthService {
 
     try {
       const response = await fetch(url, config);
-      const data = await response.json();
+      
+      // Vérifier si la réponse est vide (204 No Content)
+      const contentType = response.headers.get('content-type');
+      let data;
+      
+      if (response.status !== 204 && contentType && contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        data = {};
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || `HTTP error! status: ${response.status}`);
+        const errorMessage = data.error || data.message || `HTTP error! status: ${response.status}`;
+        throw new Error(errorMessage);
       }
 
       return data;
@@ -40,65 +57,85 @@ class AuthService {
   }
 
   async login(data: LoginData): Promise<AuthResponse> {
-    return this.request<AuthResponse>('/auth/login/', {
+    return this.request<AuthResponse>('/users/login/', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   async register(data: RegisterData): Promise<{ message: string }> {
-    return this.request<{ message: string }>('/auth/register/', {
+    return this.request<{ message: string }>('/users/register/', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   async logout(refreshToken: string): Promise<{ message: string }> {
-    return this.request<{ message: string }>('/auth/logout/', {
+    return this.request<{ message: string }>('/users/logout/', {
       method: 'POST',
       body: JSON.stringify({ refresh: refreshToken }),
     });
   }
 
   async getCurrentUser(): Promise<User> {
-    return this.request<User>('/auth/me/');
+    return this.request<User>('/users/me/');
   }
 
   async refreshToken(refreshToken: string): Promise<{ access: string }> {
-    return this.request<{ access: string }>('/auth/refresh/', {
+    return this.request<{ access: string }>('/users/refresh/', {
       method: 'POST',
       body: JSON.stringify({ refresh: refreshToken }),
     });
   }
 
   async forgotPassword(email: string): Promise<{ message: string }> {
-    return this.request<{ message: string }>('/auth/forgot-password/', {
+    return this.request<{ message: string }>('/users/forgot-password/', {
       method: 'POST',
       body: JSON.stringify({ email }),
     });
   }
 
   async resetPassword(token: string, data: ResetPasswordData): Promise<{ message: string }> {
-    return this.request<{ message: string }>(`/auth/reset-password/${token}/`, {
+    return this.request<{ message: string }>(`/users/reset-password/${token}/`, {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   async verifyEmail(token: string): Promise<{ message: string }> {
-    return this.request<{ message: string }>('/auth/verify-email/', {
+    // Correction : utilisation correcte des paramètres de requête
+    return this.request<{ message: string }>(`/users/verify-email/?token=${token}`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }, `?token=${token}`);
+    });
   }
 
   async firebaseAuth(idToken: string): Promise<AuthResponse> {
-    return this.request<AuthResponse>('/auth/firebase/', {
+    return this.request<AuthResponse>('/users/firebase/', {
       method: 'POST',
       body: JSON.stringify({ id_token: idToken }),
     });
+  }
+
+  // Méthode utilitaire pour gérer le stockage du token
+  setAccessToken(token: string): void {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('accessToken', token);
+    }
+  }
+
+  // Méthode utilitaire pour récupérer le token
+  getAccessToken(): string | null {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('accessToken');
+    }
+    return null;
+  }
+
+  // Méthode utilitaire pour supprimer le token
+  removeAccessToken(): void {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('accessToken');
+    }
   }
 }
 
