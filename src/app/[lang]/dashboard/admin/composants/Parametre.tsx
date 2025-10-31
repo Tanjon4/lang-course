@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Card from "../composants/ui/Cards";
+import Card from "./ui/Cards";
 import { motion } from "framer-motion";
 
 /* Very simple mock of the bar-visual present in image */
