@@ -27,6 +27,22 @@ export interface RegisterData {
   password: string;
   password2: string;
 }
+
+// ✅ ResetPasswordData
+export interface ResetPasswordData {
+  password: string;
+  password2: string;
+  token?: string;
+}
+
+// ✅ ApiError
+export interface ApiError {
+  message: string;
+  status?: number;
+  code?: string;
+  errors?: Record<string, string[]>;
+}
+
 // ✅ AuthState
 export interface AuthState {
   user: User | null;
@@ -35,4 +51,21 @@ export interface AuthState {
   isAuthenticated: boolean;
   loading: boolean;
   error?: string | null;
+}
+
+// ✅ Types supplémentaires utiles pour l'authentification
+export interface RefreshTokenData {
+  refresh: string;
+}
+
+export interface ForgotPasswordData {
+  email: string;
+}
+
+export interface VerifyEmailData {
+  token: string;
+}
+
+export interface FirebaseAuthData {
+  id_token: string;
 }

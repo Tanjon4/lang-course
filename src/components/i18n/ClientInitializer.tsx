@@ -103,7 +103,7 @@ export default function ClientInitializer({ children }: ClientInitializerProps) 
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto mb-2"></div>
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-amber-700 mx-auto mb-2"></div>
           <p className="text-gray-500 text-xs">Chargement...</p>
         </div>
       </div>
