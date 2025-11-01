@@ -1,102 +1,159 @@
-// src/app/[lang]/dashboard/admin/services/api.ts
-import axios from "axios";
+// // src/app/[lang]/dashboard/admin/services/api.ts
+// import { auth } from "@/lib/firebase";
 
-/* -------------------------------------------------------------------------- */
-/*                           🔹 CONFIGURATION AXIOS 🔹                        */
-/* -------------------------------------------------------------------------- */
+// // 🔹 Récupération du token Firebase
+// async function getToken(): Promise<string> {
+//   const user = auth.currentUser;
+//   if (!user) throw new Error("Utilisateur non connecté");
+//   return user.getIdToken();
+// }
 
-const api = axios.create({
-  baseURL: "https://lang-courses-api.onrender.com/api",
-  headers: { "Content-Type": "application/json" },
-});
+// // 🔹 Fonction fetch avec authentification
+// async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<any> {
+//   const token = await getToken();
 
-// Intercepteur pour ajouter le token Firebase à toutes les requêtes
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("access_token");
-  if (token && config.headers) {
-    config.headers.Authorization = `Bearer ${token}`;
+//   const res = await fetch(url, {
+//     ...options,
+//     headers: {
+//       "Content-Type": "application/json",
+//       "Authorization": `Bearer ${token}`,
+//       ...(options.headers || {}),
+//     },
+//   });
+
+//   if (!res.ok) {
+//     const errorData = await res.json().catch(() => ({}));
+//     throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
+//   }
+
+//   if (res.status === 204) return null; // No content
+//   return res.json().catch(() => null);
+// }
+
+// const BASE_URL = "https://lang-courses-api.onrender.com/api";
+
+// // ===================== Courses =====================
+// export async function getCourses() {
+//   return fetchWithAuth(`${BASE_URL}/courses/`);
+// }
+
+// export async function getCourse(id: number | string) {
+//   return fetchWithAuth(`${BASE_URL}/courses/${id}/`);
+// }
+
+// export async function createCourse(data: { title: string; description?: string; language_code: string }) {
+//   return fetchWithAuth(`${BASE_URL}/courses/`, {
+//     method: "POST",
+//     body: JSON.stringify(data),
+//   });
+// }
+
+// export async function updateCourse(id: number | string, data: any) {
+//   return fetchWithAuth(`${BASE_URL}/courses/${id}/`, {
+//     method: "PUT",
+//     body: JSON.stringify(data),
+//   });
+// }
+
+// export async function deleteCourse(id: number | string) {
+//   return fetchWithAuth(`${BASE_URL}/courses/${id}/`, {
+//     method: "DELETE",
+//   });
+// }
+
+// // ===================== Users =====================
+// export async function getUsers() {
+//   return fetchWithAuth(`${BASE_URL}/users/`);
+// }
+
+// export async function createUser(data: { username: string; email: string; password: string; role?: string }) {
+//   return fetchWithAuth(`${BASE_URL}/users/`, {
+//     method: "POST",
+//     body: JSON.stringify(data),
+//   });
+// }
+
+// export async function updateUser(id: number | string, data: any) {
+//   return fetchWithAuth(`${BASE_URL}/users/${id}/`, {
+//     method: "PUT",
+//     body: JSON.stringify(data),
+//   });
+// }
+
+// export async function deleteUser(id: number | string) {
+//   return fetchWithAuth(`${BASE_URL}/users/${id}/`, {
+//     method: "DELETE",
+//   });
+// }
+
+// export async function toggleUserStatus(id: number | string) {
+//   return fetchWithAuth(`${BASE_URL}/users/${id}/toggle_status/`, {
+//     method: "POST",
+//   });
+// }
+
+// src/lib/api.ts
+import { getAuth } from "firebase/auth";
+
+// Fonction pour récupérer le token Firebase actuel
+async function getFirebaseToken(): Promise<string> {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (!user) throw new Error("Utilisateur non connecté");
+
+  const token = await user.getIdToken();
+  localStorage.setItem("access_token", token); // stocker pour debug ou reusage
+  return token;
+}
+
+// Fonction fetch générique avec auth
+export async function fetchWithAuth(url: string, options: RequestInit = {}) {
+  try {
+    // Récupérer le token depuis Firebase ou localStorage
+    let token = localStorage.getItem("access_token");
+    if (!token) {
+      token = await getFirebaseToken();
+    }
+
+    // Ajouter les headers
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      ...options.headers,
+    };
+
+    const response = await fetch(url, { ...options, headers });
+
+    if (!response.ok) {
+      // Si 401, on peut forcer la récupération d'un nouveau token
+      if (response.status === 401) {
+        console.warn("401 détecté, tentative de refresh token...");
+        const newToken = await getFirebaseToken();
+        const retryResponse = await fetch(url, {
+          ...options,
+          headers: { ...headers, Authorization: `Bearer ${newToken}` },
+        });
+        if (!retryResponse.ok) {
+          throw new Error(`HTTP error! status: ${retryResponse.status}`);
+        }
+        return await retryResponse.json();
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (err: any) {
+    console.error("Erreur fetchWithAuth:", err.message);
+    throw err;
   }
-  return config;
-});
+}
 
-/* -------------------------------------------------------------------------- */
-/*                                🔸 TYPES 🔸                                 */
-/* -------------------------------------------------------------------------- */
+// Exemples de fonctions API
+export async function getUsers() {
+  return fetchWithAuth("https://lang-courses-api.onrender.com/api/users/");
+}
 
-export type Course = {
-  id: number;
-  title: string;
-  description: string;
-  language_code: string;
-  is_published?: boolean;
-};
-
-export type User = {
-  id: number;
-  username: string;
-  email: string;
-  role: string;
-  is_active: boolean;
-};
-
-/* -------------------------------------------------------------------------- */
-/*                              🔸 COURSES API 🔸                              */
-/* -------------------------------------------------------------------------- */
-
-// GET all courses
-export const getCourses = async (): Promise<Course[]> => {
-  const res = await api.get("/courses/");
-  return res.data;
-};
-
-// CREATE course
-export const createCourse = async (data: Partial<Course>): Promise<Course> => {
-  const res = await api.post("/courses/", data);
-  return res.data;
-};
-
-// UPDATE course
-export const updateCourse = async (id: number, data: Partial<Course>): Promise<Course> => {
-  const res = await api.put(`/courses/${id}/`, data);
-  return res.data;
-};
-
-// DELETE course
-export const deleteCourse = async (id: number): Promise<void> => {
-  await api.delete(`/courses/${id}/`);
-};
-
-/* -------------------------------------------------------------------------- */
-/*                               🔸 USERS API 🔸                               */
-/* -------------------------------------------------------------------------- */
-
-// GET all users
-export const getUsers = async (): Promise<User[]> => {
-  const res = await api.get("/users/");
-  return res.data;
-};
-
-// CREATE user
-export const createUser = async (data: Partial<User>): Promise<User> => {
-  const res = await api.post("/users/", data);
-  return res.data;
-};
-
-// UPDATE user
-export const updateUser = async (id: number, data: Partial<User>): Promise<User> => {
-  const res = await api.put(`/users/${id}/`, data);
-  return res.data;
-};
-
-// DELETE user
-export const deleteUser = async (id: number): Promise<void> => {
-  await api.delete(`/users/${id}/`);
-};
-
-// TOGGLE user activation
-export const toggleUserStatus = async (id: number, isActive: boolean): Promise<User> => {
-  const res = await api.patch(`/users/${id}/`, { is_active: isActive });
-  return res.data;
-};
-
-export default api;
+export async function getCourses() {
+  return fetchWithAuth("https://lang-courses-api.onrender.com/api/courses/courses/");
+}

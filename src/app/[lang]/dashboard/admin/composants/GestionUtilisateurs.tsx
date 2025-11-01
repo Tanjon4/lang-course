@@ -8,17 +8,23 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function GestionUtilisateurs() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [formData, setFormData] = useState({ username: "", email: "", status: "active" as "active" | "suspendu" });
 
+  // 🔹 Récupérer les utilisateurs
   const fetchUsers = async () => {
+    setLoading(true);
     try {
-      const res = await getUsers();
-      setUsers(res.data);
+      const data = await getUsers();
+      setUsers(data);
     } catch (err: any) {
-      setError(err.message || "Erreur lors de la récupération des utilisateurs");
+      if (err.message.includes("Utilisateur non connecté")) {
+        toast.error("Vous devez être connecté pour accéder aux utilisateurs.");
+      } else {
+        toast.error(err.message || "Erreur lors de la récupération des utilisateurs.");
+      }
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -28,10 +34,12 @@ export default function GestionUtilisateurs() {
     fetchUsers();
   }, []);
 
+  // 🔹 Gestion des changements de formulaire
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // 🔹 Ajouter / Modifier un utilisateur
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -47,10 +55,16 @@ export default function GestionUtilisateurs() {
       setFormData({ username: "", email: "", status: "active" });
       fetchUsers();
     } catch (err: any) {
-      toast.error(err.message || "Erreur lors de l'opération");
+      if (err.message.includes("Utilisateur non connecté")) {
+        toast.error("Vous devez être connecté pour créer ou modifier un utilisateur.");
+      } else {
+        toast.error(err.message || "Erreur lors de l'opération.");
+      }
+      console.error(err);
     }
   };
 
+  // 🔹 Supprimer un utilisateur
   const handleDelete = async (id: number) => {
     if (!confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) return;
     try {
@@ -58,20 +72,32 @@ export default function GestionUtilisateurs() {
       toast.success("Utilisateur supprimé !");
       fetchUsers();
     } catch (err: any) {
-      toast.error(err.message || "Erreur lors de la suppression");
+      if (err.message.includes("Utilisateur non connecté")) {
+        toast.error("Vous devez être connecté pour supprimer un utilisateur.");
+      } else {
+        toast.error(err.message || "Erreur lors de la suppression.");
+      }
+      console.error(err);
     }
   };
 
+  // 🔹 Changer le statut
   const handleToggleStatus = async (user: User) => {
     try {
       await toggleUserStatus(user.id, user.status === "active" ? "suspendu" : "active");
       toast.success("Statut modifié !");
       fetchUsers();
     } catch (err: any) {
-      toast.error(err.message || "Erreur lors de la modification du statut");
+      if (err.message.includes("Utilisateur non connecté")) {
+        toast.error("Vous devez être connecté pour modifier le statut.");
+      } else {
+        toast.error(err.message || "Erreur lors de la modification du statut.");
+      }
+      console.error(err);
     }
   };
 
+  // 🔹 Ouvrir la modale pour modifier
   const openEditModal = (user: User) => {
     setEditingUser(user);
     setFormData({ username: user.username, email: user.email, status: user.status });
@@ -79,7 +105,6 @@ export default function GestionUtilisateurs() {
   };
 
   if (loading) return <p className="text-center mt-10 text-gray-500">Chargement...</p>;
-  if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -107,7 +132,7 @@ export default function GestionUtilisateurs() {
           </thead>
           <tbody>
             <AnimatePresence>
-              {users.map((user) => (
+              {users.map(user => (
                 <motion.tr
                   key={user.id}
                   initial={{ opacity: 0, y: -10 }}
@@ -119,33 +144,16 @@ export default function GestionUtilisateurs() {
                   <td className="px-4 py-2">{user.username}</td>
                   <td className="px-4 py-2">{user.email}</td>
                   <td className="px-4 py-2">
-                    <span
-                      className={`px-2 py-1 rounded-full text-sm font-medium ${
-                        user.status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                      }`}
-                    >
+                    <span className={`px-2 py-1 rounded-full text-sm font-medium ${user.status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
                       {user.status}
                     </span>
                   </td>
                   <td className="px-4 py-2 text-center space-x-2">
-                    <button
-                      className="px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500 transition"
-                      onClick={() => openEditModal(user)}
-                    >
-                      Modifier
-                    </button>
-                    <button
-                      className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
-                      onClick={() => handleToggleStatus(user)}
-                    >
+                    <button className="px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500 transition" onClick={() => openEditModal(user)}>Modifier</button>
+                    <button className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 transition" onClick={() => handleToggleStatus(user)}>
                       {user.status === "active" ? "Suspendre" : "Réactiver"}
                     </button>
-                    <button
-                      className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
-                      onClick={() => handleDelete(user.id)}
-                    >
-                      Supprimer
-                    </button>
+                    <button className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition" onClick={() => handleDelete(user.id)}>Supprimer</button>
                   </td>
                 </motion.tr>
               ))}
@@ -157,7 +165,7 @@ export default function GestionUtilisateurs() {
       {/* Mobile Cards */}
       <div className="md:hidden space-y-4">
         <AnimatePresence>
-          {users.map((user) => (
+          {users.map(user => (
             <motion.div
               key={user.id}
               initial={{ opacity: 0, y: -10 }}
@@ -167,34 +175,17 @@ export default function GestionUtilisateurs() {
             >
               <div className="flex justify-between items-center">
                 <h2 className="font-bold text-lg">{user.username}</h2>
-                <span
-                  className={`px-2 py-1 rounded-full text-sm font-medium ${
-                    user.status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                  }`}
-                >
+                <span className={`px-2 py-1 rounded-full text-sm font-medium ${user.status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
                   {user.status}
                 </span>
               </div>
               <p className="text-gray-600">{user.email}</p>
               <div className="flex flex-wrap gap-2 mt-2">
-                <button
-                  className="flex-1 px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500 transition"
-                  onClick={() => openEditModal(user)}
-                >
-                  Modifier
-                </button>
-                <button
-                  className="flex-1 px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
-                  onClick={() => handleToggleStatus(user)}
-                >
+                <button className="flex-1 px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500 transition" onClick={() => openEditModal(user)}>Modifier</button>
+                <button className="flex-1 px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 transition" onClick={() => handleToggleStatus(user)}>
                   {user.status === "active" ? "Suspendre" : "Réactiver"}
                 </button>
-                <button
-                  className="flex-1 px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
-                  onClick={() => handleDelete(user.id)}
-                >
-                  Supprimer
-                </button>
+                <button className="flex-1 px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition" onClick={() => handleDelete(user.id)}>Supprimer</button>
               </div>
             </motion.div>
           ))}
@@ -214,55 +205,22 @@ export default function GestionUtilisateurs() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-gray-700">Nom d'utilisateur</label>
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                <input type="text" name="username" value={formData.username} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
               </div>
               <div>
                 <label className="block text-gray-700">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                <input type="email" name="email" value={formData.email} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
               </div>
               <div>
                 <label className="block text-gray-700">Statut</label>
-                <select
-                  name="status"
-                  value={formData.status}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
+                <select name="status" value={formData.status} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                   <option value="active">Active</option>
                   <option value="suspendu">Suspendu</option>
                 </select>
               </div>
               <div className="flex justify-end space-x-2 mt-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setModalOpen(false);
-                    setEditingUser(null);
-                  }}
-                  className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition"
-                >
-                  Annuler
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-                >
-                  {editingUser ? "Modifier" : "Ajouter"}
-                </button>
+                <button type="button" onClick={() => { setModalOpen(false); setEditingUser(null); }} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition">Annuler</button>
+                <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">{editingUser ? "Modifier" : "Ajouter"}</button>
               </div>
             </form>
           </motion.div>
