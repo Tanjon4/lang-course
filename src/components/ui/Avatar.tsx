@@ -1,56 +1,49 @@
-"use client";
-
-import { useState } from 'react';
-import Image from 'next/image';
-
+// components/ui/Avatar.tsx
 interface AvatarProps {
   src?: string | null;
-  alt: string;
-  username: string;
+  alt?: string;
+  username?: string;
+  size?: "sm" | "md" | "lg";
   className?: string;
-  size?: 'sm' | 'md' | 'lg';
 }
 
 export default function Avatar({ 
   src, 
-  alt, 
-  username, 
-  className = "", 
-  size = "md" 
+  alt = "User avatar", 
+  username = "User", 
+  size = "md", 
+  className = "" 
 }: AvatarProps) {
-  const [imageError, setImageError] = useState(false);
-
   const sizeClasses = {
     sm: "w-6 h-6 text-xs",
-    md: "w-8 h-8 text-sm", 
-    lg: "w-12 h-12 text-base"
+    md: "w-8 h-8 text-sm",
+    lg: "w-10 h-10 text-base"
   };
 
-  // Si pas de source OU erreur de chargement, afficher l'avatar par défaut
-  if (!src || imageError) {
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(part => part[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  if (src) {
     return (
-      <div 
-        className={`
-          ${sizeClasses[size]} 
-          rounded-full bg-amber-500 flex items-center justify-center text-white font-semibold
-          ${className}
-        `}
-      >
-        {username.charAt(0).toUpperCase()}
-      </div>
+      <img
+        src={src}
+        alt={alt}
+        className={`rounded-full object-cover ${sizeClasses[size]} ${className}`}
+      />
     );
   }
 
-  // Image de l'API ou locale
   return (
-    <Image
-      src={src}
-      alt={alt}
-      width={size === 'sm' ? 24 : size === 'md' ? 32 : 48}
-      height={size === 'sm' ? 24 : size === 'md' ? 32 : 48}
-      className={`rounded-full object-cover ${sizeClasses[size]} ${className}`}
-      onError={() => setImageError(true)}
-      priority={size === 'lg'}
-    />
+    <div
+      className={`bg-gradient-to-r from-orange-400 to-amber-500 rounded-full flex items-center justify-center text-white font-semibold ${sizeClasses[size]} ${className}`}
+    >
+      {getInitials(username)}
+    </div>
   );
 }

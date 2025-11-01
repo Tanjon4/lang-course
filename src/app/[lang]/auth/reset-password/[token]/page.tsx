@@ -10,6 +10,7 @@ export default function ResetPasswordPage() {
   const router = useRouter();
   const params = useParams();
   const token = params.token as string;
+  const decodedToken = decodeURIComponent(token);
 
   const lang = params.lang as string;
 
@@ -76,7 +77,7 @@ export default function ResetPasswordPage() {
     }
 
     try {
-      const response = await fetch(`https://lang-courses-api.onrender.com/api/users/reset-password/${token}/`, {
+      const response = await fetch(`https://lang-courses-api.onrender.com/api/users/reset-password/${decodedToken}/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password, password2 }),
