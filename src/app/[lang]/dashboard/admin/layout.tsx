@@ -18,19 +18,11 @@
 //   );
 // }
 
-"use client";
-
-import { ThemeProvider } from "next-themes";
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+// ✅ src/app/[lang]/layout.tsx
+export default function LangLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
-      <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+    <div className="lang-layout">
+      {children}
+    </div>
   );
 }
-
