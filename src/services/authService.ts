@@ -1,38 +1,39 @@
 import { LoginData, RegisterData, AuthResponse, User, ApiError, ResetPasswordData } from '@/types/auth';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lang-courses-api.onrender.com/api';
 
 class AuthService {
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`;
     
-    // Configuration par défaut
-    const config: RequestInit = {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-      ...options,
+    // Récupérez le token
+    const token = this.getAccessToken();
+    console.log('🔐 Token for request:', token ? `Bearer ${token.substring(0, 20)}...` : 'No token');
+
+    // Créez les headers
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...(options.headers as Record<string, string> || {}),
     };
 
-    // Ajouter le token d'authentification si disponible
-    // Vérification de l'existence de localStorage (pour compatibilité SSR)
-    let token: string | null = null;
-    if (typeof window !== 'undefined') {
-      token = localStorage.getItem('accessToken');
-    }
-    
+    // Ajoutez l'Authorization
     if (token) {
-      config.headers = {
-        ...config.headers,
-        'Authorization': `Bearer ${token}`,
-      };
+      headers['Authorization'] = `Bearer ${token}`;
     }
+
+    const config: RequestInit = {
+      ...options,
+      headers,
+    };
+
+    console.log('🚀 Making request to:', url);
+    console.log('📋 Request method:', config.method);
 
     try {
       const response = await fetch(url, config);
       
-      // Vérifier si la réponse est vide (204 No Content)
+      console.log('📥 Response status:', response.status);
+
       const contentType = response.headers.get('content-type');
       let data;
       
@@ -43,12 +44,15 @@ class AuthService {
       }
 
       if (!response.ok) {
-        const errorMessage = data.error || data.message || `HTTP error! status: ${response.status}`;
+        const errorMessage = data.detail || data.error || data.message || `HTTP error! status: ${response.status}`;
+        console.error('❌ Request failed:', errorMessage);
         throw new Error(errorMessage);
       }
 
+      console.log('✅ Request successful');
       return data;
     } catch (error) {
+      console.error('❌ Request error:', error);
       if (error instanceof Error) {
         throw error;
       }
@@ -57,13 +61,17 @@ class AuthService {
   }
 
   async login(data: LoginData): Promise<AuthResponse> {
-    return this.request<AuthResponse>('/users/login/', {
+    console.log('🔑 Attempting login...');
+    const response = await this.request<AuthResponse>('/users/login/', {
       method: 'POST',
       body: JSON.stringify(data),
     });
+    console.log('✅ Login successful');
+    return response;
   }
 
   async register(data: RegisterData): Promise<{ message: string }> {
+    console.log('👤 Attempting registration...');
     return this.request<{ message: string }>('/users/register/', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -71,6 +79,7 @@ class AuthService {
   }
 
   async logout(refreshToken: string): Promise<{ message: string }> {
+    console.log('🚪 Attempting logout...');
     return this.request<{ message: string }>('/users/logout/', {
       method: 'POST',
       body: JSON.stringify({ refresh: refreshToken }),
@@ -78,17 +87,24 @@ class AuthService {
   }
 
   async getCurrentUser(): Promise<User> {
-    return this.request<User>('/users/me/');
+    console.log('👤 Fetching current user...');
+    const user = await this.request<User>('/users/me/');
+    console.log('✅ Current user fetched');
+    return user;
   }
 
   async refreshToken(refreshToken: string): Promise<{ access: string }> {
-    return this.request<{ access: string }>('/users/refresh/', {
+    console.log('🔄 Attempting token refresh...');
+    const response = await this.request<{ access: string }>('/users/refresh/', {
       method: 'POST',
       body: JSON.stringify({ refresh: refreshToken }),
     });
+    console.log('✅ Token refreshed successfully');
+    return response;
   }
 
   async forgotPassword(email: string): Promise<{ message: string }> {
+    console.log('📧 Sending forgot password request...');
     return this.request<{ message: string }>('/users/forgot-password/', {
       method: 'POST',
       body: JSON.stringify({ email }),
@@ -96,6 +112,7 @@ class AuthService {
   }
 
   async resetPassword(token: string, data: ResetPasswordData): Promise<{ message: string }> {
+    console.log('🔄 Attempting password reset...');
     return this.request<{ message: string }>(`/users/reset-password/${token}/`, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -103,13 +120,14 @@ class AuthService {
   }
 
   async verifyEmail(token: string): Promise<{ message: string }> {
-    // Correction : utilisation correcte des paramètres de requête
+    console.log('📧 Verifying email...');
     return this.request<{ message: string }>(`/users/verify-email/?token=${token}`, {
       method: 'GET',
     });
   }
 
   async firebaseAuth(idToken: string): Promise<AuthResponse> {
+    console.log('🔥 Firebase authentication...');
     return this.request<AuthResponse>('/users/firebase/', {
       method: 'POST',
       body: JSON.stringify({ id_token: idToken }),
@@ -119,14 +137,17 @@ class AuthService {
   // Méthode utilitaire pour gérer le stockage du token
   setAccessToken(token: string): void {
     if (typeof window !== 'undefined') {
-      localStorage.setItem('accessToken', token);
+      const cleanToken = token.trim();
+      localStorage.setItem('accessToken', cleanToken);
+      console.log('💾 Access token stored in localStorage');
     }
   }
 
   // Méthode utilitaire pour récupérer le token
   getAccessToken(): string | null {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('accessToken');
+      const token = localStorage.getItem('accessToken');
+      return token;
     }
     return null;
   }
@@ -135,6 +156,33 @@ class AuthService {
   removeAccessToken(): void {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('accessToken');
+      console.log('🗑️ Access token removed from localStorage');
+    }
+  }
+
+  // Méthode pour stocker le refresh token
+  setRefreshToken(token: string): void {
+    if (typeof window !== 'undefined') {
+      const cleanToken = token.trim();
+      localStorage.setItem('refreshToken', cleanToken);
+      console.log('💾 Refresh token stored in localStorage');
+    }
+  }
+
+  // Méthode pour récupérer le refresh token
+  getRefreshToken(): string | null {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('refreshToken');
+    }
+    return null;
+  }
+
+  // Méthode pour supprimer tous les tokens
+  clearTokens(): void {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      console.log('🧹 All tokens cleared from localStorage');
     }
   }
 }
