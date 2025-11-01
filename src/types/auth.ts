@@ -6,6 +6,7 @@ export interface User {
   avatar?: string;
   is_email_verified: boolean;
   provider?: string;
+  role: string;
   date_joined?: string;
 }
 

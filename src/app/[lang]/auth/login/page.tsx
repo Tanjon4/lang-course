@@ -8,6 +8,7 @@ import { auth } from '@/lib/firebase';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
+import { useAuth } from '@/app/contexts/AuthContext';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -16,115 +17,151 @@ export default function LoginPage() {
   const router = useRouter();
   const params = useParams();
   const lang = params?.lang as string;
+  const { login } = useAuth();
 
-  // ✅ Fonction de redirection selon le rôle
-  const redirectByRole = async () => {
-    try {
-      const accessToken = localStorage.getItem('access');
-      
-      if (!accessToken) {
-        console.error("Aucun token d'accès trouvé");
-        router.push(`/${lang}/auth/login`);
-        return;
-      }
-
-      const res = await fetch("https://lang-courses-api.onrender.com/api/users/me/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`
-        },
-      });
-
-      if (!res.ok) {
-        console.error("Erreur lors de la récupération du profil:", res.status);
-        router.push(`/${lang}/auth/login`);
-        return;
-      }
-
-      const data = await res.json();
-      const role = data.role;
-      console.log("Role de l'utilisateur:", role);
-
-      // Utilisation de lang dans les routes
-      if (role === "admin") {
-        router.push(`/${lang}/dashboard/admin`);
-      } else if (role === "student") {
-        router.push(`/${lang}/dashboard/user`);
-      } else {
-        alert("Rôle inconnu. Contactez l'administrateur.");
-        router.push(`/${lang}`);
-      }
-    } catch (err) {
-      console.error("Erreur réseau lors de la récupération du profil:", err);
-      router.push(`/${lang}/auth/login`);
-    }
-  };
-
-  // Login avec email/password backend
+  // ✅ Login avec email/password backend - UTILISE LE AUTHCONTEXT
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const res = await fetch('https://lang-courses-api.onrender.com/api/users/login/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+      // ✅ Utilise la fonction login du AuthContext qui gère tout
+      await login(formData);
       
-      const data = await res.json();
+      console.log('✅ Connexion réussie via AuthContext');
+      // La redirection est gérée automatiquement dans le AuthContext
       
-      if (res.ok) {
-        localStorage.setItem('access', data.access);
-        localStorage.setItem('refresh', data.refresh);
-        console.log('Connexion réussie:', data);
-        alert("✅ Connexion réussie !");
-        await redirectByRole();
-      } else if (res.status === 401) {
+    } catch (error: any) {
+      console.error('❌ Erreur login:', error);
+      
+      if (error.message && error.message.includes('401')) {
         alert("❌ Email ou mot de passe incorrect !");
       } else {
-        console.error('Erreur login:', data);
-        alert(`❌ Erreur de connexion : ${data.detail || data.message || "Identifiants invalides"}`);
+        alert(`❌ Erreur de connexion : ${error.message || "Identifiants invalides"}`);
       }
-    } catch (error) {
-      console.error('Erreur login:', error);
-      alert("❌ Erreur de réseau ou serveur. Veuillez réessayer.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Login avec Google Firebase
+  // ✅ Login avec Google Firebase
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
+    setIsLoading(true);
+    
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       console.log('Firebase Google User:', user);
 
+      // ✅ Récupérez le token JWT de Firebase
       const token = await user.getIdToken();
-      const res = await fetch('https://lang-courses-api.onrender.com/api/users/login/firebase/', {
+      console.log('🔐 Firebase ID Token:', token ? 'Present' : 'Missing');
+      
+      // ✅ Essayez l'endpoint Firebase avec le bon format
+      const res = await fetch('https://lang-courses-api.onrender.com/api/users/firebase/', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          id_token: token, // ✅ Le backend attend "id_token" (avec underscore)
+          // Ou essayez aussi avec "token" si "id_token" ne marche pas
+          token: token
+        }),
+      });
+      
+      console.log('📥 Google login response status:', res.status);
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error('❌ Google login failed:', errorData);
+        
+        // ✅ Si l'endpoint Firebase ne marche pas, essayez l'endpoint standard
+        if (res.status === 400 || res.status === 404) {
+          console.log('🔄 Trying standard login with Google credentials...');
+          await handleStandardLoginWithGoogle(user);
+          return;
+        }
+        
+        alert(`❌ Erreur Google login: ${errorData.error || errorData.detail || "Erreur serveur"}`);
+        return;
+      }
+
+      // ✅ Parsez la réponse JSON
+      const data = await res.json();
+      console.log('✅ Google login successful:', data);
+      
+      // ✅ Stockez les tokens
+      if (data.access && data.refresh) {
+        localStorage.setItem('accessToken', data.access);
+        localStorage.setItem('refreshToken', data.refresh);
+        
+        console.log('💾 Tokens stored for Google login');
+        
+        // ✅ Redirection automatique
+        setTimeout(() => {
+          window.location.href = `/${lang}/auth/profile`;
+        }, 100);
+        
+        alert("✅ Connexion Google réussie !");
+      } else {
+        throw new Error('Tokens manquants dans la réponse');
+      }
+      
+    } catch (error: any) {
+      console.error('❌ Erreur login Google Firebase:', error);
+      alert("❌ Erreur de connexion Google. Veuillez réessayer.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // ✅ Fonction de fallback pour l'authentification standard
+  const handleStandardLoginWithGoogle = async (user: any) => {
+    try {
+      console.log('🔄 Attempting standard login with Google user...');
+      
+      const res = await fetch('https://lang-courses-api.onrender.com/api/users/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token }),
+        body: JSON.stringify({
+          email: user.email,
+          password: `google_${user.uid}`, // Mot de passe unique basé sur l'UID
+        }),
       });
       
       const data = await res.json();
       
       if (res.ok) {
-        localStorage.setItem('access', data.access);
-        localStorage.setItem('refresh', data.refresh);
-        console.log('Login Google backend réussi:', data);
-        alert("✅ Connexion Google réussie !");
-        await redirectByRole();
+        localStorage.setItem('accessToken', data.access);
+        localStorage.setItem('refreshToken', data.refresh);
+        
+        console.log('✅ Standard login with Google successful');
+        alert("✅ Connexion réussie !");
+        
+        setTimeout(() => {
+          window.location.href = `/${lang}/auth/profile`;
+        }, 100);
+        
       } else {
-        console.error('Erreur login Google backend:', data);
-        alert(`❌ Erreur Google backend : ${data.detail || data.message || "Connexion échouée"}`);
+        // Si le compte n'existe pas, proposez l'inscription
+        if (res.status === 401) {
+          const shouldRegister = confirm(
+            `Compte non trouvé pour ${user.email}. Voulez-vous créer un compte avec votre compte Google ?`
+          );
+          
+          if (shouldRegister) {
+            // Redirigez vers l'inscription
+            router.push(`/${lang}/auth/register?email=${encodeURIComponent(user.email || '')}&name=${encodeURIComponent(user.displayName || '')}`);
+          }
+        } else {
+          alert(`❌ Erreur: ${data.detail || data.message || "Connexion échouée"}`);
+        }
       }
     } catch (error) {
-      console.error('Erreur login Google Firebase:', error);
-      alert("❌ Erreur de connexion Google. Veuillez réessayer.");
+      console.error('❌ Standard login with Google failed:', error);
+      alert("❌ Erreur lors de la connexion. Veuillez réessayer.");
     }
   };
 

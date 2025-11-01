@@ -2,12 +2,13 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { User, AuthState, LoginData, RegisterData } from '@/types/auth';
 import { authService } from '@/services/authService';
+import { useRouter } from 'next/navigation';
 
 type AuthContextType = AuthState & {
   login: (data: LoginData) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
-  refreshToken: () => Promise<string | undefined>; // ✅ ovaina eto
+  refreshToken: () => Promise<string | undefined>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -17,13 +18,13 @@ type AuthAction =
   | { type: 'AUTH_SUCCESS'; payload: { user: User; access: string; refresh: string } }
   | { type: 'AUTH_FAIL' }
   | { type: 'LOGOUT' }
-  | { type: 'UPDATE_USER'; payload: User };
+  | { type: 'UPDATE_USER'; payload: User }
+  | { type: 'SET_LOADING'; payload: boolean };
 
 const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
     case 'AUTH_START':
       return { ...state, loading: true, error: null };
-
     case 'AUTH_SUCCESS':
       return {
         ...state,
@@ -34,7 +35,6 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         refreshTokenValue: action.payload.refresh,
         error: null,
       };
-
     case 'AUTH_FAIL':
       return {
         ...state,
@@ -45,7 +45,6 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         refreshTokenValue: null,
         error: 'Authentication failed',
       };
-
     case 'LOGOUT':
       return {
         ...state,
@@ -56,10 +55,10 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         loading: false,
         error: null,
       };
-
     case 'UPDATE_USER':
       return { ...state, user: action.payload };
-
+    case 'SET_LOADING':
+      return { ...state, loading: action.payload };
     default:
       return state;
   }
@@ -70,53 +69,136 @@ const initialState: AuthState = {
   accessToken: null,
   refreshTokenValue: null,
   isAuthenticated: false,
-  loading: false,
+  loading: true,
   error: null,
 };
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(authReducer, initialState);
+  const router = useRouter(); // ✅ Utilisez useRouter pour la navigation
 
   useEffect(() => {
     checkAuth();
   }, []);
 
   const checkAuth = async () => {
+    console.log('🔄 Starting authentication check...');
+    
+    const accessToken = authService.getAccessToken();
+    const refreshToken = authService.getRefreshToken();
+    
+    console.log('🔍 Tokens check:', { 
+      accessToken: !!accessToken, 
+      refreshToken: !!refreshToken 
+    });
+
+    if (!accessToken || !refreshToken) {
+      console.log('❌ No tokens found, user is not authenticated');
+      dispatch({ type: 'AUTH_FAIL' });
+      return;
+    }
+
     try {
-      const token = localStorage.getItem('accessToken');
-      if (token) {
-        const user = await authService.getCurrentUser();
-        dispatch({
-          type: 'AUTH_SUCCESS',
-          payload: {
-            user,
-            access: token,
-            refresh: localStorage.getItem('refreshToken') || '',
-          },
-        });
-      } else {
-        dispatch({ type: 'AUTH_FAIL' });
+      console.log('👤 Fetching current user data...');
+      const user = await authService.getCurrentUser();
+      
+      console.log('✅ Authentication successful, user:', user);
+      dispatch({
+        type: 'AUTH_SUCCESS',
+        payload: {
+          user,
+          access: accessToken,
+          refresh: refreshToken,
+        },
+      });
+    } catch (error: any) {
+      console.error('❌ getCurrentUser failed:', error);
+      
+      // Si erreur 401, essayez de rafraîchir le token
+      if (error.message && error.message.includes('401')) {
+        console.log('🔄 Token expired, attempting refresh...');
+        try {
+          const newAccessToken = await refreshTokenFunc();
+          if (newAccessToken) {
+            console.log('✅ Token refreshed, fetching user again...');
+            const user = await authService.getCurrentUser();
+            dispatch({
+              type: 'AUTH_SUCCESS',
+              payload: {
+                user,
+                access: newAccessToken,
+                refresh: refreshToken || '',
+              },
+            });
+            return;
+          }
+        } catch (refreshError) {
+          console.error('❌ Token refresh failed:', refreshError);
+        }
       }
-    } catch {
+      
+      // Si tout échoue, nettoyez
+      console.log('🧹 Cleaning up invalid tokens');
+      authService.clearTokens();
       dispatch({ type: 'AUTH_FAIL' });
     }
   };
 
+  // ✅ Fonction login avec redirection automatique
   const login = async (data: LoginData) => {
+    console.log('🔑 Starting login process...');
     dispatch({ type: 'AUTH_START' });
+    
     try {
       const response = await authService.login(data);
-      localStorage.setItem('accessToken', response.access);
-      localStorage.setItem('refreshToken', response.refresh);
+      
+      console.log('✅ Login response received:', response);
+      
+      // Stockez les tokens
+      authService.setAccessToken(response.access);
+      authService.setRefreshToken(response.refresh);
+      
+      console.log('💾 Tokens stored in localStorage');
+      
+      // Récupérez les infos utilisateur
+      const user = await authService.getCurrentUser();
+      
+      console.log('✅ User data fetched:', user);
+      
       dispatch({
         type: 'AUTH_SUCCESS',
         payload: {
-          user: response.user,
+          user,
           access: response.access,
           refresh: response.refresh,
         },
       });
+      
+      console.log('🎉 User fully authenticated and context updated');
+      
+      // ✅ REDIRECTION AUTOMATIQUE avec useRouter
+      // Déterminez la langue depuis l'URL actuelle ou utilisez 'fr' par défaut
+      const currentPath = window.location.pathname;
+      const langMatch = currentPath.match(/^\/([a-z]{2})\//);
+      const lang = langMatch ? langMatch[1] : 'fr';
+      
+      console.log('🌍 Detected language:', lang);
+      console.log('👤 User role:', user.role);
+      
+      // Redirection basée sur le rôle
+      if (user.role === "admin") {
+        console.log('🚀 Redirecting admin to profile');
+        router.push(`/${lang}/auth/profile`);
+      } else if (user.role === "student") {
+        console.log('🚀 Redirecting student to user dashboard');
+        router.push(`/${lang}/dashboard/user`);
+      } else {
+        console.log('🚀 Redirecting to home page');
+        router.push(`/${lang}`);
+      }
+      
     } catch (error) {
+      console.error('❌ Login failed:', error);
       dispatch({ type: 'AUTH_FAIL' });
       throw error;
     }
@@ -126,7 +208,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: 'AUTH_START' });
     try {
       await authService.register(data);
-      dispatch({ type: 'AUTH_FAIL' }); // tsy auto-login
+      dispatch({ type: 'SET_LOADING', payload: false });
     } catch (error) {
       dispatch({ type: 'AUTH_FAIL' });
       throw error;
@@ -134,26 +216,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async () => {
+    console.log('🚪 Starting logout process...');
     try {
-      const refreshToken = localStorage.getItem('refreshToken');
+      const refreshToken = authService.getRefreshToken();
       if (refreshToken) {
         await authService.logout(refreshToken);
       }
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      authService.clearTokens();
       dispatch({ type: 'LOGOUT' });
+      
+      // ✅ Redirection après logout
+      const currentPath = window.location.pathname;
+      const langMatch = currentPath.match(/^\/([a-z]{2})\//);
+      const lang = langMatch ? langMatch[1] : 'fr';
+      
+      router.push(`/${lang}/auth/login`);
+      console.log('✅ Logout completed and redirected to login');
     }
   };
 
-  const refreshToken = async () => {
+  const refreshTokenFunc = async (): Promise<string | undefined> => {
     try {
-      const refresh = localStorage.getItem('refreshToken');
+      const refresh = authService.getRefreshToken();
       if (refresh) {
         const response = await authService.refreshToken(refresh);
-        localStorage.setItem('accessToken', response.access);
+        authService.setAccessToken(response.access);
         return response.access;
       }
     } catch (error) {
@@ -169,7 +259,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         login,
         register,
         logout,
-        refreshToken,
+        refreshToken: refreshTokenFunc,
       }}
     >
       {children}

@@ -57,7 +57,7 @@ export default function Navbar() {
 
     const fetchUser = async () => {
       try {
-        const res = await fetch("https://lang-courses-api.onrender.com/api/users/");
+        const res = await fetch("https://lang-courses-api.onrender.com/api/users/me/");
         if (!res.ok) {
           // Mock user pour le développement
           setUser({
