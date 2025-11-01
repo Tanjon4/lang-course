@@ -8,6 +8,7 @@ export interface User {
   provider?: string;
   role: string;
   date_joined?: string;
+  last_login?: string;
 }
 
 export interface AuthResponse {
