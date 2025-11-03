@@ -2,6 +2,7 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
+// ⚠️ Mets tes vraies clés ici ou via .env.local
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN!,
@@ -11,9 +12,7 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!,
 };
 
-// 🔹 Initialisation sécurisée : si aucune app Firebase n’est créée, on la crée
+// ✅ Évite l’erreur "No Firebase App '[DEFAULT]'..."
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-
-// 🔹 Export de l’auth
 export const auth = getAuth(app);
-
+export default app;
