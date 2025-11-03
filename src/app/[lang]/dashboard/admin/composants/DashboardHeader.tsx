@@ -1,23 +1,29 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiSearch, FiBell } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { UserContext } from "@/app/[lang]/dashboard/admin/context/UserContext";
+import { useAuth } from "@/app/contexts/AuthContext";
 
 export default function DashboardHeader() {
-  const { user, setUser } = useContext(UserContext);
+  const { user, isAuthenticated, loading } = useAuth();
   const [localUser, setLocalUser] = useState(() => {
     // ✅ Initialisation avec le user du contexte ou localStorage
-    const storedUser = localStorage.getItem("user");
-    return user || (storedUser ? JSON.parse(storedUser) : null);
+    if (typeof window !== "undefined") {
+      const storedUser = localStorage.getItem("user");
+      return user || (storedUser ? JSON.parse(storedUser) : null);
+    }
+    return user || null;
   });
   const router = useRouter();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        // Vérifier si on est côté client
+        if (typeof window === "undefined") return;
+
         const accessToken = localStorage.getItem("access") || localStorage.getItem("accessToken");
         if (!accessToken) {
           console.warn("⚠️ Aucun token d'accès trouvé. Redirection vers login.");
@@ -60,7 +66,7 @@ export default function DashboardHeader() {
           role: data.role || "user",
         };
 
-        setUser(userData);
+        // ✅ Correction : Utiliser setLocalUser au lieu de setUser qui n'existe pas
         setLocalUser(userData);
         localStorage.setItem("user", JSON.stringify(userData));
       } catch (err) {
@@ -69,7 +75,19 @@ export default function DashboardHeader() {
     };
 
     if (!localUser) fetchUser();
-  }, [localUser, setUser, router]);
+  }, [localUser, router]); // ✅ Retirer setUser des dépendances
+
+  // ✅ Gérer le chargement
+  if (loading) {
+    return (
+      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-white/10">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+          <p className="text-sm text-[var(--muted)]">Chargement...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <motion.div
