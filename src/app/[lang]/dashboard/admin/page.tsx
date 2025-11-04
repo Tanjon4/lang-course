@@ -5,7 +5,8 @@ import DashboardHome from "./composants/DashboardHome";
 import GestionCours from "./composants/GestionCours";
 import GestionUtilisateurs from "./composants/GestionUtilisateurs";
 import GestionNiveaux from "./composants/GestionNiveaux";
-import Parametre from "./composants/Parametre"
+import GestionChapitre from "./composants/GestionChapitre";
+import GestionLesson from "./composants/GestionLesson"
 
 export default function AdminDashboard() {
   const [activePage, setActivePage] = useState("Dashboard");
@@ -20,8 +21,10 @@ export default function AdminDashboard() {
         return <GestionUtilisateurs />;
       case "Gestion des niveaux":
         return <GestionNiveaux />;
-        case "Parametre":
-        return <Parametre />;
+      case "Gestion chapitres":
+        return <GestionChapitre />;
+        case "Gestion chapitres":
+        return <GestionLesson/>;
       default:
         return <DashboardHome />;
     }

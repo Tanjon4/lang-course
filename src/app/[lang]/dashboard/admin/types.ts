@@ -9,3 +9,4 @@ export interface Level {
   course_title?: string; // pour affichage
   is_published: boolean;
 }
+
