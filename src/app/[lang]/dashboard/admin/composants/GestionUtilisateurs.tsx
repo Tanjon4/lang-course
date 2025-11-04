@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import { useAuth } from "@/app/contexts/AuthContext";
 import { getUsers, updateUser, deleteUser, toggleUserStatus, User } from "@/app/[lang]/dashboard/admin/services/api";
@@ -15,6 +15,7 @@ export default function GestionUtilisateurs() {
     username: "",
     email: "",
     status: "active" as "active" | "suspendu",
+    role: "user" as "user" | "admin",
   });
 
   // Vérification rôle admin
@@ -29,7 +30,7 @@ export default function GestionUtilisateurs() {
     if (!user || user.role !== "admin") return;
     try {
       const res = await getUsers();
-      setUsers(res.data);
+      setUsers(res);
     } catch (err: any) {
       toast.error("Erreur lors de la récupération des utilisateurs.");
       console.error(err);
@@ -90,133 +91,311 @@ export default function GestionUtilisateurs() {
   // Ouvrir modal modification
   const openEditModal = (u: User) => {
     setEditingUser(u);
-    setFormData({ username: u.username, email: u.email, status: u.status });
+    setFormData({ 
+      username: u.username, 
+      email: u.email, 
+      status: u.status,
+      role: u.role 
+    });
     setModalOpen(true);
   };
 
-  if (loading) return <p className="text-center mt-10 text-gray-500">Chargement...</p>;
-  if (!user || user.role !== "admin") return <p className="text-center mt-10 text-red-500">Accès refusé.</p>;
+  if (loading) return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
+  );
+  
+  if (!user || user.role !== "admin") return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="text-center">
+        <div className="w-24 h-24 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+          <svg className="w-12 h-12 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </div>
+        <p className="text-xl font-semibold text-gray-700">Accès refusé</p>
+        <p className="text-gray-500 mt-2">Vous n'avez pas les permissions nécessaires</p>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <Toaster position="top-right" />
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Gestion des utilisateurs</h1>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 p-6">
+      <Toaster 
+        position="top-right" 
+        toastOptions={{
+          className: 'bg-white shadow-lg border border-gray-100',
+          style: {
+            padding: '16px',
+            color: '#374151',
+          },
+        }}
+      />
+      
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Gestion des Utilisateurs
+            </h1>
+            <p className="text-gray-600 mt-2">Administrez et gérez les comptes utilisateurs de votre plateforme</p>
+          </div>
+          <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-2xl shadow-sm border border-gray-100">
+            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+            <span className="text-sm font-medium text-gray-700">
+              {users.length} utilisateur{users.length > 1 ? 's' : ''}
+            </span>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Tableau des utilisateurs */}
-      <div className="overflow-x-auto bg-white shadow rounded-lg">
-        <table className="w-full text-left border-collapse">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-2 border-b">ID</th>
-              <th className="px-4 py-2 border-b">Nom</th>
-              <th className="px-4 py-2 border-b">Email</th>
-              <th className="px-4 py-2 border-b">Statut</th>
-              <th className="px-4 py-2 border-b">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((u) => (
-              <tr key={u.id} className="hover:bg-gray-50">
-                <td className="px-4 py-2 border-b">{u.id}</td>
-                <td className="px-4 py-2 border-b">{u.username}</td>
-                <td className="px-4 py-2 border-b">{u.email}</td>
-                <td className="px-4 py-2 border-b">
-                  <span
-                    className={`px-2 py-1 rounded text-white cursor-pointer ${
-                      u.status === "active" ? "bg-green-500" : "bg-red-500"
-                    }`}
-                    onClick={() => handleToggleStatus(u)}
-                  >
-                    {u.status}
-                  </span>
-                </td>
-                <td className="px-4 py-2 border-b space-x-2">
-                  <button
-                    className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-                    onClick={() => openEditModal(u)}
-                  >
-                    Modifier
-                  </button>
-                  <button
-                    className="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700"
-                    onClick={() => handleDelete(u.id)}
-                  >
-                    Supprimer
-                  </button>
-                </td>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/60 overflow-hidden"
+      >
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gradient-to-r from-blue-50 to-purple-50/50 border-b border-gray-100">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Utilisateur
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Email
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Rôle
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Statut
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="divide-y divide-gray-100/50">
+              {users.map((u, index) => (
+                <motion.tr 
+                  key={u.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="hover:bg-gray-50/50 transition-colors duration-200"
+                >
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center text-white font-semibold shadow-lg">
+                        {u.username.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm font-semibold text-gray-900">{u.username}</div>
+                        <div className="text-sm text-gray-500">ID: {u.id}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">{u.email}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                        u.role === "admin" 
+                          ? "bg-purple-100 text-purple-800 ring-1 ring-purple-200" 
+                          : "bg-blue-100 text-blue-800 ring-1 ring-blue-200"
+                      }`}
+                    >
+                      {u.role === "admin" ? (
+                        <>
+                          <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                          Administrateur
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                          </svg>
+                          Utilisateur
+                        </>
+                      )}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => handleToggleStatus(u)}
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 hover:scale-105 ${
+                        u.status === "active" 
+                          ? "bg-green-100 text-green-800 ring-1 ring-green-200 hover:bg-green-200" 
+                          : "bg-red-100 text-red-800 ring-1 ring-red-200 hover:bg-red-200"
+                      }`}
+                    >
+                      <div className={`w-2 h-2 rounded-full mr-2 ${u.status === "active" ? "bg-green-500" : "bg-red-500"}`}></div>
+                      {u.status === "active" ? "Actif" : "Suspendu"}
+                    </button>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div className="flex items-center space-x-2 transition-opacity duration-200">
+                      <button
+                        onClick={() => openEditModal(u)}
+                        className="inline-flex items-center px-3 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 hover:shadow-sm"
+                      >
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Modifier
+                      </button>
+                      <button
+                        onClick={() => handleDelete(u.id)}
+                        className="inline-flex items-center px-3 py-2 bg-white text-red-600 rounded-lg border border-red-200 hover:bg-red-50 hover:border-red-300 transition-all duration-200 hover:shadow-sm"
+                      >
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Supprimer
+                      </button>
+                    </div>
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </motion.div>
 
       {/* Modal modification */}
-      {modalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+      <AnimatePresence>
+        {modalOpen && (
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 p-4"
+            onClick={() => setModalOpen(false)}
           >
-            <h2 className="text-2xl font-bold mb-4">Modifier l'utilisateur</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-gray-700">Nom d'utilisateur</label>
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header modal */}
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-bold text-white">Modifier l'utilisateur</h2>
+                  <button
+                    onClick={() => setModalOpen(false)}
+                    className="text-white/80 hover:text-white transition-colors duration-200"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <p className="text-blue-100 mt-1">Mettez à jour les informations de l'utilisateur</p>
               </div>
-              <div>
-                <label className="block text-gray-700">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Statut</label>
-                <select
-                  name="status"
-                  value={formData.status}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="active">Active</option>
-                  <option value="suspendu">Suspendu</option>
-                </select>
-              </div>
-              <div className="flex justify-end space-x-2 mt-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setModalOpen(false);
-                    setEditingUser(null);
-                  }}
-                  className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition"
-                >
-                  Annuler
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-                >
-                  Modifier
-                </button>
-              </div>
-            </form>
+
+              {/* Formulaire */}
+              <form onSubmit={handleSubmit} className="p-6 space-y-6">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Nom d'utilisateur
+                  </label>
+                  <input
+                    type="text"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    required
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50/50"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50/50"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Rôle
+                    </label>
+                    <select
+                      name="role"
+                      value={formData.role}
+                      onChange={handleChange}
+                      className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50/50 appearance-none"
+                    >
+                      <option value="user">Utilisateur</option>
+                      <option value="admin">Administrateur</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Statut
+                    </label>
+                    <select
+                      name="status"
+                      value={formData.status}
+                      onChange={handleChange}
+                      className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50/50 appearance-none"
+                    >
+                      <option value="active">Actif</option>
+                      <option value="suspendu">Suspendu</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div className="flex justify-end space-x-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setModalOpen(false);
+                      setEditingUser(null);
+                    }}
+                    className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 font-medium"
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  >
+                    <div className="flex items-center">
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Modifier
+                    </div>
+                  </button>
+                </div>
+              </form>
+            </motion.div>
           </motion.div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </div>
   );
 }

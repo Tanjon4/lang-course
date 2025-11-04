@@ -79,7 +79,7 @@ export type Course = { id: number; title: string; description: string; language_
 export type Level = { id: number; name: string; description: string; course_global: number; };
 export type Chapter = { id: number; title: string; level: number; description: string; };
 export type Lesson = { id: number; title: string; content: string; chapter: number; is_published: boolean; };
-export type User = { id: number; username: string; email: string; status: "active" | "suspendu"; role: string; created_at: string; };
+// export type User = { id: number; username: string; email: string; status: "active" | "suspendu"; role: string; created_at: string; };
 
 // --------------------------------------------------------------------------
 // 🔹 API ENDPOINTS 🔹
@@ -112,34 +112,66 @@ export const deleteLesson = async (id: number) => api.delete(`/lessons/${id}/`);
 export const publishLesson = async (id: number) => api.patch(`/lessons/${id}/publish/`);
 export const unpublishLesson = async (id: number) => api.patch(`/lessons/${id}/unpublish/`);
 
-// // USERS
-// export const getUsers = async () => api.get<User[]>("/users/");
-// export const createUser = async (data: Omit<User, "id" | "created_at">) => api.post("/users/", data);
-// export const updateUser = async (id: number, data: Partial<User>) => api.put(`/users/${id}/`, data);
-// export const deleteUser = async (id: number) => api.delete(`/users/${id}`);
-// export const toggleUserStatus = async (id: number, status: "active" | "suspendu") => api.patch(`/users/${id}/`, { status });
-
-// export default api;
-
-
-// // TYPES SUPPLÉMENTAIRES
-// export type UserPayload = {
-//   username: string;
-//   email: string;
-//   status: "active" | "suspendu";
-//   role?: string;
-// };
 
 // USERS
-export const getUsers = async () => api.get<User[]>("/users/");
+// export const getUsers = async () => api.get<User[]>("/users/");
 
-export const updateUser = async (id: number, data: Partial<User>) =>
-  api.put(`/users/${id}/`, data);
+// export const updateUser = async (id: number, data: Partial<User>) =>
+//   api.put(`/users/${id}/`, data);
 
-export const deleteUser = async (id: number) =>
-  api.delete(`/users/${id}/`);
+// export const deleteUser = async (id: number) =>
+//   api.delete(`/users/${id}/`);
 
-export const toggleUserStatus = async (
-  id: number,
-  status: "active" | "suspendu"
-) => api.patch(`/users/${id}/`, { status });
+// export const toggleUserStatus = async (
+//   id: number,
+//   status: "active" | "suspendu"
+// ) => api.patch(`/users/${id}/`, { status });
+
+
+
+// 🧱 Définition du type User selon la réponse API
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+  role: "admin" | "user";          // ✅ champ ajouté
+  status: "active" | "suspendu";   // ✅ champ déjà existant
+}
+
+
+// 🎫 Intercepteur : ajoute automatiquement le token JWT si présent
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("accessToken"); // récupéré via AuthContext
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// ===================== 🧩 Requêtes API =====================
+
+// ✅ Récupérer tous les utilisateurs
+export const getUsers = async (): Promise<User[]> => {
+  const response = await api.get("/users/");
+  return response.data;
+};
+
+// ✅ Mettre à jour un utilisateur
+export const updateUser = async (id: number, data: Partial<User>) => {
+  const response = await api.put(`/users/${id}/`, data);
+  return response.data;
+};
+
+// ✅ Supprimer un utilisateur
+export const deleteUser = async (id: number) => {
+  const response = await api.delete(`/users/${id}/`);
+  return response.data;
+};
+
+// ✅ Activer / suspendre un utilisateur
+export const toggleUserStatus = async (id: number, newStatus: "active" | "suspendu") => {
+  const response = await api.patch(`/users/${id}/`, { status: newStatus });
+  return response.data;
+};
+
+export default api;
