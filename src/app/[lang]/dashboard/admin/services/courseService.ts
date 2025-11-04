@@ -1,12 +1,18 @@
-// src/app/[lang]/dashboard/admin/services/courseService.ts
 import axios from "axios";
+import { Level } from "./levelService"; // Raiso Level interface avy amin'ny levelService
 
 const API_URL = "https://lang-courses-api.onrender.com/api";
 
-// Récupérer toutes les courses publiques
-export const getCourses = async () => {
+export interface Course {
+  id: number;
+  title: string;
+  levels?: Level[];
+}
+
+// Récupérer toutes les courses
+export const getCourses = async (): Promise<Course[]> => {
   try {
-    const response = await axios.get(`${API_URL}/courses/`);
+    const response = await axios.get<Course[]>(`${API_URL}/courses/`);
     return response.data;
   } catch (err: any) {
     console.error("Erreur récupération courses :", err.response?.data || err.message);

@@ -12,6 +12,31 @@ import {
   Course,
 } from "@/app/[lang]/dashboard/admin/services/api";
 
+// Icônes SVG
+const EditIcon = () => (
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+  </svg>
+);
+
+const DeleteIcon = () => (
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+  </svg>
+);
+
+const PlusIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+  </svg>
+);
+
+const SearchIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+  </svg>
+);
+
 export default function GestionCours() {
   const { user, loading } = useAuth();
   const [courses, setCourses] = useState<Course[]>([]);
@@ -22,7 +47,8 @@ export default function GestionCours() {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const coursesPerPage = 5;
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const coursesPerPage = 6;
 
   // 🔹 Vérification rôle / chargement
   useEffect(() => {
@@ -82,6 +108,8 @@ export default function GestionCours() {
       toast.error("Veuillez entrer un titre de cours.");
       return;
     }
+    
+    setIsSubmitting(true);
     try {
       if (!user || user.role !== "admin") return;
 
@@ -110,6 +138,8 @@ export default function GestionCours() {
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Erreur lors de l'enregistrement du cours.");
       console.error(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -126,98 +156,245 @@ export default function GestionCours() {
     }
   };
 
-  if (loading) return <p>Chargement...</p>;
+  if (loading) return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
+  );
+  
   if (!user || user.role !== "admin")
-    return <p>Vous n'avez pas la permission d'accéder à cette page.</p>;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 max-w-md mx-auto">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Accès refusé</h3>
+            <p className="text-gray-600 dark:text-gray-300">Vous n'avez pas la permission d'accéder à cette page.</p>
+          </div>
+        </div>
+      </div>
+    );
 
   return (
-    <div className="space-y-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-xl">
-      <Toaster position="top-right" reverseOrder={false} />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800 p-6">
+      <Toaster 
+        position="top-right" 
+        reverseOrder={false}
+        toastOptions={{
+          className: 'dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700',
+          style: {
+            background: 'white',
+            color: 'black',
+          },
+        }}
+      />
 
-      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Gestion des Cours</h2>
-
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <input
-          type="text"
-          placeholder="Rechercher un cours..."
-          className="w-full sm:w-1/2 p-2 border rounded-lg dark:bg-gray-800 dark:text-white"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button
-          onClick={() => openModal()}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
         >
-          + Ajouter un cours
-        </button>
-      </div>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+            Gestion des Cours
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            Créez, modifiez et gérez l'ensemble des cours disponibles sur la plateforme
+          </p>
+        </motion.div>
 
-      {/* Liste des cours */}
-      <div className="p-4 border rounded-lg bg-white dark:bg-gray-800 shadow-md">
+        {/* Search and Add Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex flex-col lg:flex-row gap-6 mb-8"
+        >
+          {/* Search Bar */}
+          <div className="flex-1 relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <SearchIcon />
+            </div>
+            <input
+              type="text"
+              placeholder="Rechercher un cours..."
+              className="w-full pl-10 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 dark:text-white"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          {/* Add Button */}
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => openModal()}
+            className="group flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 font-semibold"
+          >
+            <PlusIcon />
+            Nouveau Cours
+          </motion.button>
+        </motion.div>
+
+        {/* Courses Grid */}
         {currentCourses.length === 0 ? (
-          <p className="text-gray-500 dark:text-gray-300">Aucun cours trouvé.</p>
-        ) : (
-          <ul className="space-y-3">
-            {currentCourses.map((course) => (
-              <motion.li
-                key={course.id}
-                layout
-                className="flex justify-between items-center p-3 border-b dark:border-gray-700"
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-16 bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-200 dark:border-gray-700"
+          >
+            <div className="w-24 h-24 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Aucun cours trouvé</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
+              {searchTerm ? "Aucun cours ne correspond à votre recherche." : "Commencez par créer votre premier cours."}
+            </p>
+            {!searchTerm && (
+              <button
+                onClick={() => openModal()}
+                className="px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors duration-200 font-medium"
               >
-                <div>
-                  <p className="font-semibold text-gray-800 dark:text-gray-200">{course.title}</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {course.description || "Pas de description"}
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => openModal(course)}
-                    className="px-3 py-1 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
+                Créer un cours
+              </button>
+            )}
+          </motion.div>
+        ) : (
+          <>
+            <motion.div
+              layout
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
+            >
+              <AnimatePresence>
+                {currentCourses.map((course, index) => (
+                  <motion.div
+                    key={course.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    className="group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300"
                   >
-                    Modifier
-                  </button>
-                  <button
-                    onClick={() => handleDeleteCourse(course.id)}
-                    className="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700"
-                  >
-                    Supprimer
-                  </button>
+                    <div className="p-6">
+                      <div className="flex justify-between items-start mb-4">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white line-clamp-2 group-hover:text-blue-600 transition-colors duration-200">
+                          {course.title}
+                        </h3>
+                        <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => openModal(course)}
+                            className="p-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200"
+                            title="Modifier"
+                          >
+                            <EditIcon />
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => handleDeleteCourse(course.id)}
+                            className="p-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors duration-200"
+                            title="Supprimer"
+                          >
+                            <DeleteIcon />
+                          </motion.button>
+                        </div>
+                      </div>
+                      
+                      <p className="text-gray-600 dark:text-gray-300 line-clamp-3 mb-4">
+                        {course.description || "Aucune description fournie"}
+                      </p>
+                      
+                      <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                        <span className="flex items-center gap-1">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          Créé le {new Date(course.created_at).toLocaleDateString()}
+                        </span>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          course.is_published 
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                            : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
+                        }`}>
+                          {course.is_published ? 'Publié' : 'Brouillon'}
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+
+            {/* Pagination */}
+            {filteredCourses.length > coursesPerPage && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex justify-center items-center gap-3 mt-8"
+              >
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 font-medium"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  Précédent
+                </motion.button>
+                
+                <div className="flex items-center gap-2">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`w-10 h-10 rounded-xl font-medium transition-all duration-200 ${
+                        currentPage === page
+                          ? 'bg-blue-600 text-white shadow-lg'
+                          : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
                 </div>
-              </motion.li>
-            ))}
-          </ul>
+
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 font-medium"
+                >
+                  Suivant
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </motion.button>
+              </motion.div>
+            )}
+          </>
         )}
       </div>
 
-      {/* Pagination */}
-      {filteredCourses.length > coursesPerPage && (
-        <div className="flex justify-center items-center gap-3 mt-4">
-          <button
-            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-            disabled={currentPage === 1}
-            className="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg disabled:opacity-50"
-          >
-            Précédent
-          </button>
-          <span className="text-gray-700 dark:text-gray-300">
-            Page {currentPage} / {totalPages}
-          </span>
-          <button
-            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-            disabled={currentPage === totalPages}
-            className="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg disabled:opacity-50"
-          >
-            Suivant
-          </button>
-        </div>
-      )}
-
-      {/* Modale */}
+      {/* Modal */}
       <AnimatePresence>
         {modalOpen && (
           <motion.div
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -226,39 +403,72 @@ export default function GestionCours() {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-[90%] max-w-md p-6"
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden"
             >
-              <h3 className="text-xl font-semibold mb-3 dark:text-white">
-                {selectedCourse ? "Modifier le cours" : "Ajouter un cours"}
-              </h3>
-              <input
-                type="text"
-                placeholder="Titre du cours"
-                className="w-full p-2 border rounded-lg mb-3 dark:bg-gray-700 dark:text-white"
-                value={newTitle}
-                onChange={(e) => setNewTitle(e.target.value)}
-              />
-              <textarea
-                placeholder="Description"
-                className="w-full p-2 border rounded-lg mb-4 dark:bg-gray-700 dark:text-white"
-                rows={3}
-                value={newDescription}
-                onChange={(e) => setNewDescription(e.target.value)}
-              />
-              <div className="flex justify-end gap-3">
-                <button
+              {/* Header */}
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6">
+                <h3 className="text-xl font-bold text-white">
+                  {selectedCourse ? "Modifier le cours" : "Nouveau cours"}
+                </h3>
+              </div>
+
+              {/* Form */}
+              <div className="p-6 space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Titre du cours *
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Entrez le titre du cours"
+                    className="w-full p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 dark:text-white"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Description
+                  </label>
+                  <textarea
+                    placeholder="Décrivez le contenu du cours..."
+                    className="w-full p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 dark:text-white resize-none"
+                    rows={4}
+                    value={newDescription}
+                    onChange={(e) => setNewDescription(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                  className="px-6 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-200 dark:border-gray-500 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors duration-200 font-medium"
+                  disabled={isSubmitting}
                 >
                   Annuler
-                </button>
-                <button
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={saveCourse}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  disabled={isSubmitting}
+                  className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {selectedCourse ? "Enregistrer" : "Ajouter"}
-                </button>
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      {selectedCourse ? "Modification..." : "Création..."}
+                    </>
+                  ) : (
+                    selectedCourse ? "Enregistrer" : "Créer le cours"
+                  )}
+                </motion.button>
               </div>
             </motion.div>
           </motion.div>
