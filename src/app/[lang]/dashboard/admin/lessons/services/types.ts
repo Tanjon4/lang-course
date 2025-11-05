@@ -1,3 +1,20 @@
+export interface Course {
+  id: number;
+  title: string;
+}
+
+export interface Level {
+  id: number;
+  title: string;
+  course: number;
+}
+
+export interface Chapter {
+  id: number;
+  title: string;
+  level: number;
+}
+
 export interface Lesson {
   id: number;
   chapter: number;
@@ -6,8 +23,5 @@ export interface Lesson {
   video_url?: string;
   pdf_file?: string;
   content?: string;
-  duration?: string;
-  order?: number;
   is_published: boolean;
-  published_at?: string;
 }

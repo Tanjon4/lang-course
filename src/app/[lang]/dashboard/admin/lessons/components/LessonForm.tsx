@@ -1,15 +1,16 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { createLessonWithAuth } from "../services/api";
+import { createLesson } from "../services/api";
 import { useAuth } from "@/app/contexts/AuthContext";
 import toast from "react-hot-toast";
 
 interface LessonFormProps {
   chapterId: number;
+  refresh: () => void; // pour recharger la liste après ajout
 }
 
-export default function LessonForm({ chapterId }: LessonFormProps) {
+export default function LessonForm({ chapterId, refresh }: LessonFormProps) {
   const { accessToken } = useAuth();
   const [title, setTitle] = useState("");
   const [number, setNumber] = useState(1);
@@ -20,6 +21,8 @@ export default function LessonForm({ chapterId }: LessonFormProps) {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!accessToken) return;
+
     setIsSubmitting(true);
 
     try {
@@ -28,15 +31,19 @@ export default function LessonForm({ chapterId }: LessonFormProps) {
       formData.append("number", number.toString());
       formData.append("video_url", videoUrl);
       formData.append("content", content);
+      formData.append("chapter", chapterId.toString()); // obligatoire
       if (pdfFile) formData.append("pdf_file", pdfFile);
 
-      await createLessonWithAuth(chapterId, formData, accessToken);
+      await createLesson(chapterId, formData, accessToken);
+
       toast.success("Leçon ajoutée avec succès !");
       setTitle("");
       setNumber(number + 1);
       setVideoUrl("");
       setPdfFile(null);
       setContent("");
+
+      refresh(); // recharge la liste des leçons
     } catch (err: any) {
       toast.error("Erreur : " + err.message);
     } finally {

@@ -1,12 +1,12 @@
 "use client"
 
 import React from "react";
-import ChapterPage from "@/app/[lang]/dashboard/admin/chapters/page";
+import ChapterPageContent from "@/app/[lang]/dashboard/admin/chapters/ChapterPageContent";
 
-export default function GestionCours() {
+export default function GestionChapitre() {
   return (
     <div className="space-y-4">
-      <ChapterPage />
+      <ChapterPageContent />
     </div>
   );
 }

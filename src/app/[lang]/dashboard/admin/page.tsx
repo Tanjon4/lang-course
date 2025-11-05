@@ -23,8 +23,8 @@ export default function AdminDashboard() {
         return <GestionNiveaux />;
       case "Gestion chapitres":
         return <GestionChapitre />;
-        case "Gestion chapitres":
-        return <GestionLesson/>;
+      case "Gestion leçons":
+        return <GestionLesson />;
       default:
         return <DashboardHome />;
     }
