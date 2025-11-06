@@ -51,24 +51,42 @@
   "error": "Erreur",
   "success": "Succès",
   "about_title": "Qui sommes-nous ?",
-  "about_description": "Hoavi est une startup edtech qui réinvente l'apprentissage des langues en combinant cours en ligne, formations présentielle (collège → lycée) et technologies immersives (mobile, VR). Nos parcours sont certifiants : chaque apprenant peut obtenir des certificats et badges numériques vérifiables attestant de compétences linguistiques et professionnelles.",
-  
+  "about_description": "Hoavi est une startup edtech qui réinvente l'apprentissage des langues en alliant cours en ligne, formations en présentiel (du collège au lycée) et technologies immersives telles que le mobile et la réalité virtuelle (VR). Nos parcours sont certifiants, permettant à chaque apprenant d’obtenir des certificats et badges numériques vérifiables, attestant de compétences linguistiques et professionnelles concrètes.",
+
   "section_histoire_title": "Histoire",
-  "section_histoire_content": "Lancée fin août 2025 par une équipe passionnée, Hoavi est née de l'ambition de rendre l'éducation linguistique et scolaire utile, moderne et accessible — avec des certificats concrets qui ouvrent des portes académiques et professionnelles.",
+  "section_histoire_content": "Lancée à la fin du mois d’août 2025 par une équipe passionnée, Hoavi est née de la volonté de rendre l’éducation linguistique et scolaire plus utile, moderne et accessible. Son ambition : proposer des formations concrètes et certifiées, ouvrant de réelles opportunités académiques et professionnelles.",
 
   "section_vision_title": "Vision",
-  "section_vision_content": "Être la référence mondiale d'un modèle éducatif hybride où apprendre rime avec accréditation : des parcours alignés sur des référentiels internationaux (ex. CEFR pour les langues) et reconnus par des partenaires académiques et entreprises, préparant les apprenants à des carrières réelles.",
+  "section_vision_content": "Notre vision est de devenir la référence mondiale d’un modèle éducatif hybride, où apprendre rime avec accréditation. Hoavi s’appuie sur des parcours alignés sur des référentiels internationaux — tels que le CEFR pour les langues — et reconnus par des partenaires académiques et des entreprises, afin de préparer chaque apprenant à une carrière réelle et valorisée.",
 
   "section_mission_title": "Mission",
-  "section_mission_content": "• Proposer des parcours certifiants, personnalisés et mesurables (en ligne, présentiel, mobile, VR)\n• Fournir des compétences transférables : langue + savoir-faire métier\n• Délivrer des certificats vérifiables (examens, portfolios, badges numériques)\n• Étendre l'offre de cours certifiants à l'international d'ici 2026",
+  "section_mission_content": "Notre mission est de proposer des parcours certifiants, personnalisés et mesurables, accessibles en ligne, en présentiel, sur mobile et en réalité virtuelle. Nous visons à développer des compétences transférables alliant maîtrise linguistique et savoir-faire professionnel. Hoavi délivre des certificats vérifiables à travers des examens, portfolios et badges numériques, et ambitionne d’étendre son offre de cours certifiants à l’international d’ici 2026.",
 
   "section_offres_title": "Offres & Projet Stratégique",
-  "section_offres_content": "• Parcours certifiants linguistiques : modules progressifs, évaluations continues, examen final, certificat numérique (aligné CEFR A1→C2)\n• Présentiel : cursus intégrés avec délivrance de certificats internes et articulation avec certifications partenaires\n• Technologie : site, app mobile, plateforme VR\n• Expansion mondiale : déploiement dans plusieurs pays d'ici 2026\n• Qualité & accréditation : conventions avec universités et organismes reconnus",
+  "section_offres_content": "Hoavi propose des parcours certifiants linguistiques comprenant des modules progressifs, des évaluations continues, un examen final et un certificat numérique aligné sur le CEFR (niveaux A1 à C2). Les formations en présentiel s’intègrent dans des cursus complets, associant certificats internes et certifications partenaires. Notre écosystème technologique repose sur un site web, une application mobile et une plateforme de réalité virtuelle. Le plan stratégique prévoit une expansion internationale dans plusieurs pays d’ici 2026, avec un accent fort sur la qualité et l’accréditation à travers des conventions signées avec des universités et organismes reconnus.",
 
   "section_organisation_title": "Organisation & Ressources",
-  "section_organisation_content": "• Équipe Pédagogique : concepteurs de cours et évaluateurs\n• Bureau Certification & Qualité : création de référentiels, jurys d'examen, délivrance\n• Relations Institutionnelles : partenariats, accréditations\n• Tech & Produit : gestion des examens, badges numériques, vérification blockchain-ready\n• Support & Carrières : accompagnement à la valorisation des certificats",
+  "section_organisation_content": "L’organisation de Hoavi repose sur plusieurs pôles complémentaires : une équipe pédagogique chargée de la conception des cours et de l’évaluation, un bureau Certification & Qualité dédié à la création de référentiels et à la délivrance des certificats, un service des relations institutionnelles pour les partenariats et accréditations, ainsi qu’une équipe Tech & Produit gérant les examens, les badges numériques et la vérification blockchain-ready. Enfin, le pôle Support & Carrières accompagne les apprenants dans la valorisation de leurs certificats sur le marché professionnel.",
 
   "section_role_title": "Rôle de Hoavi",
-  "section_role_content": "Hoavi conçoit, met en œuvre, évalue et délivre des certifications utiles et vérifiables, tout en accompagnant les apprenants pour rendre ces certificats opérationnels sur le marché du travail."
+  "section_role_content": "Hoavi conçoit, met en œuvre et évalue des parcours certifiants tout en délivrant des certifications vérifiables et reconnues. L’entreprise accompagne les apprenants dans la mise en valeur de leurs compétences afin que chaque certificat devienne un véritable levier d’accès à l’emploi et au développement professionnel.",
+  
+  "contact_title": "Contactez-nous",
+  "contact_description": "Une question, une collaboration ou un partenariat ? Nous serons ravis d’échanger avec vous.",
+  
+  "form_name_label": "Nom complet",
+  "form_email_label": "Adresse e-mail",
+  "form_message_label": "Message",
+  "form_submit_button": "Envoyer le message",
+  
+  "form_success_message": "Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.",
+  "form_error_message": "Une erreur est survenue. Veuillez réessayer.",
+  
+  "contact_info_title": "Informations de contact",
+  "contact_info_description": "Vous pouvez également nous joindre via les canaux suivants :",
+  
+  "contact_address_label": "Adresse",
+  "contact_phone_label": "Téléphone",
+  "contact_email_label": "Email"
 
 }

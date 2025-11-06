@@ -50,26 +50,42 @@
   "loading": "Andraso kely...",
   "error": "Hadisoana",
   "success": "Nahomby",
-  "about_title": "Iza izahay?",
-  "about_description": "Hoavi dia orinasa edtech manavao ny fianarana teny amin’ny alalan’ny fampifangaroana fianarana an-tserasera, fiofanana mivantana (amin’ny kolejy sy lisea) ary teknolojia mihetsika (mobile sy VR). Ny làlana rehetra dia mitondra mari-pahaizana azo hamarinina, manaporofo fahaiza-manao amin’ny teny sy asa.",
+  "about_title": "Iza izahay ?",
+  "about_description": "Hoavi dia orinasa edtech manavao ny fianarana fiteny amin’ny alalan’ny fampifangaroana ny taranja an-tserasera, fiofanana mivantana (avy amin’ny kolejy hatramin’ny lisea), ary teknolojia mampisitrika toy ny finday sy ny zava-misy virtoaly (VR). Ireo lalana fianarana dia manome mari-pahaizana sy badge nomerika azo hamarinina, manaporofo fahaizana amin’ny sehatra ara-pitenenana sy matihanina.",
 
-  "section_histoire_title": "Tantara",
-  "section_histoire_content": "Natsangana tamin’ny faran’ny volana Aogositra 2025 tamin’ny alalan’ny ekipa mazoto, Hoavi dia teraka avy amin’ny tanjona hanatsara ny fanabeazana amin’ny teny sy sekoly ho mahasoa, maoderina ary mora idirana — miaraka amin’ny mari-pahaizana manampy amin’ny sehatra akademika sy asa.",
+  "section_histoire_title": "Tantaranay",
+  "section_histoire_content": "Naorina tamin’ny faran’ny volana Aogositra 2025, Hoavi dia vokatry ny fanirian’ny ekipa iray manam-pitiavana hampisongadina sy hanatsara ny fianarana fiteny sy sekoly ho mahasoa, maoderina ary mora idirana. Ny tanjony dia ny hanolotra fiofanana azo tsapain-tanana sy manome mari-pahaizana manokatra varavarana ho amin’ny asa sy fianarana ambony.",
 
-  "section_vision_title": "Tanjona",
-  "section_vision_content": "Ho lasa ohatra manerantany amin’ny rafitra fampianarana mifangaro izay mampifandray ny fianarana sy ny fankatoavana: drafitra mifanaraka amin’ny fenitra iraisam-pirenena (ohatra CEFR ho an’ny teny) ary ekena amin’ny anjerimanontolo sy orinasa maneran-tany, manomana ny mpianatra amin’ny asa tena izy.",
+  "section_vision_title": "Tanjona lavitr’ezaka",
+  "section_vision_content": "Ny fahitantsika dia ny ho lasa modely manerantany amin’ny rafitra fanabeazana mifangaro, izay mampifandray ny fianarana sy ny fankatoavana ara-dalàna. Hoavi dia manaraka ny fenitra iraisam-pirenena toy ny CEFR ho an’ny fiteny, ary ekena amin’ny alalan’ny fiaraha-miasa amin’ny oniversite sy orinasa, mba hanomanana ireo mpianatra amin’ny asa tena izy sy fandrosoana matihanina.",
 
   "section_mission_title": "Iraka",
-  "section_mission_content": "• Manolotra fiofanana voamarina sy azo refesina (an-tserasera, mivantana, mobile, VR)\n• Manome fahaiza-manao azo ampiharina: fiteny + fahaiza-manao amin’ny asa\n• Manome mari-pahaizana azo hamarinina (fanadinana, portfolio, badge nomerika)\n• Manitatra ny tolotra fiofanana maneran-tany hatramin’ny 2026",
+  "section_mission_content": "Ny irakanay dia ny manolotra lalana fianarana manome mari-pahaizana, manokana sy azo refesina, amin’ny alalan’ny sehatra an-tserasera, mivantana, amin’ny finday ary amin’ny VR. Mikendry izahay ny hanome fahaizana azo ampiharina, mampifandray ny fiteny sy ny fahaiza-manao amin’ny asa. Hoavi dia manome mari-pahaizana azo hamarinina amin’ny alalan’ny fanadinana, portfolio, sy badge nomerika, ary mikasa hanitatra ny tolotra fianarana maneran-tany alohan’ny taona 2026.",
 
   "section_offres_title": "Tolotra & Tetikasa Stratejika",
-  "section_offres_content": "• Làlana fianarana amin’ny teny: module miandalana, fanombanana mitohy, fanadinana farany, mari-pahaizana nomerika (mifanaraka CEFR A1→C2)\n• Fampianarana mivantana: fandaharam-pianarana mitambatra miaraka amin’ny mari-pahaizana anatiny sy fanamarinana amin’ny mpiara-miombon’antoka\n• Teknolojia: tranonkala, app mobile, sehatra VR\n• Fanitarana maneran-tany: fametrahana any amin’ny firenena maro hatramin’ny 2026\n• Kalitao & fanamarinana: fiaraha-miasa amin’ny oniversite sy fikambanana manam-pahefana",
+  "section_offres_content": "Hoavi dia manolotra lalana fianarana amin’ny fiteny miaraka amin’ny taranja mitohy, fanombanana tsy tapaka, fanadinana famaranana, ary mari-pahaizana nomerika mifanaraka amin’ny CEFR (A1–C2). Ny fiofanana mivantana dia tafiditra ao anatin’ny programa feno miaraka amin’ny mari-pahaizana anatiny sy avy amin’ny mpiara-miombon’antoka. Ny sehatra teknolojikanay dia ahitana tranonkala, fampiharana finday, ary sehatra VR. Ny tetikasa stratejika dia mikendry ny fanitarana maneran-tany hatramin’ny 2026, miaraka amin’ny fanamafisana ny kalitao sy ny fankatoavana amin’ny alalan’ny fiaraha-miasa amin’ny oniversite sy fikambanana ofisialy.",
 
-  "section_organisation_title": "Fandaminana & Loharano",
-  "section_organisation_content": "• Ekipa fampianarana: mpamorona lesona sy mpanombana\n• Biraon’ny Fanamarinana & Kalitao: famoronana fenitra, fitsarana fanadinana, famoahana mari-pahaizana\n• Fifandraisana amin’ny andrim-panjakana: fiaraha-miasa sy fanamarinana\n• Teknolojia & Vokatra: rafitra fitantanana fanadinana, badge nomerika, fanamarinana blockchain\n• Fanohanana & Asa: fanampiana amin’ny fampiasana ny mari-pahaizana amin’ny asa sy sekoly",
+  "section_organisation_title": "Fikambanana & Loharano",
+  "section_organisation_content": "Ny rafitry ny Hoavi dia ahitana sampana maromaro mifameno: ekipa mpampianatra misahana ny famolavolana sy fanombanana taranja, birao misahana ny mari-pahaizana sy ny kalitao, sampana fifandraisana amin’ny andrim-panjakana ho an’ny fiaraha-miasa, ary ekipa Teknolojia & Vokatra miandraikitra ny fanadinana, badge nomerika ary fanamarinana amin’ny blockchain. Ny sampana Fanohanana & Asa dia manampy ny mpianatra amin’ny fampiasana sy fanatsarana ny mari-pahaizany amin’ny sehatra matihanina.",
 
   "section_role_title": "Anjara asan’i Hoavi",
-  "section_role_content": "Hoavi no mamolavola, manatanteraka, manombana ary manome mari-pahaizana azo hamarinina sy mahasoa, ary manampy ny mpianatra hampihatra izany amin’ny asa."
-
-
+  
+  "section_role_content": "Hoavi dia mamolavola, manatanteraka ary manombana lalana fianarana manome mari-pahaizana, ary manolotra mari-pahaizana azo hamarinina sy ekena amin’ny sehatra ofisialy. Manampy ny mpianatra amin’ny fampisehoana ny fahaizany izahay mba hahatonga ny mari-pahaizana tsirairay ho lakilen’ny fahazoana asa sy fandrosoana amin’ny asa.",
+  "contact_title": "Mifandraisa aminay",
+  "contact_description": "Manana fanontaniana, tolo-kevitra fiaraha-miasa, sa te hiara-hiasa aminay ? Faly izahay mandray anao.",
+  
+  "form_name_label": "Anarana feno",
+  "form_email_label": "Adiresy mailaka",
+  "form_message_label": "Hafatra",
+  "form_submit_button": "Alefa ny hafatra",
+  
+  "form_success_message": "Voaray soa aman-tsara ny hafatrao. Hifandray aminao izahay tsy ho ela.",
+  "form_error_message": "Nisy olana nitranga. Andramo indray azafady.",
+  
+  "contact_info_title": "Fampahafantarana fifandraisana",
+  "contact_info_description": "Afaka mifandray aminay koa ianao amin’ny alalan’ireto fantsona manaraka ireto :",
+  
+  "contact_address_label": "Adiresy",
+  "contact_phone_label": "Telefaonina",
+  "contact_email_label": "Mailaka"
 }

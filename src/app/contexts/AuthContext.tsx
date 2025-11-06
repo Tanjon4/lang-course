@@ -1,3 +1,4 @@
+// contexts/AuthContext.tsx
 'use client';
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { User, AuthState, LoginData, RegisterData } from '@/types/auth';
@@ -9,6 +10,7 @@ type AuthContextType = AuthState & {
   register: (data: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
   refreshToken: () => Promise<string | undefined>;
+  checkAuth: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -75,7 +77,7 @@ const initialState: AuthState = {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(authReducer, initialState);
-  const router = useRouter(); // ✅ Utilisez useRouter pour la navigation
+  const router = useRouter();
 
   useEffect(() => {
     checkAuth();
@@ -85,14 +87,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log('🔄 Starting authentication check...');
     
     const accessToken = authService.getAccessToken();
-    const refreshToken = authService.getRefreshToken();
+    const refreshTokenValue = authService.getRefreshToken();
     
     console.log('🔍 Tokens check:', { 
       accessToken: !!accessToken, 
-      refreshToken: !!refreshToken 
+      refreshToken: !!refreshTokenValue 
     });
 
-    if (!accessToken || !refreshToken) {
+    if (!accessToken || !refreshTokenValue) {
       console.log('❌ No tokens found, user is not authenticated');
       dispatch({ type: 'AUTH_FAIL' });
       return;
@@ -108,7 +110,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         payload: {
           user,
           access: accessToken,
-          refresh: refreshToken,
+          refresh: refreshTokenValue,
         },
       });
     } catch (error: any) {
@@ -127,7 +129,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               payload: {
                 user,
                 access: newAccessToken,
-                refresh: refreshToken || '',
+                refresh: refreshTokenValue,
               },
             });
             return;
@@ -144,7 +146,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // ✅ Fonction login avec redirection automatique
   const login = async (data: LoginData) => {
     console.log('🔑 Starting login process...');
     dispatch({ type: 'AUTH_START' });
@@ -176,8 +177,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       console.log('🎉 User fully authenticated and context updated');
       
-      // ✅ REDIRECTION AUTOMATIQUE avec useRouter
-      // Déterminez la langue depuis l'URL actuelle ou utilisez 'fr' par défaut
+      // Redirection basée sur le rôle
       const currentPath = window.location.pathname;
       const langMatch = currentPath.match(/^\/([a-z]{2})\//);
       const lang = langMatch ? langMatch[1] : 'fr';
@@ -185,7 +185,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.log('🌍 Detected language:', lang);
       console.log('👤 User role:', user.role);
       
-      // Redirection basée sur le rôle
       if (user.role === "admin") {
         console.log('🚀 Redirecting admin to profile');
         router.push(`/${lang}/auth/profile`);
@@ -228,7 +227,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       authService.clearTokens();
       dispatch({ type: 'LOGOUT' });
       
-      // ✅ Redirection après logout
+      // Redirection après logout
       const currentPath = window.location.pathname;
       const langMatch = currentPath.match(/^\/([a-z]{2})\//);
       const lang = langMatch ? langMatch[1] : 'fr';
@@ -260,6 +259,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         register,
         logout,
         refreshToken: refreshTokenFunc,
+        checkAuth,
       }}
     >
       {children}

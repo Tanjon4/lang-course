@@ -1,4 +1,5 @@
-import { LoginData, RegisterData, AuthResponse, User, ApiError, ResetPasswordData } from '@/types/auth';
+// services/authService.tsx
+import { LoginData, RegisterData, AuthResponse, User, ResetPasswordData } from '@/types/auth';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lang-courses-api.onrender.com/api';
 
@@ -134,7 +135,7 @@ class AuthService {
     });
   }
 
-  // Méthode utilitaire pour gérer le stockage du token
+  // Méthodes de gestion des tokens
   setAccessToken(token: string): void {
     if (typeof window !== 'undefined') {
       const cleanToken = token.trim();
@@ -143,7 +144,6 @@ class AuthService {
     }
   }
 
-  // Méthode utilitaire pour récupérer le token
   getAccessToken(): string | null {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('accessToken');
@@ -152,7 +152,6 @@ class AuthService {
     return null;
   }
 
-  // Méthode utilitaire pour supprimer le token
   removeAccessToken(): void {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('accessToken');
@@ -160,7 +159,6 @@ class AuthService {
     }
   }
 
-  // Méthode pour stocker le refresh token
   setRefreshToken(token: string): void {
     if (typeof window !== 'undefined') {
       const cleanToken = token.trim();
@@ -169,7 +167,6 @@ class AuthService {
     }
   }
 
-  // Méthode pour récupérer le refresh token
   getRefreshToken(): string | null {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('refreshToken');
@@ -177,7 +174,13 @@ class AuthService {
     return null;
   }
 
-  // Méthode pour supprimer tous les tokens
+  removeRefreshToken(): void {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('refreshToken');
+      console.log('🗑️ Refresh token removed from localStorage');
+    }
+  }
+
   clearTokens(): void {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('accessToken');

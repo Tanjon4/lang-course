@@ -51,24 +51,40 @@
   "error": "Error",
   "success": "Success",
   "about_title": "Who are we?",
-  "about_description": "Hoavi is an edtech startup reinventing language learning by combining online courses, in-person training (middle → high school), and immersive technologies (mobile, VR). Our programs are certifying: each learner can obtain verifiable digital certificates and badges proving linguistic and professional skills.",
+  "about_description": "Hoavi is an edtech startup reinventing language learning by combining online courses, in-person training (from middle to high school), and immersive technologies such as mobile and virtual reality (VR). Our programs are certification-based, allowing each learner to earn verifiable digital certificates and badges that prove real linguistic and professional skills.",
 
   "section_histoire_title": "History",
-  "section_histoire_content": "Launched in late August 2025 by a passionate team, Hoavi was born from the ambition to make linguistic and academic education useful, modern, and accessible — with concrete certificates that open academic and professional opportunities.",
+  "section_histoire_content": "Launched in late August 2025 by a passionate team, Hoavi was born from the ambition to make linguistic and academic education more useful, modern, and accessible. Its goal is to provide practical and certified learning paths that open real academic and career opportunities.",
 
   "section_vision_title": "Vision",
-  "section_vision_content": "To be the global benchmark of a hybrid educational model where learning means accreditation: programs aligned with international standards (e.g., CEFR for languages) and recognized by academic and corporate partners, preparing learners for real careers.",
+  "section_vision_content": "Our vision is to become the global reference for a hybrid educational model where learning goes hand in hand with accreditation. Hoavi aligns its programs with international frameworks — such as the CEFR for languages — recognized by academic partners and companies, preparing learners for real-world and rewarding careers.",
 
   "section_mission_title": "Mission",
-  "section_mission_content": "• Offer certifying, personalized, and measurable learning paths (online, in-person, mobile, VR)\n• Provide transferable skills: language + professional know-how\n• Deliver verifiable certificates (exams, portfolios, digital badges)\n• Expand certifying course offerings internationally by 2026",
+  "section_mission_content": "Our mission is to offer personalized, measurable, and certifiable learning paths available online, in person, on mobile, and in VR. We aim to develop transferable skills that combine language mastery with professional know-how. Hoavi issues verifiable certificates through exams, portfolios, and digital badges, and plans to expand its certified courses internationally by 2026.",
 
   "section_offres_title": "Offers & Strategic Project",
-  "section_offres_content": "• Language certification paths: progressive modules, continuous assessment, final exam, digital certificate (aligned CEFR A1→C2)\n• In-person: integrated curricula with internal certificates and national/partner certifications\n• Technology: website, mobile app, VR platform\n• Global expansion: deployment in several countries by 2026\n• Quality & accreditation: partnerships with universities and recognized institutions",
+  "section_offres_content": "Hoavi provides certified language programs with progressive modules, continuous assessments, a final exam, and a CEFR-aligned digital certificate (levels A1–C2). In-person courses are part of integrated programs combining internal certificates and partner accreditations. Our technological ecosystem includes a website, a mobile app, and a VR platform. The strategic plan aims for international expansion by 2026, emphasizing quality and accreditation through agreements with universities and recognized organizations.",
 
   "section_organisation_title": "Organization & Resources",
-  "section_organisation_content": "• Educational Team: course designers and assessors\n• Certification & Quality Office: frameworks, exam boards, issuance\n• Institutional Relations: partnerships, accreditations\n• Tech & Product: exam management, digital badges, blockchain-ready verification\n• Support & Careers: assistance in promoting certificates to employers and institutions",
+  "section_organisation_content": "Hoavi’s organization is built around several complementary departments: a pedagogical team designing and evaluating courses, a Certification & Quality Office responsible for creating frameworks and issuing certificates, an Institutional Relations team managing partnerships and accreditations, and a Tech & Product team handling exams, digital badges, and blockchain-ready verification. The Support & Careers department helps learners leverage their certificates in the professional world.",
 
-  "section_role_title": "Hoavi’s Role",
-  "section_role_content": "Hoavi designs, implements, evaluates, and delivers useful, verifiable certifications while supporting learners to make those certificates valuable on the job market."
-
+  "section_role_title": "Role of Hoavi",
+  "section_role_content": "Hoavi designs, implements, and evaluates certified learning programs while issuing verifiable and recognized credentials. The company supports learners in showcasing their skills, ensuring each certificate becomes a true gateway to employment and career growth.",
+  "contact_title": "Contact Us",
+  "contact_description": "Have a question, collaboration idea, or partnership proposal? We’d love to hear from you.",
+  
+  "form_name_label": "Full Name",
+  "form_email_label": "Email Address",
+  "form_message_label": "Message",
+  "form_submit_button": "Send Message",
+  
+  "form_success_message": "Your message has been sent successfully. We’ll get back to you shortly.",
+  "form_error_message": "An error occurred. Please try again.",
+  
+  "contact_info_title": "Contact Information",
+  "contact_info_description": "You can also reach us through the following channels:",
+  
+  "contact_address_label": "Address",
+  "contact_phone_label": "Phone",
+  "contact_email_label": "Email"
 }

@@ -17,6 +17,7 @@ import {
   BookOpen,
   Star
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
