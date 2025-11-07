@@ -114,64 +114,225 @@ export const unpublishLesson = async (id: number) => api.patch(`/lessons/${id}/u
 
 
 // USERS
-// export const getUsers = async () => api.get<User[]>("/users/");
 
-// export const updateUser = async (id: number, data: Partial<User>) =>
-//   api.put(`/users/${id}/`, data);
+// // 🧱 Définition du type User
+// export interface User {
+//   id: number;
+//   username: string;
+//   email: string;
+//   role: "admin" | "user";
+//   status: "active" | "suspendu";
+// }
 
-// export const deleteUser = async (id: number) =>
-//   api.delete(`/users/${id}/`);
+// // 🎫 Intercepteur Axios pour ajouter le token JWT
+// api.interceptors.request.use((config) => {
+//   const token = localStorage.getItem("accessToken");
+//   if (token) config.headers.Authorization = `Bearer ${token}`;
+//   return config;
+// });
 
+// // 🔹 Décoder JWT pour lire le payload
+// const decodeToken = (token: string): any | null => {
+//   try {
+//     const payload = token.split(".")[1];
+//     return JSON.parse(atob(payload));
+//   } catch {
+//     return null;
+//   }
+// };
+
+// // 🔹 Vérifier si le token correspond à un admin
+// const isAdminToken = (): boolean => {
+//   const token = localStorage.getItem("accessToken");
+//   if (!token) return false;
+//   const payload = decodeToken(token);
+//   return payload?.role === "admin";
+// };
+
+// // 🔧 Gestion centralisée des erreurs API
+// const handleApiError = (err: unknown): never => {
+//   if (axios.isAxiosError(err)) {
+//     if (err.response?.status === 403) {
+//       throw new Error("Accès refusé : vous n'avez pas les permissions nécessaires.");
+//     }
+//     if (err.response?.data) {
+//       const msg = (err.response.data as any).detail || JSON.stringify(err.response.data);
+//       throw new Error(msg);
+//     }
+//   }
+//   throw new Error("Erreur inconnue lors de la requête API");
+// };
+
+// // ===================== 🧩 Requêtes API =====================
+
+// // Récupérer tous les utilisateurs
+// export const getUsers = async (): Promise<User[]> => {
+//   try {
+//     const response = await api.get("/users/");
+//     return response.data as User[];
+//   } catch (err) {
+//     console.error(err);
+//     return []; // Retour par défaut pour TypeScript
+//   }
+// };
+
+// // Mettre à jour un utilisateur (admin only)
+// export const updateUser = async (id: number, data: Partial<User>): Promise<User | null> => {
+//   if (!isAdminToken()) {
+//     console.error("Action réservée aux admins.");
+//     return null;
+//   }
+//   try {
+//     const response = await api.patch(`/users/${id}/update-user/`, data);
+//     return response.data as User;
+//   } catch (err: unknown) {
+//     console.error(err);
+//     return null;
+//   }
+// };
+
+// // Supprimer un utilisateur
+// export const deleteUser = async (id: number): Promise<boolean> => {
+//   try {
+//     await api.delete(`/users/${id}/`);
+//     return true;
+//   } catch (err: unknown) {
+//     console.error(err);
+//     return false;
+//   }
+// };
+
+// // Activer / suspendre un utilisateur (admin only)
 // export const toggleUserStatus = async (
 //   id: number,
-//   status: "active" | "suspendu"
-// ) => api.patch(`/users/${id}/`, { status });
+//   newStatus: "active" | "suspendu"
+// ): Promise<User | null> => {
+//   if (!isAdminToken()) {
+//     console.error("Action réservée aux admins.");
+//     return null;
+//   }
+//   try {
+//     const response = await api.patch(`/users/${id}/`, { status: newStatus });
+//     return response.data as User;
+//   } catch (err: unknown) {
+//     console.error(err);
+//     return null;
+//   }
+// };
 
+// export default api;
 
-
-// 🧱 Définition du type User selon la réponse API
+// 🧱 Type User
 export interface User {
   id: number;
   username: string;
   email: string;
-  role: "admin" | "user";          // ✅ champ ajouté
-  status: "active" | "suspendu";   // ✅ champ déjà existant
+  role: "admin" | "user";
+  status: "active" | "suspendu";
 }
 
-
-// 🎫 Intercepteur : ajoute automatiquement le token JWT si présent
+// 🎫 Intercepteur Axios pour ajouter le token
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("accessToken"); // récupéré via AuthContext
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+  const token = localStorage.getItem("accessToken");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
+// 🔹 Décoder JWT Base64 URL Safe
+const decodeToken = (token: string): any | null => {
+  try {
+    let payloadBase64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    const padLength = 4 - (payloadBase64.length % 4);
+    if (padLength < 4) payloadBase64 += "=".repeat(padLength);
+    return JSON.parse(atob(payloadBase64));
+  } catch {
+    return null;
+  }
+};
+
+// 🔹 Vérifier si le token est admin et non expiré
+export const isAdminToken = (): boolean => {
+  const token = localStorage.getItem("accessToken");
+  if (!token) return false;
+
+  const payload = decodeToken(token);
+  if (!payload) return false;
+
+  const now = Math.floor(Date.now() / 1000);
+  if (payload.exp && payload.exp < now) return false;
+
+  return payload.role === "admin";
+};
+
+// 🔧 Gestion des erreurs API
+const handleApiError = (err: unknown): never => {
+  if (axios.isAxiosError(err)) {
+    if (err.response?.status === 403) {
+      throw new Error("Accès refusé : permissions insuffisantes.");
+    }
+    if (err.response?.data) {
+      const msg = (err.response.data as any).detail || JSON.stringify(err.response.data);
+      throw new Error(msg);
+    }
+  }
+  throw new Error("Erreur inconnue lors de la requête API");
+};
+
 // ===================== 🧩 Requêtes API =====================
 
-// ✅ Récupérer tous les utilisateurs
+// Récupérer tous les utilisateurs
 export const getUsers = async (): Promise<User[]> => {
-  const response = await api.get("/users/");
-  return response.data;
+  try {
+    const response = await api.get("/users/");
+    return response.data as User[];
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
 };
 
-// ✅ Mettre à jour un utilisateur
-export const updateUser = async (id: number, data: Partial<User>) => {
-  const response = await api.put(`/users/${id}/`, data);
-  return response.data;
+// Mettre à jour un utilisateur (admin seulement)
+export const updateUser = async (id: number, data: Partial<User>): Promise<User | null> => {
+  if (!isAdminToken()) {
+    console.error("Action réservée aux admins.");
+    return null;
+  }
+  try {
+    const response = await api.patch(`/users/${id}/update-user/`, data);
+    return response.data as User;
+  } catch (err: unknown) {
+    console.error(err);
+    return null;
+  }
 };
 
-// ✅ Supprimer un utilisateur
-export const deleteUser = async (id: number) => {
-  const response = await api.delete(`/users/${id}/`);
-  return response.data;
+// Supprimer un utilisateur
+export const deleteUser = async (id: number): Promise<boolean> => {
+  try {
+    await api.delete(`/users/${id}/`);
+    return true;
+  } catch (err: unknown) {
+    console.error(err);
+    return false;
+  }
 };
 
-// ✅ Activer / suspendre un utilisateur
-export const toggleUserStatus = async (id: number, newStatus: "active" | "suspendu") => {
-  const response = await api.patch(`/users/${id}/`, { status: newStatus });
-  return response.data;
+// Activer / suspendre un utilisateur (admin seulement)
+export const toggleUserStatus = async (
+  id: number,
+  newStatus: "active" | "suspendu"
+): Promise<User | null> => {
+  if (!isAdminToken()) {
+    console.error("Action réservée aux admins.");
+    return null;
+  }
+  try {
+    const response = await api.patch(`/users/${id}/`, { status: newStatus });
+    return response.data as User;
+  } catch (err: unknown) {
+    console.error(err);
+    return null;
+  }
 };
 
 export default api;
