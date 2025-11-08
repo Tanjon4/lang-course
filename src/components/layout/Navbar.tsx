@@ -304,12 +304,10 @@ export default function Navbar() {
           >
             <div className="flex flex-col h-full p-6">
               <div className="flex justify-between items-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-800">📚 Menu</h2>
                 <button 
                   onClick={() => setIsOpen(false)}
                   className="p-2 rounded-lg hover:bg-orange-200 transition-colors"
                 >
-                  <X size={24} />
                 </button>
               </div>
 

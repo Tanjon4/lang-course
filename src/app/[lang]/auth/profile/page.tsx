@@ -1,23 +1,249 @@
+// app/[lng]/profile/page.tsx
 'use client';
-import React, { useEffect } from 'react';
-import { User as UserIcon, Mail, Shield, Calendar, Edit, Star, Settings, Award, Folder, Users } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { 
+  User as UserIcon, 
+  Mail, 
+  Shield, 
+  Calendar, 
+  Edit, 
+  Star, 
+  Settings, 
+  Award, 
+  Trophy,
+  Zap,
+  Flame,
+  FileText,
+  Target,
+  BarChart3,
+  Clock,
+  GraduationCap
+} from 'lucide-react';
 import Layout from '@/components/layout/BaseLayout';
-import { useAuth } from '@/app/contexts/AuthContext'
+import { useAuth } from '@/app/contexts/AuthContext';
 import { useParams } from 'next/navigation';
+import { courseService } from '@/services/courseService';
+import { UserProgressOverview, CourseGlobal } from '@/types/course';
+
+// Types pour les données utilisateur étendues
+interface UserStats {
+  level: number;
+  xp: number;
+  xpToNextLevel: number;
+  streak: number;
+  certificatesCount: number;
+  currentRank: string;
+  nextRank: string;
+  progressToNextRank: number;
+  completedLevels: number;
+  totalLevels: number;
+  currentLevelProgress: number;
+}
+
+interface LevelProgress {
+  levelId: number;
+  levelNumber: number;
+  levelTitle: string;
+  completed: boolean;
+  progress: number;
+  totalChapters: number;
+  completedChapters: number;
+}
 
 export default function ProfilePage() {
   const { user, isAuthenticated, loading } = useAuth();
   const params = useParams();
   const lang = params.lng;
+  const [overviewProgress, setOverviewProgress] = useState<UserProgressOverview | null>(null);
+  const [userStats, setUserStats] = useState<UserStats | null>(null);
+  const [courses, setCourses] = useState<CourseGlobal[]>([]);
+  const [levelProgress, setLevelProgress] = useState<LevelProgress[]>([]);
+  const [coursesLoading, setCoursesLoading] = useState(true);
 
-  // Debug
   useEffect(() => {
     console.log('Profile Page - User:', user);
     console.log('Profile Page - isAuthenticated:', isAuthenticated);
-    console.log('Profile Page - Loading:', loading);
-  }, [user, isAuthenticated, loading]);
+  }, [user, isAuthenticated]);
 
-  if (loading) {
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      loadUserData();
+    }
+  }, [isAuthenticated, user]);
+
+  const loadUserData = async () => {
+    if (!isAuthenticated) {
+      console.log('👤 User not authenticated, skipping data load');
+      return;
+    }
+    
+    try {
+      setCoursesLoading(true);
+      console.log('📊 Loading user data...');
+      
+      // Charger les cours et progrès
+      const [coursesData, progressData] = await Promise.all([
+        courseService.getCourses(),
+        courseService.getUserProgressOverview()
+      ]);
+      
+      console.log('✅ Courses loaded:', coursesData.length);
+      console.log('✅ Progress overview loaded:', progressData);
+      
+      setCourses(coursesData);
+      setOverviewProgress(progressData);
+      
+      // Calculer les statistiques basées sur la progression réelle
+      const stats = await calculateUserStats(coursesData, progressData);
+      setUserStats(stats);
+      
+    } catch (err) {
+      console.error('Error loading user data:', err);
+      setUserStats(getFallbackStats());
+    } finally {
+      setCoursesLoading(false);
+    }
+  };
+
+  const calculateUserStats = async (coursesData: CourseGlobal[], progressData: UserProgressOverview): Promise<UserStats> => {
+    // Calculer la progression par niveau
+    const levelProgressData = await calculateLevelProgress(coursesData);
+    setLevelProgress(levelProgressData);
+
+    // Compter les niveaux complétés
+    const completedLevels = levelProgressData.filter(level => level.completed).length;
+    const totalLevels = levelProgressData.length;
+
+    // Déterminer le rang basé sur les niveaux complétés
+    const { currentRank, nextRank, progressToNextRank } = calculateRank(completedLevels, totalLevels);
+    
+    // Calculer XP basé sur la progression (exemple: 100 XP par niveau complété + 10 XP par cours)
+    const xpFromLevels = completedLevels * 100;
+    const xpFromCourses = (progressData.completed_courses || 0) * 10;
+    const totalXP = xpFromLevels + xpFromCourses;
+
+    // Calculer le niveau basé sur XP (exemple: 100 XP par niveau)
+    const level = Math.floor(totalXP / 100) + 1;
+    const xpToNextLevel = 100 - (totalXP % 100);
+
+    // Compter les certificats (un par niveau complété)
+    const certificatesCount = completedLevels;
+
+    return {
+      level,
+      xp: totalXP,
+      xpToNextLevel,
+      streak: progressData.streak || 0,
+      certificatesCount,
+      currentRank,
+      nextRank,
+      progressToNextRank,
+      completedLevels,
+      totalLevels,
+      currentLevelProgress: completedLevels > 0 ? Math.round((completedLevels / totalLevels) * 100) : 0
+    };
+  };
+
+  const calculateLevelProgress = async (coursesData: CourseGlobal[]): Promise<LevelProgress[]> => {
+    // Cette fonction devrait interroger l'API pour obtenir la progression par niveau
+    // Pour l'instant, on simule avec les données des cours
+    const levelProgress: LevelProgress[] = [];
+
+    coursesData.forEach(course => {
+      // Supposons que chaque cours a des niveaux (à adapter selon votre structure réelle)
+      if (course.levels && course.levels.length > 0) {
+        course.levels.forEach(level => {
+          // Vérifier si le niveau est complété (basé sur la progression du cours)
+          const isCompleted = course.progress?.completed_course || false;
+          const progress = course.progress?.progress_percentage || 0;
+          
+          levelProgress.push({
+            levelId: level.id,
+            levelNumber: level.number,
+            levelTitle: level.title,
+            completed: isCompleted,
+            progress: progress,
+            totalChapters: level.chapters?.length || 0,
+            completedChapters: Math.floor((progress / 100) * (level.chapters?.length || 1))
+          });
+        });
+      }
+    });
+
+    return levelProgress;
+  };
+
+  const calculateRank = (completedLevels: number, totalLevels: number) => {
+    const progressPercentage = totalLevels > 0 ? (completedLevels / totalLevels) * 100 : 0;
+    
+    if (progressPercentage < 25) {
+      return {
+        currentRank: "Beginner",
+        nextRank: "Intermediate",
+        progressToNextRank: Math.round((progressPercentage / 25) * 100)
+      };
+    } else if (progressPercentage < 50) {
+      return {
+        currentRank: "Intermediate",
+        nextRank: "Advanced",
+        progressToNextRank: Math.round(((progressPercentage - 25) / 25) * 100)
+      };
+    } else if (progressPercentage < 75) {
+      return {
+        currentRank: "Advanced",
+        nextRank: "Expert",
+        progressToNextRank: Math.round(((progressPercentage - 50) / 25) * 100)
+      };
+    } else {
+      return {
+        currentRank: "Expert",
+        nextRank: "Master",
+        progressToNextRank: Math.round(((progressPercentage - 75) / 25) * 100)
+      };
+    }
+  };
+
+  const getFallbackStats = (): UserStats => ({
+    level: 1,
+    xp: 0,
+    xpToNextLevel: 100,
+    streak: 0,
+    certificatesCount: 0,
+    currentRank: "Beginner",
+    nextRank: "Intermediate",
+    progressToNextRank: 0,
+    completedLevels: 0,
+    totalLevels: 0,
+    currentLevelProgress: 0
+  });
+
+  const getRankColor = (rank: string) => {
+    switch (rank.toLowerCase()) {
+      case 'beginner': return 'text-green-600 bg-green-100 border-green-200';
+      case 'intermediate': return 'text-blue-600 bg-blue-100 border-blue-200';
+      case 'advanced': return 'text-purple-600 bg-purple-100 border-purple-200';
+      case 'expert': return 'text-orange-600 bg-orange-100 border-orange-200';
+      case 'master': return 'text-red-600 bg-red-100 border-red-200';
+      default: return 'text-gray-600 bg-gray-100 border-gray-200';
+    }
+  };
+
+  const getLevelRequirements = (currentRank: string) => {
+    switch (currentRank.toLowerCase()) {
+      case 'beginner':
+        return "Complétez 25% des niveaux pour devenir Intermediate";
+      case 'intermediate':
+        return "Complétez 50% des niveaux pour devenir Advanced";
+      case 'advanced':
+        return "Complétez 75% des niveaux pour devenir Expert";
+      case 'expert':
+        return "Complétez 100% des niveaux pour devenir Master";
+      default:
+        return "Continuez à apprendre !";
+    }
+  };
+
+  if (loading || coursesLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-50 to-amber-50">
         <div className="flex flex-col items-center space-y-4">
@@ -31,6 +257,7 @@ export default function ProfilePage() {
   if (!user) {
     return (
       <Layout>
+        <br /><br />
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 px-4">
           <div className="text-center bg-white rounded-2xl shadow-xl p-8 max-w-md w-full border border-orange-100">
             <div className="w-20 h-20 bg-gradient-to-r from-orange-200 to-amber-200 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -52,17 +279,18 @@ export default function ProfilePage() {
 
   return (
     <Layout user={user}>
+      <br /><br />
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-orange-100 py-4 sm:py-8 px-3 sm:px-4">
         <div className="max-w-6xl mx-auto">
           
-          {/* En-tête du profil */}
+          {/* En-tête du profil avec niveau et XP */}
           <div className="relative bg-gradient-to-r from-gray-800 to-zinc-600 rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden mb-6 sm:mb-8 border border-orange-200">
             <div className="absolute inset-0 bg-orange-100/20"></div>
             <div className="absolute top-0 right-0 w-40 h-40 sm:w-64 sm:h-64 bg-orange-100/30 rounded-full -translate-y-20 translate-x-20 sm:-translate-y-32 sm:translate-x-32"></div>
             <div className="absolute bottom-0 left-0 w-32 h-32 sm:w-48 sm:h-48 bg-amber-100/30 rounded-full translate-y-16 -translate-x-16 sm:translate-y-24 sm:-translate-x-24"></div>
             
-            <div className="relative px-4 sm:px-8 py-6 sm:py-12 text-white">
-              <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
+            <div className="relative px-4 sm:px-8 py-6 sm:py-8 text-white">
+              <div className="flex flex-col lg:flex-row items-center justify-between space-y-6 lg:space-y-0">
                 <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 text-center sm:text-left">
                   <div className="relative">
                     <div className="h-20 w-20 sm:h-28 sm:w-28 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border-2 border-white/30 shadow-lg">
@@ -76,16 +304,36 @@ export default function ProfilePage() {
                         <UserIcon className="h-8 w-8 sm:h-12 sm:w-12 text-white" />
                       )}
                     </div>
-                    <div className="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 bg-amber-400 rounded-full p-1 border-2 border-white">
-                      <Star className="h-3 w-3 sm:h-4 sm:w-4 text-white fill-white" />
-                    </div>
+                    {userStats && (
+                      <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full p-2 border-2 border-white shadow-lg">
+                        <div className="text-xs font-bold whitespace-nowrap">
+                          Niv. {userStats.level}
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="flex-1">
                     <h1 className="text-2xl sm:text-4xl font-bold mb-2 text-white">{user.username}</h1>
-                    <div className="flex items-center justify-center sm:justify-start space-x-2 text-white/90">
+                    <div className="flex items-center justify-center sm:justify-start space-x-2 text-white/90 mb-3">
                       <Mail className="h-4 w-4" />
                       <p className="text-sm sm:text-lg opacity-95">{user.email}</p>
                     </div>
+                    {userStats && (
+                      <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
+                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getRankColor(userStats.currentRank)}`}>
+                          <Trophy className="h-3 w-3 mr-1" />
+                          {userStats.currentRank}
+                        </span>
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-500 text-white border border-amber-600">
+                          <Zap className="h-3 w-3 mr-1" />
+                          {userStats.xp} XP
+                        </span>
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-500 text-white border border-green-600">
+                          <GraduationCap className="h-3 w-3 mr-1" />
+                          {userStats.completedLevels}/{userStats.totalLevels} Niveaux
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
                 
@@ -98,72 +346,147 @@ export default function ProfilePage() {
                   </button>
                 </div>
               </div>
+
+              {/* Barre de progression du rang */}
+              {userStats && (
+                <div className="mt-6 bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium">Progression vers {userStats.nextRank}</span>
+                    <span className="text-sm font-bold">{userStats.progressToNextRank}%</span>
+                  </div>
+                  <div className="w-full bg-white/20 rounded-full h-3">
+                    <div 
+                      className="bg-gradient-to-r from-orange-400 to-amber-400 h-3 rounded-full transition-all duration-500"
+                      style={{ width: `${userStats.progressToNextRank}%` }}
+                    ></div>
+                  </div>
+                  <div className="flex justify-between text-xs mt-1 text-white/80">
+                    <span>{userStats.currentRank}</span>
+                    <span>{userStats.nextRank}</span>
+                  </div>
+                  <p className="text-xs text-white/70 mt-2 text-center">
+                    {getLevelRequirements(userStats.currentRank)}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Grille des informations */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+          {/* Section Statistiques principales */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+            {/* Niveaux complétés */}
+            <div className="bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="flex items-center justify-between mb-4">
+                <GraduationCap className="h-8 w-8" />
+                <span className="text-2xl font-bold">{userStats?.completedLevels || 0}</span>
+              </div>
+              <h3 className="font-semibold text-white/90">Niveaux</h3>
+              <p className="text-sm text-white/70 mt-1">Complétés</p>
+            </div>
+
+            {/* Streak */}
+            <div className="bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="flex items-center justify-between mb-4">
+                <Flame className="h-8 w-8" />
+                <span className="text-2xl font-bold">{userStats?.streak || 0}</span>
+              </div>
+              <h3 className="font-semibold text-white/90">Jours</h3>
+              <p className="text-sm text-white/70 mt-1">Streak actuel</p>
+            </div>
+
+            {/* Certificats */}
+            <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="flex items-center justify-between mb-4">
+                <FileText className="h-8 w-8" />
+                <span className="text-2xl font-bold">{userStats?.certificatesCount || 0}</span>
+              </div>
+              <h3 className="font-semibold text-white/90">Certificats</h3>
+              <p className="text-sm text-white/70 mt-1">Obtenus</p>
+            </div>
+
+            {/* Cours complétés */}
+            <div className="bg-gradient-to-br from-purple-500 to-indigo-500 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="flex items-center justify-between mb-4">
+                <Target className="h-8 w-8" />
+                <span className="text-2xl font-bold">{overviewProgress?.completed_courses || 0}</span>
+              </div>
+              <h3 className="font-semibold text-white/90">Cours</h3>
+              <p className="text-sm text-white/70 mt-1">Terminés</p>
+            </div>
+          </div>
+
+          {/* Grille des informations détaillées */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             
+            {/* Progression et niveau */}
+            <div className="bg-white rounded-2xl shadow-lg border border-orange-100 p-6 hover:shadow-xl transition-all duration-300 group">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="p-3 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                  <BarChart3 className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">Progression & Niveau</h3>
+              </div>
+              <div className="space-y-4">
+                {userStats ? (
+                  <>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-gray-600">Niveau actuel</span>
+                      <span className="text-lg font-bold text-gray-900">Niv. {userStats.level}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-gray-600">XP total</span>
+                      <span className="text-lg font-bold text-amber-600">{userStats.xp} XP</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-gray-600">Prochain niveau</span>
+                      <span className="text-sm font-medium text-gray-900">{userStats.xpToNextLevel} XP requis</span>
+                    </div>
+                    <div className="pt-4 border-t border-orange-50">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-600">Rang actuel</span>
+                        <span className={`text-sm font-bold px-2 py-1 rounded ${getRankColor(userStats.currentRank)}`}>
+                          {userStats.currentRank}
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-gradient-to-r from-orange-500 to-amber-500 h-2 rounded-full transition-all duration-500"
+                          style={{ width: `${userStats.progressToNextRank}%` }}
+                        ></div>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-2">
+                        {getLevelRequirements(userStats.currentRank)}
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-center py-4 text-gray-500">
+                    Chargement des statistiques...
+                  </div>
+                )}
+              </div>
+            </div>
+
             {/* Informations personnelles */}
-            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-orange-100 p-4 sm:p-6 hover:shadow-xl transition-all duration-300 group">
-              <div className="flex items-center space-x-3 mb-4 sm:mb-6">
-                <div className="p-2 sm:p-3 bg-gradient-to-r from-orange-500 to-amber-500 rounded-lg sm:rounded-xl group-hover:scale-110 transition-transform duration-300">
-                  <UserIcon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+            <div className="bg-white rounded-2xl shadow-lg border border-orange-100 p-6 hover:shadow-xl transition-all duration-300 group">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="p-3 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                  <UserIcon className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Informations personnelles</h3>
+                <h3 className="text-xl font-semibold text-gray-900">Informations personnelles</h3>
               </div>
-              <dl className="space-y-3 sm:space-y-4">
-                <div className="pb-3 border-b border-orange-50">
-                  <dt className="text-xs sm:text-sm font-medium text-gray-500 mb-1">Nom d'utilisateur</dt>
-                  <dd className="text-gray-900 font-medium text-base sm:text-lg">{user.username}</dd>
+              <dl className="space-y-4">
+                <div className="pb-4 border-b border-orange-50">
+                  <dt className="text-sm font-medium text-gray-500 mb-2">Nom d'utilisateur</dt>
+                  <dd className="text-gray-900 font-medium text-lg">{user.username}</dd>
                 </div>
-                <div className="pb-3 border-b border-orange-50">
-                  <dt className="text-xs sm:text-sm font-medium text-gray-500 mb-1">Email</dt>
-                  <dd className="text-gray-900 font-medium text-sm sm:text-base break-words">{user.email}</dd>
+                <div className="pb-4 border-b border-orange-50">
+                  <dt className="text-sm font-medium text-gray-500 mb-2">Email</dt>
+                  <dd className="text-gray-900 font-medium text-base break-words">{user.email}</dd>
                 </div>
-              </dl>
-            </div>
-
-            {/* Sécurité */}
-            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-orange-100 p-4 sm:p-6 hover:shadow-xl transition-all duration-300 group">
-              <div className="flex items-center space-x-3 mb-4 sm:mb-6">
-                <div className="p-2 sm:p-3 bg-gradient-to-r from-orange-500 to-amber-500 rounded-lg sm:rounded-xl group-hover:scale-110 transition-transform duration-300">
-                  <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Sécurité</h3>
-              </div>
-              <dl className="space-y-3 sm:space-y-4">
-                <div className="pb-3 border-b border-orange-50">
-                  <dt className="text-xs sm:text-sm font-medium text-gray-500 mb-1">Statut du compte</dt>
-                  <dd>
-                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                      user.is_email_verified 
-                        ? 'bg-green-100 text-green-800 border border-green-200' 
-                        : 'bg-amber-100 text-amber-800 border border-amber-200'
-                    }`}>
-                      {user.is_email_verified ? '✓ Vérifié' : '⏳ En attente'}
-                    </span>
-                  </dd>
-                </div>
-                <div className="pb-3 border-b border-orange-50">
-                  <dt className="text-xs sm:text-sm font-medium text-gray-500 mb-1">Méthode d'authentification</dt>
-                  <dd className="text-gray-900 font-medium capitalize text-sm sm:text-base">{user.provider || 'Email'}</dd>
-                </div>
-              </dl>
-            </div>
-
-            {/* Activité */}
-            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-orange-100 p-4 sm:p-6 hover:shadow-xl transition-all duration-300 group">
-              <div className="flex items-center space-x-3 mb-4 sm:mb-6">
-                <div className="p-2 sm:p-3 bg-gradient-to-r from-orange-500 to-amber-500 rounded-lg sm:rounded-xl group-hover:scale-110 transition-transform duration-300">
-                  <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Activité</h3>
-              </div>
-              <dl className="space-y-3 sm:space-y-4">
-                <div className="pb-3 border-b border-orange-50">
-                  <dt className="text-xs sm:text-sm font-medium text-gray-500 mb-1">Membre depuis</dt>
-                  <dd className="text-gray-900 font-medium text-sm sm:text-base">
+                <div>
+                  <dt className="text-sm font-medium text-gray-500 mb-2">Membre depuis</dt>
+                  <dd className="text-gray-900 font-medium text-base">
                     {user.date_joined ? new Date(user.date_joined).toLocaleDateString('fr-FR', {
                       year: 'numeric',
                       month: 'long',
@@ -171,62 +494,55 @@ export default function ProfilePage() {
                     }) : 'N/A'}
                   </dd>
                 </div>
-                <div className="pb-3">
-                  <dt className="text-xs sm:text-sm font-medium text-gray-500 mb-1">Dernière connexion</dt>
-                  <dd className="text-gray-900 font-medium text-sm sm:text-base">
-                    {user.last_login ? new Date(user.last_login).toLocaleDateString('fr-FR') : 'Maintenant'}
-                  </dd>
-                </div>
               </dl>
             </div>
-          </div>
 
-          {/* Section statistiques */}
-          <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-            <div className="bg-gradient-to-r from-orange-200 to-amber-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-black shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <div className="flex items-center space-x-3 mb-3">
-                <Folder className="h-6 w-6 sm:h-8 sm:w-8 text-zinc-700" />
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold">12</div>
-                  <div className="text-xs sm:text-sm text-zinc-600">Projets créés</div>
+            {/* Progression des niveaux */}
+            {levelProgress.length > 0 && (
+              <div className="bg-white rounded-2xl shadow-lg border border-orange-100 p-6 hover:shadow-xl transition-all duration-300 group lg:col-span-2">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="p-3 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                    <Target className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900">Progression par Niveau</h3>
                 </div>
-              </div>
-            </div>
-            <div className="bg-gradient-to-r from-orange-200 to-amber-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-black shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <div className="flex items-center space-x-3 mb-3">
-                <Users className="h-6 w-6 sm:h-8 sm:w-8 text-zinc-700" />
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold">47</div>
-                  <div className="text-xs sm:text-sm text-zinc-600">Contributions</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {levelProgress.slice(0, 6).map((level) => (
+                    <div key={level.levelId} className="border border-orange-100 rounded-lg p-4 hover:shadow-md transition-shadow">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="font-medium text-gray-900">Niveau {level.levelNumber}</span>
+                        {level.completed ? (
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <Award className="h-3 w-3 mr-1" />
+                            Terminé
+                          </span>
+                        ) : (
+                          <span className="text-xs text-gray-500">
+                            {level.completedChapters}/{level.totalChapters} chapitres
+                          </span>
+                        )}
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div 
+                          className={`h-2 rounded-full transition-all duration-500 ${
+                            level.completed 
+                              ? 'bg-green-500' 
+                              : 'bg-orange-500'
+                          }`}
+                          style={{ width: `${level.progress}%` }}
+                        ></div>
+                      </div>
+                      <p className="text-sm text-gray-600 mt-1 truncate">{level.levelTitle}</p>
+                    </div>
+                  ))}
                 </div>
+                {levelProgress.length > 6 && (
+                  <p className="text-center text-gray-500 mt-4">
+                    +{levelProgress.length - 6} autres niveaux...
+                  </p>
+                )}
               </div>
-            </div>
-            <div className="bg-gradient-to-r from-amber-200 to-orange-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-black shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <div className="flex items-center space-x-3 mb-3">
-                <Award className="h-6 w-6 sm:h-8 sm:w-8 text-zinc-700" />
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold">89%</div>
-                  <div className="text-xs sm:text-sm text-zinc-600">Profil complété</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Section actions rapides pour mobile */}
-          <div className="mt-6 sm:hidden">
-            <div className="bg-white rounded-xl shadow-lg border border-orange-100 p-4">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Actions rapides</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <button className="flex items-center justify-center space-x-2 bg-orange-50 hover:bg-orange-100 p-3 rounded-lg transition-colors duration-200">
-                  <Edit className="h-4 w-4 text-orange-600" />
-                  <span className="text-sm font-medium text-orange-700">Modifier</span>
-                </button>
-                <button className="flex items-center justify-center space-x-2 bg-amber-50 hover:bg-amber-100 p-3 rounded-lg transition-colors duration-200">
-                  <Settings className="h-4 w-4 text-amber-600" />
-                  <span className="text-sm font-medium text-amber-700">Paramètres</span>
-                </button>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

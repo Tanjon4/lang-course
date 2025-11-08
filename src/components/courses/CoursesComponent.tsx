@@ -17,9 +17,8 @@ import {
 } from 'lucide-react';
 import { courseService } from '@/services/courseService';
 import { CourseGlobal, UserProgressOverview } from '@/types/course';
-import CourseCard from './CourseCard';
+import CourseCard from '../course/CourseCard';
 import CourseDetail from './CourseDetail';
-import ProgressOverview from './ProgressOverview';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -51,15 +50,11 @@ const CoursesComponent: React.FC = () => {
   const [selectedCourse, setSelectedCourse] = useState<CourseGlobal | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [overviewProgress, setOverviewProgress] = useState<UserProgressOverview | null>(null);
 
   console.log('🔐 CoursesComponent Auth:', { isAuthenticated, user: !!user });
 
   useEffect(() => {
     loadCourses();
-    if (isAuthenticated) {
-      loadOverviewProgress();
-    }
   }, [isAuthenticated]);
 
   const loadCourses = async () => {
@@ -78,53 +73,6 @@ const CoursesComponent: React.FC = () => {
     }
   };
 
-  const loadOverviewProgress = async () => {
-  if (!isAuthenticated) {
-    console.log('👤 User not authenticated, skipping progress load');
-    return;
-  }
-  
-  try {
-    console.log('📊 Loading user progress overview...');
-    const progressData = await courseService.getUserProgressOverview();
-    console.log('✅ Progress overview loaded:', progressData);
-    
-    // ✅ VALIDATION DES DONNÉES AVANT DE LES UTILISER
-    const validatedProgress = {
-      total_courses: progressData.total_courses || courses.length,
-      completed_courses: progressData.completed_courses || 0,
-      in_progress_courses: progressData.in_progress_courses || 0,
-      streak: progressData.streak || 0,
-      total_time_spent: progressData.total_time_spent || 0,
-      enrolled_courses: progressData.enrolled_courses || []
-    };
-    
-    setOverviewProgress(validatedProgress);
-  } catch (err) {
-    console.error('Error loading overview progress:', err);
-    console.log('🔄 Using fallback progress data based on courses...');
-    
-    // ✅ CALCUL DE PROGRESSION BASÉ SUR LES COURS
-    const enrolledCourses = courses.filter(course => course.progress?.enrolled);
-    const completedCourses = courses.filter(course => course.progress?.completed_course);
-    const inProgressCourses = enrolledCourses.filter(course => !course.progress?.completed_course);
-    
-    const fallbackProgress = {
-      total_courses: courses.length,
-      completed_courses: completedCourses.length,
-      in_progress_courses: inProgressCourses.length,
-      streak: 0,
-      total_time_spent: enrolledCourses.reduce((total, course) => 
-        total + (course.progress?.time_spent || 0), 0
-      ),
-      enrolled_courses: enrolledCourses.map(course => course.id)
-    };
-    
-    console.log('📊 Fallback progress:', fallbackProgress);
-    setOverviewProgress(fallbackProgress);
-  }
-};
-
   const handleEnroll = async (courseId: number) => {
     console.log('🎯 handleEnroll called for course:', courseId);
     
@@ -142,7 +90,6 @@ const CoursesComponent: React.FC = () => {
       
       // Recharger les données
       await loadCourses();
-      await loadOverviewProgress();
       
     } catch (err: any) {
       const errorMsg = err.message || 'Erreur lors de l\'inscription au cours';
@@ -195,7 +142,7 @@ const CoursesComponent: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-600"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-orange-600"></div>
       </div>
     );
   }
@@ -203,24 +150,7 @@ const CoursesComponent: React.FC = () => {
   const filteredCourses = getFilteredCourses();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10">
-        <div className="px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-3">
-              <BookOpen className="h-8 w-8 text-indigo-600" />
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                Learning Platform
-              </h1>
-            </div>
-            <button className="px-4 py-2 border-2 border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors font-semibold">
-              Mon Profil
-            </button>
-          </div>
-        </div>
-      </header>
-
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {error && (
           <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex justify-between items-center">
@@ -231,22 +161,19 @@ const CoursesComponent: React.FC = () => {
           </div>
         )}
 
-        {/* Progress Overview */}
-        <ProgressOverview progress={overviewProgress} />
-
         {/* Main Content */}
         <div className="bg-white rounded-2xl shadow-lg border-0 overflow-hidden">
           {/* Tabs */}
-          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-            <div className="flex border-b border-indigo-500">
+          <div className="text-white">
+            <div className="flex border-b border-indigo-200">
               {['Tous les cours', 'En cours', 'Terminés'].map((tab, index) => (
                 <button
                   key={tab}
                   onClick={() => handleTabChange(index)}
                   className={`flex-1 px-6 py-4 font-semibold text-center transition-all ${
                     tabValue === index
-                      ? 'bg-white bg-opacity-20 text-white'
-                      : 'text-white opacity-90 hover:opacity-100 hover:bg-white hover:bg-opacity-10'
+                      ? 'bg-gradient-to-r from-orange-200 to-amber-400 bg-opacity-20 text-zinc-500 shadow-lg'
+                      : 'text-black opacity-90 hover:opacity-100 hover:bg-white hover:bg-opacity-10'
                   }`}
                 >
                   {tab} {index === 0 ? `(${courses.length})` : index === 1 ? `(${filteredCourses.length})` : `(${filteredCourses.length})`}

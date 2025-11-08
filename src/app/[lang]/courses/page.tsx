@@ -1,8 +1,22 @@
 // app/[lang]/courses/page.tsx
 'use client';
 
-import CoursesComponent from '@/components/courses/CoursesComponent';
+import Layout from "@/components/layout/BaseLayout";
+import { useCourses } from '@/lib/hooks/useCourses';
+import CourseGlobalComponent from '@/components/course/CourseGlobalComponent'
+
 
 export default function CoursesPage() {
-  return <CoursesComponent />;
+  // return <CoursesComponent />;
+  return(
+    <Layout>
+        <br /> <br />
+        <CourseGlobalComponent />
+        
+       
+    </Layout>
+  )
+
 }
+
+

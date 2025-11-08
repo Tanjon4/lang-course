@@ -1,8 +1,11 @@
 // services/courseService.ts
-import { CourseGlobal, Level, Chapter, Lesson, CourseProgress, UserProgressOverview } from '@/types/course';
+import { 
+  CourseGlobal, Level, Chapter, Lesson, CourseProgress, UserProgressOverview,
+  Exam, ExamResult, ExamSubmission, ExamResponse, Certificate 
+} from '@/types/course';
 import { authService } from './authService';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lang-courses-api.onrender.com/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000/api';
 
 class CourseService {
   private async fetchAPI(endpoint: string, options: RequestInit = {}) {
@@ -50,13 +53,13 @@ class CourseService {
     }
   }
 
-  // ✅ CORRESPOND AU BACKEND : /api/courses/{id}/enroll/
+  // === 🔹 COURSES ===
+
   async enroll(courseId: number): Promise<{status: string}> {
     console.log('🎯 CourseService.enroll called for course:', courseId);
     return this.fetchAPI(`/courses/${courseId}/enroll/`, { method: 'POST' });
   }
 
-  // ✅ CORRESPOND AU BACKEND : /api/courses/
   async getCourses(languageCode?: string): Promise<CourseGlobal[]> {
     const params = new URLSearchParams();
     if (languageCode) params.append('language_code', languageCode);
@@ -65,52 +68,44 @@ class CourseService {
     return this.fetchAPI(endpoint);
   }
 
-  // ✅ CORRESPOND AU BACKEND : /api/courses/{id}/
   async getCourse(id: number): Promise<CourseGlobal> {
     return this.fetchAPI(`/courses/${id}/`);
   }
 
-  // ✅ CORRESPOND AU BACKEND : /api/courses/{id}/complete/
   async completeCourse(courseId: number): Promise<{status: string}> {
     return this.fetchAPI(`/courses/${courseId}/complete/`, { method: 'POST' });
   }
 
-  // ✅ CORRESPOND AU BACKEND : /api/courses/{id}/progress/
   async getCourseProgress(courseId: number): Promise<CourseProgress> {
     return this.fetchAPI(`/courses/${courseId}/progress/`);
   }
 
-  // ✅ CORRESPOND AU BACKEND : /api/levels/{id}/unlock/
+  // === 🔹 LEVELS, CHAPTERS, LESSONS ===
+
   async unlockLevel(levelId: number): Promise<{status: string}> {
     return this.fetchAPI(`/levels/${levelId}/unlock/`, { method: 'POST' });
   }
 
-  // ✅ CORRESPOND AU BACKEND : /api/levels/{id}/complete/
   async completeLevel(levelId: number): Promise<{status: string, next_content_unlocked: boolean}> {
     return this.fetchAPI(`/levels/${levelId}/complete/`, { method: 'POST' });
   }
 
-  // ✅ CORRESPOND AU BACKEND : /api/chapters/{id}/unlock/
   async unlockChapter(chapterId: number): Promise<{status: string}> {
     return this.fetchAPI(`/chapters/${chapterId}/unlock/`, { method: 'POST' });
   }
 
-  // ✅ CORRESPOND AU BACKEND : /api/chapters/{id}/complete/
   async completeChapter(chapterId: number): Promise<{status: string, next_content_unlocked: boolean}> {
     return this.fetchAPI(`/chapters/${chapterId}/complete/`, { method: 'POST' });
   }
 
-  // ✅ CORRESPOND AU BACKEND : /api/lessons/{id}/unlock/
   async unlockLesson(lessonId: number): Promise<{status: string}> {
     return this.fetchAPI(`/lessons/${lessonId}/unlock/`, { method: 'POST' });
   }
 
-  // ✅ CORRESPOND AU BACKEND : /api/lessons/{id}/complete/
   async completeLesson(lessonId: number): Promise<{status: string, next_content_unlocked: boolean}> {
     return this.fetchAPI(`/lessons/${lessonId}/complete/`, { method: 'POST' });
   }
 
-  // ✅ CORRESPOND AU BACKEND : /api/lessons/{id}/track-time/
   async trackLessonTime(lessonId: number, timeSpent: number): Promise<{status: string}> {
     return this.fetchAPI(`/lessons/${lessonId}/track-time/`, {
       method: 'POST',
@@ -118,20 +113,165 @@ class CourseService {
     });
   }
 
-  // ✅ CORRESPOND AU BACKEND : /api/user-progress/overview/
+  // === 🔹 PROGRESS ===
+
   async getUserProgressOverview(): Promise<UserProgressOverview> {
     return this.fetchAPI('/progress/overview/');
   }
 
-  // ✅ CORRESPOND AU BACKEND : /api/user-progress/streak/
   async getUserStreak(): Promise<{streak: number}> {
     return this.fetchAPI('/progress/streak/');
   }
 
-  // ✅ MÉTHODE DE COMPATIBILITÉ
+  // === 🔹 EXAMS & CERTIFICATES ===
+
+  /**
+   * Récupérer tous les examens disponibles
+   * GET /api/exams/
+   */
+  async getExams(): Promise<Exam[]> {
+    console.log('🧠 Fetching all exams');
+    return this.fetchAPI('/exams/');
+  }
+
+  /**
+   * Récupérer un examen spécifique avec ses questions
+   * GET /api/exams/{id}/
+   */
+  async getExam(examId: number): Promise<Exam> {
+    console.log('📝 Fetching exam:', examId);
+    return this.fetchAPI(`/exams/${examId}/`);
+  }
+
+  /**
+   * Soumettre un examen complet
+   * POST /api/exam-results/
+   */
+  async submitExam(
+    examId: number, 
+    responses: ExamResponse[]
+  ): Promise<ExamResult> {
+    console.log('📤 Submitting exam:', examId);
+    
+    const payload: ExamSubmission = {
+      exam: examId,
+      responses: responses
+    };
+
+    return this.fetchAPI('/exam-results/', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  /**
+   * Récupérer mes résultats d'examens
+   * GET /api/exam-results/my_results/
+   */
+  async getMyExamResults(): Promise<ExamResult[]> {
+    console.log('📊 Fetching my exam results');
+    return this.fetchAPI('/exam-results/my_results/');
+  }
+
+  /**
+   * Récupérer un résultat spécifique
+   * GET /api/exam-results/{id}/
+   */
+  async getExamResult(resultId: number): Promise<ExamResult> {
+    console.log('📄 Fetching exam result:', resultId);
+    return this.fetchAPI(`/exam-results/${resultId}/`);
+  }
+
+  /**
+   * Récupérer le certificat d'un résultat d'examen
+   * GET /api/exam-results/{id}/certificate/
+   */
+  async getExamCertificate(resultId: number): Promise<Certificate> {
+    console.log('🎓 Fetching certificate for result:', resultId);
+    return this.fetchAPI(`/exam-results/${resultId}/certificate/`);
+  }
+
+  /**
+   * Récupérer tous mes certificats
+   * GET /api/certificates/
+   */
+  async getMyCertificates(): Promise<Certificate[]> {
+    console.log('🏆 Fetching my certificates');
+    return this.fetchAPI('/certificates/');
+  }
+
+  /**
+   * Alternative pour récupérer mes certificats
+   * GET /api/certificates/my_certificates/
+   */
+  async getMyCertificatesAlt(): Promise<Certificate[]> {
+    console.log('🏆 Fetching my certificates (alternative endpoint)');
+    return this.fetchAPI('/certificates/my_certificates/');
+  }
+
+  /**
+   * Récupérer un certificat spécifique
+   * GET /api/certificates/{id}/
+   */
+  async getCertificate(certificateId: number): Promise<Certificate> {
+    console.log('📜 Fetching certificate:', certificateId);
+    return this.fetchAPI(`/certificates/${certificateId}/`);
+  }
+
+  // === 🔹 MÉTHODES DE COMPATIBILITÉ ===
+
   async enrollInCourse(courseId: number): Promise<{status: string}> {
     console.log('⚠️ enrollInCourse is deprecated, use enroll instead');
     return this.enroll(courseId);
+  }
+
+  /**
+   * @deprecated Utiliser getExam() à la place
+   */
+  async getExamByLesson(lessonId: number): Promise<any> {
+    console.log('⚠️ getExamByLesson is deprecated, use getExam() instead');
+    return this.fetchAPI(`/lessons/${lessonId}/exam/`);
+  }
+
+  /**
+   * @deprecated Utiliser getExam() à la place (les questions sont incluses)
+   */
+  async getQuestionsByExam(examId: number): Promise<any[]> {
+    console.log('⚠️ getQuestionsByExam is deprecated, use getExam() instead');
+    return this.fetchAPI(`/exams/${examId}/questions/`);
+  }
+
+  /**
+   * @deprecated Utiliser submitExam() à la place
+   */
+  async submitExamAnswers(
+    examId: number,
+    answers: { question_id: number; answer_text?: string; selected_option?: number }[]
+  ): Promise<{ score: number; passed: boolean; certificate_url?: string }> {
+    console.log('⚠️ submitExamAnswers is deprecated, use submitExam() instead');
+    
+    // Conversion du format ancien vers nouveau format
+    const responses: ExamResponse[] = answers.map(answer => ({
+      question: answer.question_id,
+      selected_answers: answer.selected_option ? [answer.selected_option] : undefined,
+      text_response: answer.answer_text
+    }));
+
+    const result = await this.submitExam(examId, responses);
+    
+    return {
+      score: result.score,
+      passed: result.passed,
+      certificate_url: undefined // À adapter si nécessaire
+    };
+  }
+
+  /**
+   * @deprecated Utiliser getMyCertificates() à la place
+   */
+  async getCertificates(userId: number): Promise<any[]> {
+    console.log('⚠️ getCertificates is deprecated, use getMyCertificates() instead');
+    return this.fetchAPI(`/certificates/${userId}/`);
   }
 }
 
