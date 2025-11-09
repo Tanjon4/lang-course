@@ -14,6 +14,7 @@ export interface Level {
   title: string;
   description: string;
   order: number;
+  number:number;
   course_global: number;
   chapters: Chapter[];
   progress?: {
@@ -29,6 +30,7 @@ export interface Chapter {
   title: string;
   description: string;
   order: number;
+  number:number;
   level: number;
   lessons: Lesson[];
   progress?: {
@@ -43,6 +45,7 @@ export interface Lesson {
   title: string;
   description: string;
   content: string;
+  number:number;
   video_url?: string;
   pdf_file?: string;
   duration?: number;

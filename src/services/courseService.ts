@@ -5,7 +5,7 @@ import {
 } from '@/types/course';
 import { authService } from './authService';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lang-courses-api.onrender.com/api';
 
 class CourseService {
   private async fetchAPI(endpoint: string, options: RequestInit = {}) {

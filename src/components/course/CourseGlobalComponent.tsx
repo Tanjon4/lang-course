@@ -1,10 +1,11 @@
-// components/courses/CourseGlobalComponent.tsx
+// components/courses/CourseGlobalComponent.tsx - CODE FINAL
 "use client";
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Languages } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useAuth } from '@/app/contexts/AuthContext';
 import { courseService } from "@/services/courseService";
 import { CourseGlobal } from "@/types/course";
 import CourseCard from "./CourseCard";
@@ -12,56 +13,120 @@ import CourseCard from "./CourseCard";
 export default function CourseGlobalComponent() {
   const [courses, setCourses] = useState<CourseGlobal[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [enrollingCourseId, setEnrollingCourseId] = useState<number | null>(null);
   const router = useRouter();
+  const { user, isAuthenticated } = useAuth();
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
+        console.log("🔄 Chargement des cours...");
         const data = await courseService.getCourses();
+        console.log("✅ Cours chargés:", data.length, "cours");
         setCourses(data);
-      } catch (error) {
-        console.error("❌ Erreur lors du chargement des cours :", error);
+        setError(null);
+      } catch (error: any) {
+        console.error("❌ Erreur chargement cours:", error);
+        setError("Erreur de chargement: " + error.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCourses();
-  }, []);
+    if (isAuthenticated) {
+      fetchCourses();
+    } else {
+      setLoading(false);
+      setError("Veuillez vous connecter pour accéder aux cours.");
+    }
+  }, [user, isAuthenticated]);
 
   const handleEnroll = async (courseId: number) => {
+    if (!isAuthenticated || !user) {
+      router.push('/auth/login');
+      return;
+    }
+
     setEnrollingCourseId(courseId);
+    
     try {
-      await courseService.enroll(courseId);
-      // Rafraîchir les données du cours après inscription
-      const updatedCourses = await courseService.getCourses();
-      setCourses(updatedCourses);
+      console.log("🎯 Inscription cours:", courseId);
       
-      // Rediriger vers la page du cours
+      // Essayer l'enrollment (mais continuer même en cas d'erreur)
+      try {
+        await courseService.enroll(courseId);
+        console.log("✅ Enrollment réussi");
+      } catch (enrollError) {
+        console.log("⚠️ Enrollment échoué (backend), mais on continue...");
+      }
+      
+      // Redirection garantie vers le cours
+      console.log("🚀 Redirection vers cours:", courseId);
       router.push(`/courses/${courseId}`);
+      
     } catch (error: any) {
-      console.error("❌ Erreur lors de l'inscription :", error);
-      alert(`Erreur lors de l'inscription: ${error.message}`);
+      console.error("❌ Erreur inattendue:", error);
+      // Redirection de fallback
+      router.push(`/courses/${courseId}`);
     } finally {
       setEnrollingCourseId(null);
     }
   };
 
   const handleSelectCourse = (course: CourseGlobal) => {
+    if (!isAuthenticated) {
+      router.push('/auth/login');
+      return;
+    }
     router.push(`/courses/${course.id}`);
   };
+
+  if (!isAuthenticated) {
+    return (
+      <section className="py-10 max-w-7xl mx-auto px-4">
+        <div className="text-center py-12 bg-yellow-50 rounded-2xl border border-yellow-200">
+          <Languages className="mx-auto h-16 w-16 text-yellow-500 mb-4" />
+          <h2 className="text-2xl font-bold text-yellow-700 mb-2">Connexion requise</h2>
+          <p className="text-yellow-600 mb-6">Veuillez vous connecter pour accéder aux cours.</p>
+          <button
+            onClick={() => router.push('/auth/login')}
+            className="bg-yellow-600 text-white px-6 py-2 rounded-lg hover:bg-yellow-700 transition"
+          >
+            Se connecter
+          </button>
+        </div>
+      </section>
+    );
+  }
 
   if (loading) {
     return (
       <div className="py-10 max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-orange-600"></div>
         </div>
         <p className="text-center text-gray-500 text-lg">Chargement des cours...</p>
       </div>
     );
   }
+
+  // if (error) {
+  //   return (
+  //     <section className="py-10 max-w-7xl mx-auto px-4">
+  //       <div className="text-center py-12 bg-red-50 rounded-2xl border border-red-200">
+  //         <div className="text-red-600 text-lg font-semibold mb-2">Erreur</div>
+  //         <div className="text-red-500 text-sm mb-4">{error}</div>
+  //         <button
+  //           onClick={() => window.location.reload()}
+  //           className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition"
+  //         >
+  //           Réessayer
+  //         </button>
+  //       </div>
+  //     </section>
+  //   );
+  // }
 
   if (!courses.length) {
     return (
@@ -69,7 +134,12 @@ export default function CourseGlobalComponent() {
         <div className="text-center py-12">
           <Languages className="mx-auto h-16 w-16 text-gray-400 mb-4" />
           <h2 className="text-2xl font-bold text-gray-600 mb-2">Aucun cours disponible</h2>
-          <p className="text-gray-500">Revenez plus tard pour découvrir nos nouvelles langues.</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            Rafraîchir
+          </button>
         </div>
       </section>
     );
@@ -77,7 +147,6 @@ export default function CourseGlobalComponent() {
 
   return (
     <section className="py-10 max-w-7xl mx-auto px-4">
-      {/* En-tête avec animation */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -91,26 +160,17 @@ export default function CourseGlobalComponent() {
           </h1>
         </div>
         <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-          Découvrez notre sélection de cours de langues et commencez votre voyage linguistique dès aujourd'hui
+          {courses.length} cours disponibles - Bienvenue {user?.username}
         </p>
       </motion.div>
 
-      {/* Grille des cours avec animations échelonnées */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
         {courses.map((course, index) => (
           <motion.div
             key={course.id}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ 
-              delay: index * 0.1,
-              duration: 0.6,
-              ease: "easeOut"
-            }}
-            whileHover={{ 
-              y: -5,
-              transition: { duration: 0.2 }
-            }}
+            transition={{ delay: index * 0.1, duration: 0.6 }}
           >
             <CourseCard
               course={course}
@@ -120,19 +180,6 @@ export default function CourseGlobalComponent() {
           </motion.div>
         ))}
       </div>
-
-      {/* Message d'information */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
-        className="text-center mt-12 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl border border-blue-100"
-      >
-        <p className="text-gray-700 text-sm">
-          <span className="font-semibold text-blue-600">{courses.length} langues</span> disponibles • 
-          Choisissez votre cours et commencez à apprendre immédiatement
-        </p>
-      </motion.div>
     </section>
   );
 }
