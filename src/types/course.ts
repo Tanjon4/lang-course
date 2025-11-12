@@ -51,6 +51,7 @@ export interface Lesson {
   duration?: number;
   order: number;
   chapter: number;
+  completed: boolean;
   is_published: boolean;
   published_at?: string;
   progress?: {

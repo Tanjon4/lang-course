@@ -8,6 +8,7 @@ import {
   ChevronUp,
 } from 'lucide-react';
 import { CourseGlobal } from '@/types/course';
+import { useTranslation } from 'react-i18next';
 
 interface CourseCardProps {
   course: CourseGlobal;
@@ -22,6 +23,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onSelect, onEnroll }) =
   const [isVisible, setIsVisible] = useState(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -144,12 +146,12 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onSelect, onEnroll }) =
               {showFullDescription ? (
                 <>
                   <ChevronUp className="h-4 w-4" />
-                  Voir moins
+                  {t("Voir moins")}
                 </>
               ) : (
                 <>
                   <ChevronDown className="h-4 w-4" />
-                  Voir plus
+                 {t(" Voir plus")}
                 </>
               )}
             </button>
@@ -177,12 +179,12 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onSelect, onEnroll }) =
           {isEnrolling ? (
             <>
               <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
-              <span className="animate-pulse">Inscription...</span>
+              <span className="animate-pulse">{t("Inscription")}</span>
             </>
           ) : (
             <>
               <Star className="h-5 w-5 animate-bounce" />
-              <span>Get Started</span>
+              <span>{t("Get_Started")}</span>
             </>
           )}
         </button>

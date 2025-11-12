@@ -9,6 +9,7 @@ import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import { useAuth } from '@/app/contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -18,6 +19,7 @@ export default function LoginPage() {
   const params = useParams();
   const lang = params?.lang as string;
   const { login } = useAuth();
+  const { t } = useTranslation();
 
   // ✅ Login avec email/password backend - UTILISE LE AUTHCONTEXT
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,9 +37,9 @@ export default function LoginPage() {
       console.error('❌ Erreur login:', error);
       
       if (error.message && error.message.includes('401')) {
-        alert("❌ Email ou mot de passe incorrect !");
+        alert(t('invalidCredentials'));
       } else {
-        alert(`❌ Erreur de connexion : ${error.message || "Identifiants invalides"}`);
+        alert(`${t('loginError')} ${error.message || "Identifiants invalides"}`);
       }
     } finally {
       setIsLoading(false);
@@ -84,7 +86,7 @@ export default function LoginPage() {
           return;
         }
         
-        alert(`❌ Erreur Google login: ${errorData.error || errorData.detail || "Erreur serveur"}`);
+        alert(`❌ ${t('loginError')}: ${errorData.error || errorData.detail || "Erreur serveur"}`);
         return;
       }
 
@@ -104,14 +106,14 @@ export default function LoginPage() {
           window.location.href = `/${lang}/auth/profile`;
         }, 100);
         
-        alert("✅ Connexion Google réussie !");
+        alert(t('googleSuccess'));
       } else {
         throw new Error('Tokens manquants dans la réponse');
       }
       
     } catch (error: any) {
       console.error('❌ Erreur login Google Firebase:', error);
-      alert("❌ Erreur de connexion Google. Veuillez réessayer.");
+      alert(t('googleLoginError'));
     } finally {
       setIsLoading(false);
     }
@@ -138,7 +140,7 @@ export default function LoginPage() {
         localStorage.setItem('refreshToken', data.refresh);
         
         console.log('✅ Standard login with Google successful');
-        alert("✅ Connexion réussie !");
+        alert(t('loginSuccess'));
         
         setTimeout(() => {
           window.location.href = `/${lang}/auth/profile`;
@@ -148,7 +150,7 @@ export default function LoginPage() {
         // Si le compte n'existe pas, proposez l'inscription
         if (res.status === 401) {
           const shouldRegister = confirm(
-            `Compte non trouvé pour ${user.email}. Voulez-vous créer un compte avec votre compte Google ?`
+            `${t('accountNotFound')} ${user.email}. ${t('createAccountWithGoogle')}`
           );
           
           if (shouldRegister) {
@@ -161,7 +163,7 @@ export default function LoginPage() {
       }
     } catch (error) {
       console.error('❌ Standard login with Google failed:', error);
-      alert("❌ Erreur lors de la connexion. Veuillez réessayer.");
+      alert(t('googleLoginError'));
     }
   };
 
@@ -184,11 +186,10 @@ export default function LoginPage() {
               <div className="space-y-4">
                 <div className="flex items-center space-x-2">
                   <Sparkles className="h-6 w-6 text-yellow-300" />
-                  <h2 className="text-4xl font-bold">Bienvenue !</h2>
+                  <h2 className="text-4xl font-bold">{t('welcome')}</h2>
                 </div>
                 <p className="text-indigo-100 text-lg leading-relaxed">
-                  Reconnectez-vous à votre espace d'apprentissage des langues. 
-                  Reprenez votre voyage linguistique là où vous l'avez laissé.
+                  {t('welcomeMessage')}
                 </p>
               </div>
 
@@ -206,7 +207,7 @@ export default function LoginPage() {
                       <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                     </svg>
                   </div>
-                  <span className="text-white font-medium">Continuer avec Google</span>
+                  <span className="text-white font-medium">{t('continueWithGoogle')}</span>
                 </button>
 
                 {/* Forgot Password Link */}
@@ -216,15 +217,15 @@ export default function LoginPage() {
                     className="text-indigo-200 hover:text-white transition-colors duration-300 text-sm font-medium inline-flex items-center space-x-1"
                   >
                     <Lock className="h-4 w-4" />
-                    <span>Mot de passe oublié ?</span>
+                    <span>{t('forgotPassword')}</span>
                   </Link>
                 </div>
               </div>
 
               <div className="pt-8 border-t border-white/20">
                 <p className="text-indigo-200 text-sm">
-                  "La maîtrise d'une nouvelle langue est comme une autre âme."<br />
-                  <span className="italic">- Charlemagne</span>
+                  {t('charlemagneQuote')}<br />
+                  <span className="italic">{t('charlemagne')}</span>
                 </p>
               </div>
             </div>
@@ -233,15 +234,15 @@ export default function LoginPage() {
           {/* Section formulaire - Côté droit */}
           <div className="lg:w-1/2 p-12 flex flex-col justify-center">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Connexion</h2>
-              <p className="text-gray-600">Accédez à votre compte personnel</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">{t('loginTitle')}</h2>
+              <p className="text-gray-600">{t('loginSubtitle')}</p>
             </div>
 
             <form className="space-y-6" onSubmit={handleSubmit}>
               {/* Email Field */}
               <div className="space-y-2">
                 <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
-                  Adresse email
+                  {t('emailLabel')}
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -253,7 +254,7 @@ export default function LoginPage() {
                     required
                     value={formData.email}
                     onChange={e => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="votre@email.com"
+                    placeholder={t('emailPlaceholder')}
                     className="w-full pl-10 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 bg-gray-50/50 hover:bg-white"
                   />
                 </div>
@@ -262,7 +263,7 @@ export default function LoginPage() {
               {/* Password Field */}
               <div className="space-y-2">
                 <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
-                  Mot de passe
+                  {t('passwordLabel')}
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -274,7 +275,7 @@ export default function LoginPage() {
                     required
                     value={formData.password}
                     onChange={e => setFormData({ ...formData, password: e.target.value })}
-                    placeholder="Votre mot de passe"
+                    placeholder={t('passwordPlaceholder')}
                     className="w-full pl-10 pr-12 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 bg-gray-50/50 hover:bg-white"
                   />
                   <button
@@ -295,19 +296,19 @@ export default function LoginPage() {
               >
                 <LogIn className="h-5 w-5" />
                 <span className="font-semibold">
-                  {isLoading ? 'Connexion en cours...' : 'Se connecter'}
+                  {isLoading ? t('loggingIn') : t('loginButton')}
                 </span>
               </button>
 
               {/* Register Link */}
               <div className="text-center pt-6">
                 <p className="text-gray-600">
-                  Pas encore de compte ?{' '}
+                  {t('noAccount')}{' '}
                   <Link 
                     href={`/${lang}/auth/register`}
                     className="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors duration-300 inline-flex items-center space-x-1"
                   >
-                    <span>Créer un compte</span>
+                    <span>{t('createAccount')}</span>
                     <span>→</span>
                   </Link>
                 </p>

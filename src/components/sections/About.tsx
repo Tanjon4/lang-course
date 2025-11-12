@@ -92,18 +92,18 @@ const About: React.FC = () => {
   ];
 
   const stats = [
-    { number: "50K+", label: "Utilisateurs actifs", icon: Users },
-    { number: "120+", label: "Pays desservis", icon: Globe },
-    { number: "15", label: "Ans d'expérience", icon: Award },
-    { number: "98%", label: "Satisfaction clients", icon: Heart },
+    { number: "50K+", label: t("actif_user"), icon: Users },
+    { number: "120+", label: t("Pays_desservis"), icon: Globe },
+    { number: "15", label: t("Ans_expérience"), icon: Award },
+    { number: "98%", label: t("Satisfaction"), icon: Heart },
   ];
 
   const timeline = [
-    { year: "2008", event: "Fondation de l'entreprise", description: "Lancement avec une petite équipe passionnée" },
-    { year: "2012", event: "Première innovation majeure", description: "Développement de notre technologie propriétaire" },
-    { year: "2016", event: "Expansion internationale", description: "Ouverture de nos premiers bureaux à l'étranger" },
-    { year: "2020", event: "Reconnaissance industrielle", description: "Prix de l'innovation et croissance accélérée" },
-    { year: "2024", event: "Leader du marché", description: "Positionnement consolidé avec de nouveaux services" },
+    { year: "2023", event: t("Fondation"), description: t("lancement") },
+    { year: "2024", event: t("innovation_majeure"), description: t("dev") },
+    { year: "2024", event: t("Expansion"), description: t("ouverture") },
+    { year: "2025", event: t("Reconnaissance"), description: t("inno") },
+    { year: "2025", event: t("aprentissage_langue"), description: t("pos")},
   ];
 
   // Fonction helper pour les couleurs
@@ -136,7 +136,7 @@ const About: React.FC = () => {
             <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full border border-white/30 mb-8">
               <Sparkles className="w-5 h-5 text-white" />
               <span className="text-white font-semibold text-sm uppercase tracking-wider">
-                Depuis 2008
+                {t("depuis") || "Depuis 2024"}
               </span>
             </div>
 
@@ -150,11 +150,11 @@ const About: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="bg-white text-orange-300 px-8 py-4 rounded-xl font-bold hover:bg-orange-50 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2">
-                Découvrir nos services
+                {t("Découvrir_services") || "Découvrir nos services"}
                 <ArrowRight className="w-5 h-5" />
               </button>
               <button className="border-2 border-white text-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-orange-600 transition-all duration-300">
-                Rencontrer l'équipe
+                {t("Rencontrer") || "Rencontrer l'équipe"}
               </button>
             </div>
           </motion.div>
@@ -207,10 +207,10 @@ const About: React.FC = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl lg:text-5xl font-black text-gray-900 mb-4">
-              Notre <span className="bg-gradient-to-r from-orange-300 to-amber-400 bg-clip-text text-transparent">Parcours</span>
+              {t("notre")} <span className="bg-gradient-to-r from-orange-300 to-amber-400 bg-clip-text text-transparent">{t("Parcours")}</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Découvrez les étapes clés qui ont marqué notre croissance et notre succès.
+              {t("p_decouvrez")}
             </p>
           </motion.div>
 
@@ -263,14 +263,14 @@ const About: React.FC = () => {
               <div className="inline-flex items-center gap-2 bg-orange-100 px-6 py-3 rounded-full border border-orange-200 mb-6">
                 <Target className="w-5 h-5 text-orange-600" />
                 <span className="text-orange-600 font-semibold text-sm uppercase tracking-wider">
-                  Nos Valeurs
+                  {t("valeur_title")}
                 </span>
               </div>
               <h2 className="text-4xl lg:text-5xl font-black text-gray-900 mb-4">
-                Ce qui nous <span className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">distingue</span>
+                {t("h2_nous")} <span className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">{t("span_d")}</span>
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Les principes fondamentaux qui guident chacune de nos actions et décisions.
+                {t("fondementaux")}
               </p>
             </motion.div>
 
@@ -318,17 +318,17 @@ const About: React.FC = () => {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl lg:text-5xl font-black text-white mb-6">
-              Prêt à transformer votre vision en réalité ?
+              {t("h2_vision")}
             </h2>
             <p className="text-orange-100 text-xl lg:text-2xl mb-8 max-w-3xl mx-auto">
-              Rejoignez les milliers de clients qui nous font confiance pour leurs projets les plus ambitieux.
+              {t("p_rej")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="bg-white text-orange-600 px-8 py-4 rounded-xl font-bold hover:bg-orange-50 transition-all duration-300 shadow-lg hover:shadow-xl text-lg">
-                Démarrer un projet
+                {t("start")}
               </button>
               <button className="border-2 border-white text-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-orange-600 transition-all duration-300 text-lg">
-                Contactez-nous
+                {t("contact_title")}
               </button>
             </div>
           </motion.div>

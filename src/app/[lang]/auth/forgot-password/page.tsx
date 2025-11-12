@@ -5,6 +5,7 @@ import { Mail, ArrowLeft, CheckCircle, Sparkles, Languages, Shield } from 'lucid
 import Link from 'next/link';
 import Layout from '@/components/layout/BaseLayout';
 import { useParams } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ export default function ForgotPasswordPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const params = useParams();
   const lang = params.lang as string;
+  const {t} = useTranslation()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,17 +53,17 @@ export default function ForgotPasswordPage() {
                   <div className="p-2 bg-white/20 rounded-xl">
                     <Languages className="h-8 w-8" />
                   </div>
-                  <h1 className="text-2xl font-bold">LangCourses</h1>
+                  <h1 className="text-2xl font-bold">{t("cours_langue")}</h1>
                 </div>
                 
                 <div className="space-y-4">
                   <div className="flex items-center space-x-2">
                     <Sparkles className="h-6 w-6 text-yellow-300" />
-                    <h2 className="text-4xl font-bold">Sécurité assurée !</h2>
+                    <h2 className="text-4xl font-bold">{t("securité")}</h2>
                   </div>
                   <p className="text-indigo-100 text-lg leading-relaxed">
-                    Votre sécurité est notre priorité. Nous avons envoyé un lien sécurisé 
-                    pour réinitialiser votre mot de passe en toute confidentialité.
+                    {t("p1_securité")}
+                    {t("p2_securité")}
                   </p>
                 </div>
 
@@ -69,22 +71,22 @@ export default function ForgotPasswordPage() {
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3">
                       <CheckCircle className="h-5 w-5 text-green-300" />
-                      <span className="text-indigo-100">Lien sécurisé envoyé</span>
+                      <span className="text-indigo-100">{t("sp_securité")}</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <CheckCircle className="h-5 w-5 text-green-300" />
-                      <span className="text-indigo-100">Valable 1 heure</span>
+                      <span className="text-indigo-100">{t("sp_heure")}</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <CheckCircle className="h-5 w-5 text-green-300" />
-                      <span className="text-indigo-100">Confidentialité garantie</span>
+                      <span className="text-indigo-100">{t("garatie")}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="pt-8 border-t border-white/20">
                   <p className="text-indigo-200 text-sm">
-                    "La sécurité n'est pas un produit, mais un processus."<br />
+                    {t("citations")}<br />
                     <span className="italic">- Bruce Schneier</span>
                   </p>
                 </div>
@@ -96,10 +98,10 @@ export default function ForgotPasswordPage() {
               <div className="text-center mb-8">
                 <CheckCircle className="h-20 w-20 text-green-500 mx-auto mb-6" />
                 <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                  Email envoyé !
+                  {t("envoyé")}
                 </h2>
                 <p className="text-gray-600 text-lg">
-                  Un lien de réinitialisation sécurisé a été envoyé à
+                  {t("p_renitialisation")}
                 </p>
                 <p className="text-indigo-600 font-semibold text-lg mt-2">
                   {email}
@@ -108,14 +110,14 @@ export default function ForgotPasswordPage() {
 
               <div className="space-y-6 text-center">
                 <p className="text-gray-600 mb-6">
-                  Vérifiez votre boîte de réception et suivez les instructions 
-                  pour réinitialiser votre mot de passe en toute sécurité.
+                  {t("p1_link")}
+                  {t("p2_link")}
                 </p>
                 
                 <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
-                  <p className="text-yellow-800 text-sm">
-                    <strong>💡 Conseil :</strong> Vérifiez également votre dossier spam 
-                    si vous ne voyez pas notre email.
+                  <p className="text-yellow-800 text-sm">{t("verify_spam")}
+                    <strong>{t("conseil")}</strong> 
+                    {t("si")}
                   </p>
                 </div>
 
@@ -124,7 +126,7 @@ export default function ForgotPasswordPage() {
                   className="inline-flex items-center justify-center space-x-3 w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
                   <ArrowLeft className="h-5 w-5" />
-                  <span className="font-semibold">Retour à la connexion</span>
+                  <span className="font-semibold">{t("return_login")}</span>
                 </Link>
               </div>
             </div>
@@ -148,17 +150,17 @@ export default function ForgotPasswordPage() {
                 <div className="p-2 bg-white/20 rounded-xl">
                   <Languages className="h-8 w-8" />
                 </div>
-                <h1 className="text-2xl font-bold">LangCourses</h1>
+                <h1 className="text-2xl font-bold">{t("cours_langue")}</h1>
               </div>
               
               <div className="space-y-4">
                 <div className="flex items-center space-x-2">
                   <Shield className="h-6 w-6 text-yellow-300" />
-                  <h2 className="text-4xl font-bold">Mot de passe oublié ?</h2>
+                  <h2 className="text-4xl font-bold">{t("forgot_password")}</h2>
                 </div>
                 <p className="text-indigo-100 text-lg leading-relaxed">
-                  Ne vous inquiétez pas ! Nous allons vous aider à récupérer l'accès 
-                  à votre compte en toute sécurité.
+                  {t("p_text")}
+                  {t("p1_text")}
                 </p>
               </div>
 
@@ -166,27 +168,27 @@ export default function ForgotPasswordPage() {
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-green-300" />
-                    <span className="text-indigo-100">Lien de réinitialisation sécurisé</span>
+                    <span className="text-indigo-100">{t("sp_link")}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-green-300" />
-                    <span className="text-indigo-100">Instructions simples à suivre</span>
+                    <span className="text-indigo-100">{t("instruction")}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-green-300" />
-                    <span className="text-indigo-100">Accès rapide à votre compte</span>
+                    <span className="text-indigo-100">{t("acces_rappide")}</span>
                   </div>
                 </div>
 
                 {/* Lien vers login */}
                 <div className="text-center pt-4">
                   <p className="text-indigo-200">
-                    Vous vous souvenez de votre mot de passe ?{' '}
+                    {t("souvenez_mdp")}{' '}
                     <Link 
                       href={`/${lang}/auth/login`} 
                       className="text-white font-semibold hover:text-yellow-200 transition-colors duration-300 inline-flex items-center space-x-1"
                     >
-                      <span>Se connecter</span>
+                      <span>{t("login")}</span>
                       <span>→</span>
                     </Link>
                   </p>
@@ -195,7 +197,7 @@ export default function ForgotPasswordPage() {
 
               <div className="pt-8 border-t border-white/20">
                 <p className="text-indigo-200 text-sm">
-                  "La meilleure sécurité est celle que vous ne remarquez pas."<br />
+                  {t("citation2")}<br />
                   <span className="italic">- Proverbe informatique</span>
                 </p>
               </div>
@@ -205,15 +207,15 @@ export default function ForgotPasswordPage() {
           {/* Section formulaire - Côté droit */}
           <div className="lg:w-1/2 p-12 flex flex-col justify-center">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Réinitialisation</h2>
-              <p className="text-gray-600">Entrez votre email pour recevoir un lien sécurisé</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">{t("Réinitialisation")}</h2>
+              <p className="text-gray-600">{t("enter_email")}</p>
             </div>
 
             <form className="space-y-6" onSubmit={handleSubmit}>
               {/* Email Field */}
               <div className="space-y-2">
                 <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
-                  Adresse email
+                  {t("email_add")}
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -231,7 +233,7 @@ export default function ForgotPasswordPage() {
                   />
                 </div>
                 <p className="text-sm text-gray-600 mt-2">
-                  Nous enverrons un lien de réinitialisation sécurisé à cette adresse.
+                  {t("link_2")}
                 </p>
               </div>
 
@@ -254,7 +256,7 @@ export default function ForgotPasswordPage() {
                   className="inline-flex items-center space-x-2 text-gray-600 hover:text-indigo-600 transition-colors duration-300 font-medium"
                 >
                   <ArrowLeft className="h-4 w-4" />
-                  <span>Retour à la connexion</span>
+                  <span>{t("back_connex")}</span>
                 </Link>
               </div>
             </form>
@@ -264,10 +266,11 @@ export default function ForgotPasswordPage() {
               <div className="flex items-start space-x-3">
                 <Shield className="h-5 w-5 text-indigo-600 mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium text-gray-900">Sécurité</p>
+                  <p className="text-sm font-medium text-gray-900">{t("security")}</p>
                   <p className="text-sm text-gray-600 mt-1">
-                    Le lien de réinitialisation est valable 1 heure pour votre sécurité. 
-                    Nous ne partagerons jamais votre email avec des tiers.
+                    {t("duration")}
+                    {t("duration1")}
+                    
                   </p>
                 </div>
               </div>

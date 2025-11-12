@@ -29,31 +29,28 @@ class CourseService {
     try {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
       
-      console.log('📥 CourseService - Response status:', response.status);
-      
-      if (response.status === 401) {
-        console.log('❌ CourseService - Token expired or invalid');
-        throw new Error('TOKEN_EXPIRED');
-      }
-      
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('❌ CourseService - API error:', response.status, errorText);
-        throw new Error(`API error: ${response.status} - ${errorText}`);
+        
+        // Essayer de parser l'erreur comme JSON
+        try {
+          const errorJson = JSON.parse(errorText);
+          throw new Error(errorJson.error || errorJson.message || `API error: ${response.status}`);
+        } catch {
+          // Si pas JSON, utiliser le texte brut
+          throw new Error(`API error: ${response.status} - ${errorText}`);
+        }
       }
-      
-      if (response.status === 204) {
-        return null;
+    
+        return await response.json();
+      } catch (error) {
+        console.error('❌ CourseService - Fetch error:', error);
+        throw error;
       }
-      
-      return await response.json();
-    } catch (error) {
-      console.error('❌ CourseService - Fetch error:', error);
-      throw error;
     }
-  }
+  
 
-  // === 🔹 COURSES ===
+  // === 🔹 COURSES (CourseGlobal) ===
 
   async enroll(courseId: number): Promise<{status: string}> {
     console.log('🎯 CourseService.enroll called for course:', courseId);
@@ -80,7 +77,19 @@ class CourseService {
     return this.fetchAPI(`/courses/${courseId}/progress/`);
   }
 
-  // === 🔹 LEVELS, CHAPTERS, LESSONS ===
+  // === 🔹 LEVELS ===
+
+  async getLevels(courseGlobalId?: number): Promise<Level[]> {
+    const params = new URLSearchParams();
+    if (courseGlobalId) params.append('course_global', courseGlobalId.toString());
+    
+    const endpoint = `/levels/${params.toString() ? `?${params}` : ''}`;
+    return this.fetchAPI(endpoint);
+  }
+
+  async getLevel(levelId: number): Promise<Level> {
+    return this.fetchAPI(`/levels/${levelId}/`);
+  }
 
   async unlockLevel(levelId: number): Promise<{status: string}> {
     return this.fetchAPI(`/levels/${levelId}/unlock/`, { method: 'POST' });
@@ -88,6 +97,20 @@ class CourseService {
 
   async completeLevel(levelId: number): Promise<{status: string, next_content_unlocked: boolean}> {
     return this.fetchAPI(`/levels/${levelId}/complete/`, { method: 'POST' });
+  }
+
+  // === 🔹 CHAPTERS ===
+
+  async getChapters(levelId?: number): Promise<Chapter[]> {
+    const params = new URLSearchParams();
+    if (levelId) params.append('level', levelId.toString());
+    
+    const endpoint = `/chapters/${params.toString() ? `?${params}` : ''}`;
+    return this.fetchAPI(endpoint);
+  }
+
+  async getChapter(chapterId: number): Promise<Chapter> {
+    return this.fetchAPI(`/chapters/${chapterId}/`);
   }
 
   async unlockChapter(chapterId: number): Promise<{status: string}> {
@@ -98,12 +121,37 @@ class CourseService {
     return this.fetchAPI(`/chapters/${chapterId}/complete/`, { method: 'POST' });
   }
 
+  // === 🔹 LESSONS ===
+
+  async getLessons(chapterId?: number): Promise<Lesson[]> {
+    const params = new URLSearchParams();
+    if (chapterId) params.append('chapter', chapterId.toString());
+    
+    const endpoint = `/lessons/${params.toString() ? `?${params}` : ''}`;
+    return this.fetchAPI(endpoint);
+  }
+
+  async getLesson(lessonId: number): Promise<Lesson> {
+    return this.fetchAPI(`/lessons/${lessonId}/`);
+  }
+
   async unlockLesson(lessonId: number): Promise<{status: string}> {
     return this.fetchAPI(`/lessons/${lessonId}/unlock/`, { method: 'POST' });
   }
 
-  async completeLesson(lessonId: number): Promise<{status: string, next_content_unlocked: boolean}> {
-    return this.fetchAPI(`/lessons/${lessonId}/complete/`, { method: 'POST' });
+  // async completeLesson(lessonId: number): Promise<{status: string, next_content_unlocked: boolean}> {
+  //   return this.fetchAPI(`/lessons/${lessonId}/complete/`, { method: 'POST' });
+  // }
+  async completeLesson(lessonId: number): Promise<{ 
+    status: string; 
+    next_content_unlocked: boolean;
+    lesson_id: number;
+    progress_id: number;
+    next_content?: any;
+  }> {
+    return this.fetchAPI(`/lessons/${lessonId}/complete/`, {
+      method: 'POST',
+    });
   }
 
   async trackLessonTime(lessonId: number, timeSpent: number): Promise<{status: string}> {
@@ -113,14 +161,22 @@ class CourseService {
     });
   }
 
-  // === 🔹 PROGRESS ===
+  async getLessonProgress(lessonId: number): Promise<any> {
+    return this.fetchAPI(`/lessons/${lessonId}/progress/`);
+  }
+
+  // === 🔹 USER PROGRESS ===
+
+  async getUserProgress(): Promise<any[]> {
+    return this.fetchAPI('/user-progress/');
+  }
 
   async getUserProgressOverview(): Promise<UserProgressOverview> {
-    return this.fetchAPI('/progress/overview/');
+    return this.fetchAPI('/user-progress/overview/');
   }
 
   async getUserStreak(): Promise<{streak: number}> {
-    return this.fetchAPI('/progress/streak/');
+    return this.fetchAPI('/user-progress/streak/');
   }
 
   // === 🔹 EXAMS & CERTIFICATES ===

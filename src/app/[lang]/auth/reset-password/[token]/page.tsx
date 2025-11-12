@@ -4,15 +4,15 @@ import { Lock, CheckCircle, ArrowLeft, Sparkles, Languages, Shield, Key } from '
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import Layout from '@/components/layout/BaseLayout';
-
+import { useTranslation } from 'react-i18next';
 
 export default function ResetPasswordPage() {
   const router = useRouter();
   const params = useParams();
   const token = params.token as string;
   const decodedToken = decodeURIComponent(token);
-
   const lang = params.lang as string;
+  const { t } = useTranslation();
 
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
@@ -48,30 +48,19 @@ export default function ResetPasswordPage() {
     return colors[strength - 1] || 'bg-gray-300';
   };
 
-  const getStrengthText = (strength: number) => {
-    const texts = [
-      'Très faible',
-      'Faible',
-      'Moyen',
-      'Fort',
-      'Très fort'
-    ];
-    return texts[strength - 1] || 'Non évalué';
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
 
     if (password !== password2) {
-      setError('Les mots de passe ne correspondent pas');
+      setError(t('formErrors_f.passwordsMismatch'));
       setIsLoading(false);
       return;
     }
 
     if (passwordStrength < 3) {
-      setError('Le mot de passe est trop faible');
+      setError(t('formErrors_f.passwordTooWeak'));
       setIsLoading(false);
       return;
     }
@@ -89,10 +78,10 @@ export default function ResetPasswordPage() {
         setIsSubmitted(true);
         setTimeout(() => router.push('/login'), 3000);
       } else {
-        setError(data.error || 'Erreur lors de la réinitialisation');
+        setError(data.error || t('errors_f.resetError'));
       }
     } catch (err) {
-      setError('Erreur réseau. Réessayez.');
+      setError(t('errors_f.networkError'));
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -102,13 +91,12 @@ export default function ResetPasswordPage() {
   if (isSubmitted) {
     return (
       <Layout>
-        
         <br /> <br />
         <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
           <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
             
             {/* Section de confirmation - Côté gauche */}
-            <div className="lg:w-1/2 bg-linear-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
+            <div className="lg:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
               <div className="space-y-8">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white/20 rounded-xl">
@@ -120,11 +108,10 @@ export default function ResetPasswordPage() {
                 <div className="space-y-4">
                   <div className="flex items-center space-x-2">
                     <Sparkles className="h-6 w-6 text-yellow-300" />
-                    <h2 className="text-4xl font-bold">Mot de passe mis à jour !</h2>
+                    <h2 className="text-4xl font-bold">{t('success.title')}</h2>
                   </div>
                   <p className="text-indigo-100 text-lg leading-relaxed">
-                    Votre sécurité est renforcée. Votre nouveau mot de passe a été 
-                    enregistré avec succès et vous pouvez maintenant vous connecter.
+                    {t('success.description')}
                   </p>
                 </div>
 
@@ -132,23 +119,23 @@ export default function ResetPasswordPage() {
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3">
                       <CheckCircle className="h-5 w-5 text-green-300" />
-                      <span className="text-indigo-100">Mot de passe sécurisé</span>
+                      <span className="text-indigo-100">{t('success.benefits.secure')}</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <CheckCircle className="h-5 w-5 text-green-300" />
-                      <span className="text-indigo-100">Compte protégé</span>
+                      <span className="text-indigo-100">{t('success.benefits.protected')}</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <CheckCircle className="h-5 w-5 text-green-300" />
-                      <span className="text-indigo-100">Redirection automatique</span>
+                      <span className="text-indigo-100">{t('success.benefits.redirect')}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="pt-8 border-t border-white/20">
                   <p className="text-indigo-200 text-sm">
-                    "La sécurité commence par un bon mot de passe."<br />
-                    <span className="italic">- Bonne pratique</span>
+                    {t('success.quote.text')}<br />
+                    <span className="italic">{t('success.quote.author')}</span>
                   </p>
                 </div>
               </div>
@@ -159,10 +146,10 @@ export default function ResetPasswordPage() {
               <div className="text-center mb-8">
                 <CheckCircle className="h-20 w-20 text-green-500 mx-auto mb-6" />
                 <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                  Réinitialisation réussie !
+                  {t('success.resetSuccess')}
                 </h2>
                 <p className="text-gray-600 text-lg">
-                  Votre mot de passe a été modifié avec succès
+                  {t('success.passwordChanged')}
                 </p>
               </div>
 
@@ -171,24 +158,24 @@ export default function ResetPasswordPage() {
                   <div className="flex items-center justify-center space-x-3">
                     <Shield className="h-8 w-8 text-green-600" />
                     <div>
-                      <p className="text-green-800 font-semibold">Compte sécurisé</p>
+                      <p className="text-green-800 font-semibold">{t('success.accountSecure')}</p>
                       <p className="text-green-700 text-sm mt-1">
-                        Votre compte est maintenant protégé par votre nouveau mot de passe
+                        {t('success.accountProtected')}
                       </p>
                     </div>
                   </div>
                 </div>
 
                 <p className="text-gray-600 mb-6">
-                  Vous serez redirigé automatiquement vers la page de connexion dans quelques secondes.
+                  {t('success.autoRedirect')}
                 </p>
 
                 <Link
                   href={`/${lang}/auth/login`}
-                  className="inline-flex items-center justify-center space-x-3 w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center justify-center space-x-3 w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
                   <ArrowLeft className="h-5 w-5" />
-                  <span className="font-semibold">Se connecter maintenant</span>
+                  <span className="font-semibold">{t('success.loginNow')}</span>
                 </Link>
               </div>
             </div>
@@ -205,7 +192,7 @@ export default function ResetPasswordPage() {
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
           {/* Section de bienvenue - Côté gauche */}
-          <div className="lg:w-1/2 bg-linear-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
+          <div className="lg:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
             <div className="space-y-8">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-white/20 rounded-xl">
@@ -217,11 +204,10 @@ export default function ResetPasswordPage() {
               <div className="space-y-4">
                 <div className="flex items-center space-x-2">
                   <Key className="h-6 w-6 text-yellow-300" />
-                  <h2 className="text-4xl font-bold">Nouveau mot de passe</h2>
+                  <h2 className="text-4xl font-bold">{t('form_f.title')}</h2>
                 </div>
                 <p className="text-indigo-100 text-lg leading-relaxed">
-                  Choisissez un mot de passe sécurisé pour protéger votre compte. 
-                  Un bon mot de passe est essentiel pour votre sécurité en ligne.
+                  {t('form_f.description')}
                 </p>
               </div>
 
@@ -229,27 +215,27 @@ export default function ResetPasswordPage() {
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-green-300" />
-                    <span className="text-indigo-100">Minimum 8 caractères</span>
+                    <span className="text-indigo-100">{t('form_f.requirements.minLength')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-green-300" />
-                    <span className="text-indigo-100">Majuscules et minuscules</span>
+                    <span className="text-indigo-100">{t('form_f.requirements.case')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-green-300" />
-                    <span className="text-indigo-100">Chiffres et caractères spéciaux</span>
+                    <span className="text-indigo-100">{t('form_f.requirements.special')}</span>
                   </div>
                 </div>
 
                 {/* Lien vers login */}
                 <div className="text-center pt-4">
                   <p className="text-indigo-200">
-                    Vous vous souvenez de votre mot de passe ?{' '}
+                    {t('form_f.rememberPassword')}{' '}
                     <Link 
                       href={`/${lang}/auth/login`}
                       className="text-white font-semibold hover:text-yellow-200 transition-colors duration-300 inline-flex items-center space-x-1"
                     >
-                      <span>Se connecter</span>
+                      <span>{t('form_f.loginLink')}</span>
                       <span>→</span>
                     </Link>
                   </p>
@@ -258,8 +244,8 @@ export default function ResetPasswordPage() {
 
               <div className="pt-8 border-t border-white/20">
                 <p className="text-indigo-200 text-sm">
-                  "Un bon mot de passe est comme une bonne clé : unique et complexe."<br />
-                  <span className="italic">- Expert en sécurité</span>
+                  {t('form_f.quote.text')}<br />
+                  <span className="italic">{t('form_f.quote.author')}</span>
                 </p>
               </div>
             </div>
@@ -268,8 +254,8 @@ export default function ResetPasswordPage() {
           {/* Section formulaire - Côté droit */}
           <div className="lg:w-1/2 p-12 flex flex-col justify-center">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Nouveau mot de passe</h2>
-              <p className="text-gray-600">Choisissez un mot de passe sécurisé</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">{t('form_f.formTitle')}</h2>
+              <p className="text-gray-600">{t('form_f.formSubtitle')}</p>
             </div>
 
             {error && (
@@ -282,7 +268,7 @@ export default function ResetPasswordPage() {
               {/* Password Field */}
               <div className="space-y-2">
                 <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
-                  Nouveau mot de passe
+                  {t('form_f.newPassword')}
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -296,7 +282,7 @@ export default function ResetPasswordPage() {
                     value={password}
                     onChange={handlePasswordChange}
                     className="w-full pl-10 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 bg-gray-50/50 hover:bg-white"
-                    placeholder="Votre nouveau mot de passe"
+                    placeholder={t('form_f.newPasswordPlaceholder')}
                   />
                 </div>
                 
@@ -304,13 +290,13 @@ export default function ResetPasswordPage() {
                 {password && (
                   <div className="mt-3 space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-gray-700">Force du mot de passe</span>
+                      <span className="text-sm font-medium text-gray-700">{t('passwordStrength.title')}</span>
                       <span className={`text-sm font-semibold ${
                         passwordStrength <= 2 ? 'text-red-600' :
                         passwordStrength === 3 ? 'text-yellow-600' :
                         'text-green-600'
                       }`}>
-                        {getStrengthText(passwordStrength)}
+                        {t(`passwordStrength.levels.${passwordStrength}`)}
                       </span>
                     </div>
                     <div className="flex space-x-1">
@@ -332,7 +318,7 @@ export default function ResetPasswordPage() {
               {/* Confirm Password Field */}
               <div className="space-y-2">
                 <label htmlFor="password2" className="block text-sm font-semibold text-gray-700">
-                  Confirmer le mot de passe
+                  {t('form_f.confirmPassword')}
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -346,13 +332,13 @@ export default function ResetPasswordPage() {
                     value={password2}
                     onChange={(e) => setPassword2(e.target.value)}
                     className="w-full pl-10 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 bg-gray-50/50 hover:bg-white"
-                    placeholder="Confirmez votre mot de passe"
+                    placeholder={t('form_f.confirmPasswordPlaceholder')}
                   />
                 </div>
                 {password2 && password === password2 && passwordStrength >= 3 && (
                   <p className="text-sm text-green-600 font-medium mt-2 flex items-center space-x-2">
                     <CheckCircle className="h-4 w-4" />
-                    <span>Les mots de passe correspondent</span>
+                    <span>{t('formErrors_f.passwordsMatch')}</span>
                   </p>
                 )}
               </div>
@@ -361,11 +347,11 @@ export default function ResetPasswordPage() {
               <button
                 type="submit"
                 disabled={isLoading || passwordStrength < 3 || password !== password2}
-                className="w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
+                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
               >
                 <Key className="h-5 w-5" />
                 <span className="font-semibold">
-                  {isLoading ? 'Réinitialisation...' : 'Réinitialiser le mot de passe'}
+                  {isLoading ? t('form_f.resetting') : t('form_f.resetButton')}
                 </span>
               </button>
 
@@ -376,7 +362,7 @@ export default function ResetPasswordPage() {
                   className="inline-flex items-center space-x-2 text-gray-600 hover:text-indigo-600 transition-colors duration-300 font-medium"
                 >
                   <ArrowLeft className="h-4 w-4" />
-                  <span>Retour à la connexion</span>
+                  <span>{t('form_f.backToLogin')}</span>
                 </Link>
               </div>
             </form>
@@ -386,10 +372,9 @@ export default function ResetPasswordPage() {
               <div className="flex items-start space-x-3">
                 <Shield className="h-5 w-5 text-blue-600 mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium text-blue-900">Conseil de sécurité</p>
+                  <p className="text-sm font-medium text-blue-900">{t('security_f.tip')}</p>
                   <p className="text-sm text-blue-800 mt-1">
-                    Utilisez un mot de passe unique que vous n'utilisez nulle part ailleurs. 
-                    Évitez les informations personnelles facilement devinables.
+                    {t('security_f.advice')}
                   </p>
                 </div>
               </div>

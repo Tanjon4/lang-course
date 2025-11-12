@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Lock, User, Eye, EyeOff, UserPlus, CheckCircle, Sparkles, Languages } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'; // Correction ici
+import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import Layout from '@/components/layout/BaseLayout';
-
+import { useTranslation } from 'react-i18next';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -21,6 +21,7 @@ export default function RegisterPage() {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const params = useParams();
   const lang = params.lang as string;
+  const { t } = useTranslation();
 
   // Utilisation de useEffect pour calculer la force du mot de passe
   useEffect(() => {
@@ -57,23 +58,12 @@ export default function RegisterPage() {
     return colors[strength - 1] || 'bg-gray-300';
   };
 
-  const getStrengthText = (strength: number) => {
-    const texts = [
-      'Très faible',
-      'Faible',
-      'Moyen',
-      'Fort',
-      'Très fort'
-    ];
-    return texts[strength - 1] || 'Non évalué';
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validation supplémentaire
     if (!isFormValid) {
-      alert('Veuillez corriger les erreurs dans le formulaire');
+      alert(t('formErrors.correctErrors'));
       return;
     }
     
@@ -90,19 +80,19 @@ export default function RegisterPage() {
       
       if (response.ok) {
         console.log('Inscription réussie');
-        alert('Inscription réussie ! Vérifiez vos emails pour confirmer votre compte et vous connecter après.');
+        alert(t('registrationSuccess'));
         // router.push(`/${lang}/auth/login`);
       } else if (response.status === 400) {
         const errorData = await response.json();
-        alert(`Erreur : ${errorData.message || 'Vérifiez vos informations d\'inscription.'}`);
+        alert(`${t('errors.error')}: ${errorData.message || t('formErrors.checkInfo')}`);
       } else {
         const error = await response.json();
         console.error('Erreur d\'inscription:', error);
-        alert('Une erreur est survenue lors de l\'inscription.');
+        alert(t('errors.registrationError'));
       }
     } catch (error) {
       console.error('Erreur d\'inscription:', error);
-      alert('Erreur de connexion. Vérifiez votre connexion internet.');
+      alert(t('errors.connectionError'));
     } finally {
       setIsLoading(false);
     }
@@ -112,6 +102,7 @@ export default function RegisterPage() {
                       formData.password === formData.password2 && 
                       formData.username.trim() !== '' && 
                       formData.email.trim() !== '';
+  
   return (
     <Layout>
       <br /> <br />
@@ -119,7 +110,7 @@ export default function RegisterPage() {
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
           {/* Section de bienvenue - Côté gauche */}
-          <div className="lg:w-1/2 bg-linear-to-b from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
+          <div className="lg:w-1/2 bg-gradient-to-b from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
             <div className="space-y-8">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-white/20 rounded-xl">
@@ -131,12 +122,10 @@ export default function RegisterPage() {
               <div className="space-y-4">
                 <div className="flex items-center space-x-2">
                   <Sparkles className="h-6 w-6 text-yellow-300" />
-                  <h2 className="text-4xl font-bold">Commencez votre voyage !</h2>
+                  <h2 className="text-4xl font-bold">{t('welcome_r.title')}</h2>
                 </div>
                 <p className="text-indigo-100 text-lg leading-relaxed">
-                  Rejoignez notre communauté d'apprenants en langues. 
-                  Accédez à des cours personnalisés, suivez votre progression 
-                  et maîtrisez de nouvelles langues à votre rythme.
+                  {t('welcome_r.description')}
                 </p>
               </div>
 
@@ -145,31 +134,31 @@ export default function RegisterPage() {
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-green-300" />
-                    <span className="text-indigo-100">Cours personnalisés</span>
+                    <span className="text-indigo-100">{t('benefits.personalized')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-green-300" />
-                    <span className="text-indigo-100">Suivi de progression détaillé</span>
+                    <span className="text-indigo-100">{t('benefits.progress')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-green-300" />
-                    <span className="text-indigo-100">Communauté internationale</span>
+                    <span className="text-indigo-100">{t('benefits.community')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-green-300" />
-                    <span className="text-indigo-100">Apprentissage à votre rythme</span>
+                    <span className="text-indigo-100">{t('benefits.pace')}</span>
                   </div>
                 </div>
 
                 {/* Lien vers login */}
                 <div className="text-center pt-4">
                   <p className="text-indigo-200">
-                    Déjà membre ?{' '}
+                    {t('alreadyMember')}{' '}
                     <Link 
                       href={`/${lang}/auth/login`} 
                       className="text-white font-semibold hover:text-yellow-200 transition-colors duration-300 inline-flex items-center space-x-1"
                     >
-                      <span>Se connecter</span>
+                      <span>{t('loginLink')}</span>
                       <span>→</span>
                     </Link>
                   </p>
@@ -178,8 +167,8 @@ export default function RegisterPage() {
 
               <div className="pt-8 border-t border-white/20">
                 <p className="text-indigo-200 text-sm">
-                  "Les limites de ma langue sont les limites de mon monde."<br />
-                  <span className="italic">- Ludwig Wittgenstein</span>
+                  {t('quote.text')}<br />
+                  <span className="italic">{t('quote.author')}</span>
                 </p>
               </div>
             </div>
@@ -188,15 +177,15 @@ export default function RegisterPage() {
           {/* Section formulaire - Côté droit */}
           <div className="lg:w-1/2 p-12 flex flex-col justify-center">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Créer un compte</h2>
-              <p className="text-gray-700">Rejoignez notre communauté d'apprenants</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">{t('form.title')}</h2>
+              <p className="text-gray-700">{t('form.subtitle')}</p>
             </div>
 
             <form className="space-y-6" onSubmit={handleSubmit}>
               {/* Username Field */}
               <div className="space-y-2">
                 <label htmlFor="username" className="block text-sm font-semibold text-gray-700">
-                  Nom d'utilisateur
+                  {t('form.username')}
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -210,7 +199,7 @@ export default function RegisterPage() {
                     value={formData.username}
                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                     className="w-full pl-10 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 bg-gray-50/50 hover:bg-white"
-                    placeholder="Votre nom d'utilisateur"
+                    placeholder={t('form.usernamePlaceholder')}
                   />
                 </div>
               </div>
@@ -218,7 +207,7 @@ export default function RegisterPage() {
               {/* Email Field */}
               <div className="space-y-2">
                 <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
-                  Adresse email
+                  {t('form.email')}
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -232,7 +221,7 @@ export default function RegisterPage() {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full pl-10 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 bg-gray-50/50 hover:bg-white"
-                    placeholder="votre@email.com"
+                    placeholder={t('form.emailPlaceholder')}
                   />
                 </div>
               </div>
@@ -240,7 +229,7 @@ export default function RegisterPage() {
               {/* Password Field */}
               <div className="space-y-2">
                 <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
-                  Mot de passe
+                  {t('form.password')}
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -254,7 +243,7 @@ export default function RegisterPage() {
                     value={formData.password}
                     onChange={handlePasswordChange}
                     className="w-full pl-10 pr-12 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 bg-gray-50/50 hover:bg-white"
-                    placeholder="Votre mot de passe"
+                    placeholder={t('form.passwordPlaceholder')}
                   />
                   <button
                     type="button"
@@ -269,13 +258,13 @@ export default function RegisterPage() {
                 {formData.password && (
                   <div className="mt-3 space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-gray-700">Force du mot de passe</span>
+                      <span className="text-sm font-medium text-gray-700">{t('passwordStrength.title')}</span>
                       <span className={`text-sm font-semibold ${
                         passwordStrength <= 2 ? 'text-red-600' :
                         passwordStrength === 3 ? 'text-yellow-600' :
                         'text-green-600'
                       }`}>
-                        {getStrengthText(passwordStrength)}
+                        {t(`passwordStrength.levels.${passwordStrength}`)}
                       </span>
                     </div>
                     <div className="flex space-x-1">
@@ -291,8 +280,7 @@ export default function RegisterPage() {
                       ))}
                     </div>
                     <p className="text-xs text-gray-600 mt-2">
-                      Le mot de passe doit contenir au moins 8 caractères, une majuscule, 
-                      une minuscule, un chiffre et un caractère spécial.
+                      {t('passwordStrength.requirements')}
                     </p>
                   </div>
                 )}
@@ -301,7 +289,7 @@ export default function RegisterPage() {
               {/* Confirm Password Field */}
               <div className="space-y-2">
                 <label htmlFor="password2" className="block text-sm font-semibold text-gray-700">
-                  Confirmer le mot de passe
+                  {t('form.confirmPassword')}
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -315,19 +303,19 @@ export default function RegisterPage() {
                     value={formData.password2}
                     onChange={(e) => setFormData({ ...formData, password2: e.target.value })}
                     className="w-full pl-10 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 bg-gray-50/50 hover:bg-white"
-                    placeholder="Confirmez votre mot de passe"
+                    placeholder={t('form.confirmPasswordPlaceholder')}
                   />
                 </div>
                 {formData.password2 && formData.password !== formData.password2 && (
                   <p className="text-sm text-red-600 font-medium mt-2 flex items-center space-x-1">
                     <span>⚠️</span>
-                    <span>Les mots de passe ne correspondent pas</span>
+                    <span>{t('formErrors.passwordsMismatch')}</span>
                   </p>
                 )}
                 {formData.password2 && formData.password === formData.password2 && passwordStrength >= 3 && (
                   <p className="text-sm text-green-600 font-medium mt-2 flex items-center space-x-1">
                     <CheckCircle className="h-4 w-4" />
-                    <span>Les mots de passe correspondent</span>
+                    <span>{t('formErrors.passwordsMatch')}</span>
                   </p>
                 )}
               </div>
@@ -336,11 +324,11 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={isLoading || !isFormValid}
-                className="w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
+                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
               >
                 <UserPlus className="h-5 w-5" />
                 <span className="font-semibold">
-                  {isLoading ? 'Création du compte...' : 'Créer mon compte'}
+                  {isLoading ? t('form.creatingAccount') : t('form.createAccount')}
                 </span>
               </button>
             </form>

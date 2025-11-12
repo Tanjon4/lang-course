@@ -32,7 +32,6 @@
   "welcomeMessage": "Vous êtes connecté avec succès à votre compte.",
   "viewProfile": "Voir mon profil",
   "login": "Se connecter",
-  "register": "S'inscrire",
   "authFeatures": "Fonctionnalités d'Authentification",
   "secureAuth": "Authentification Sécurisée",
   "secureAuthDesc": "Système JWT avec validation d'email et réinitialisation de mot de passe sécurisée",
@@ -52,10 +51,6 @@
   "success": "Succès",
   "about_title": "Qui sommes-nous ?",
   "about_description": "Hoavi est une startup edtech qui réinvente l'apprentissage des langues en alliant cours en ligne, formations en présentiel (du collège au lycée) et technologies immersives telles que le mobile et la réalité virtuelle (VR). Nos parcours sont certifiants, permettant à chaque apprenant d’obtenir des certificats et badges numériques vérifiables, attestant de compétences linguistiques et professionnelles concrètes.",
-
-  "section_histoire_title": "Histoire",
-  "section_histoire_content": "Lancée à la fin du mois d’août 2025 par une équipe passionnée, Hoavi est née de la volonté de rendre l’éducation linguistique et scolaire plus utile, moderne et accessible. Son ambition : proposer des formations concrètes et certifiées, ouvrant de réelles opportunités académiques et professionnelles.",
-
   "section_vision_title": "Vision",
   "section_vision_content": "Notre vision est de devenir la référence mondiale d’un modèle éducatif hybride, où apprendre rime avec accréditation. Hoavi s’appuie sur des parcours alignés sur des référentiels internationaux — tels que le CEFR pour les langues — et reconnus par des partenaires académiques et des entreprises, afin de préparer chaque apprenant à une carrière réelle et valorisée.",
 
@@ -71,7 +66,6 @@
   "section_role_title": "Rôle de Hoavi",
   "section_role_content": "Hoavi conçoit, met en œuvre et évalue des parcours certifiants tout en délivrant des certifications vérifiables et reconnues. L’entreprise accompagne les apprenants dans la mise en valeur de leurs compétences afin que chaque certificat devienne un véritable levier d’accès à l’emploi et au développement professionnel.",
   
-  "contact_title": "Contactez-nous",
   "contact_description": "Une question, une collaboration ou un partenariat ? Nous serons ravis d’échanger avec vous.",
   
   "form_name_label": "Nom complet",
@@ -87,6 +81,378 @@
   
   "contact_address_label": "Adresse",
   "contact_phone_label": "Téléphone",
-  "contact_email_label": "Email"
+  "contact_email_label": "Email",
+    "valeur_title": "Nos Valeurs",
+  "notre": "Notre",
+  "parcours": "Parcours",
+  "p_decouvrez": "Découvrez les étapes clés qui ont marqué notre croissance et notre succès.",
+  "h2_nous": "Ce qui nous",
+  "span_d": "distingue",
+  "pos": "Positionnement consolidé avec de nouveaux services",
+  "ouverture": "Ouverture de nos premiers bureaux",
+  "inno": "Prix de l’innovation et croissance accélérée",
+  "dev": "Développement de notre technologie propriétaire",
+  "lancement": "Lancement avec une petite équipe passionnée",
+  "fondementaux": "Les principes fondamentaux qui guident chacune de nos actions et décisions.",
+  "h2_vision": "Prêt à transformer votre vision en réalité ?",
+  "Découvrir_services": "Découvrir nos services",
+  "Rencontrer": "Rencontrer l’équipe",
+  "depuis": "Depuis 2023",
+  "Pays_desservis": "Pays desservis",
+  "actif_user": "Utilisateurs actifs",
+  "Satisfaction": "Satisfaction client",
+  "Ans_expérience": "Années d’expérience",
+  "Fondation": "Fondation de l’entreprise",
+  "start": "Démarrer l’apprentissage",
+  "innovation_majeure": "Première innovation majeure",
+  "Expansion": "Expansion internationale",
+  "Reconnaissance": "Reconnaissance de l’entreprise",
+  "aprentissage_langue": "Meilleure plateforme d’apprentissage des langues",
+  "section_histoire_title": "Histoire",
+  "section_histoire_content": "Lancée fin août 2025 par une équipe passionnée, Hoavi est née de l’ambition de rendre l’éducation linguistique et académique plus utile, moderne et accessible. Son objectif est d’offrir des parcours d’apprentissage pratiques et certifiés, ouvrant de réelles opportunités académiques et professionnelles.",
+  "p_rej": "Rejoignez les milliers de clients qui nous font confiance pour leurs projets les plus ambitieux.",
+    "contact_title": "Contactez-Nous",
+  "contact_subtitle": "Nous sommes là pour vous accompagner dans votre aventure linguistique. Une question ? Un projet ? Parlons-en !",
+  "email_title": "Email",
+  "email_desc": "Nous répondons sous 24h",
+  "phone_title": "Téléphone",
+  "phone_desc": "Lun-Ven 9h-18h",
+  "address_title": "Adresse",
+  "address_desc": "75001 Tananarive, Madagascar",
+  "support_title": "Support",
+  "content_title": "24/7 disponible",
+  "support_desc": "Chat en direct",
+  "community_title": "Communauté Dynamique",
+  "community_text": "Rejoignez plus de {{count}} apprenants passionnés qui maîtrisent déjà une nouvelle langue avec notre méthode innovante.",
+  "community_rating": "4.9/5 (2.4k avis)",
+  "why_choose_us": "Pourquoi Nous Choisir ?",
+  "feature_native": "Professeurs Natifs",
+  "feature_native_desc": "Apprenez avec des experts de la langue",
+  "feature_visio": "Cours en Visio",
+  "feature_visio_desc": "Sessions interactives en direct",
+  "feature_resources": "Ressources Illimitées",
+  "feature_resources_desc": "Accès à tous nos contenus",
+  "form_title": "Parlons de Votre Projet",
+  "form_subtitle": "Remplissez le formulaire ci-dessous et notre équipe d'experts linguistiques vous contactera personnellement.",
+  "label_name": "Nom complet *",
+  "placeholder_name": "Votre nom complet",
+  "label_email": "Email *",
+  "placeholder_email": "votre@email.com",
+  "label_subject": "Sujet *",
+  "placeholder_subject": "Sujet de votre message",
+  "label_language": "Langue d'intérêt",
+  "select_language": "Sélectionnez une langue",
+  "label_message": "Message *",
+  "placeholder_message": "Décrivez votre projet, vos objectifs linguistiques, ou toute question que vous pourriez avoir...",
+  "btn_sending": "Envoi en cours...",
+  "btn_send": "Envoyer le message",
+  "sent_title": "Message Envoyé !",
+  "sent_text": "Merci pour votre message. Notre équipe pédagogique vous répondra dans les plus brefs délais pour vous accompagner dans votre projet linguistique.",
+  "btn_new_message": "Nouveau message",
+  "faq_title": "Questions Fréquentes",
+  "faq_1_q": "Quelles langues proposez-vous ?",
+  "faq_1_a": "12 langues dont anglais, espagnol, français, allemand, italien, japonais, chinois, arabe, portugais, russe, et plus encore.",
+  "faq_2_q": "Comment fonctionnent les cours en ligne ?",
+  "faq_2_a": "Cours en visio avec professeurs natifs, plateforme interactive, exercices pratiques, et suivi personnalisé.",
+  "faq_3_q": "Proposez-vous des essais gratuits ?",
+  "faq_3_a": "Oui, profitez d'une séance d'essai gratuite avec un de nos professeurs pour découvrir notre méthode.",
+  "faq_4_q": "Quelle est la durée des formations ?",
+  "faq_4_a": "Formations flexibles de 1 à 12 mois, adaptées à vos objectifs et votre rythme d'apprentissage.",
+  "see_less": "Voir moins",
+  "see_more": "Voir plus",
+  "register": "Inscription...",
+  "get_started": "Commencer",
+  "requise": "Connexion requise",
+  "chargement": "Chargement des cours...",
+  "Rafraîchir": "Rafraîchir",
+  "langures": "Nos Langues Disponibles",
+  "salutations": "cours disponibles - Bienvenue ",
+  "text_suggestion": "Veuillez vous connecter pour accéder aux cours.",
+  "cours_langue": "Cours de Langues",
+  "securité": "Sécurité assurée !",
+  "p1_securité": "Votre sécurité est notre priorité. Nous avons envoyé un lien sécurisé ",
+  "p2_securité" :"pour réinitialiser votre mot de passe en toute confidentialité.",
+  "sp_securité": "Lien sécurisé envoyé",
+  "sp_heure": "Valable 1 heure",
+  "garatie": "Confidentialité garantie",
+  "citations": "La sécurité n'est pas un produit, mais un processus.",
+  "envoyé": "Email envoyé !",
+  "p_renitialisation": "Un lien de réinitialisation sécurisé a été envoyé à",
+  "p1_link": "Vérifiez votre boîte de réception et suivez les instructions ",
+  "p2_link": "pour réinitialiser votre mot de passe en toute sécurité.",
+  "conseil": "Conseil :",
+  "verify_spam": "Vérifiez également votre dossier spam ",
+  "si": "si vous ne voyez pas notre email.",
+  "return_login": "Retour à la connexion",
+  "forgot_password": "Mot de passe oublié ?",
+  "p_text": "Ne vous inquiétez pas ! Nous allons vous aider à récupérer l'accès ",
+  "p1_text": "à votre compte en toute sécurité.",
+  "sp_link": "Lien de réinitialisation sécurisé",
+  "instruction": "Instructions simples à suivre",
+  "acces_rappide": "Accès rapide à votre compte",
+  "souvenez_mdp": "Vous vous souvenez de votre mot de passe ?",
+  "citation2": "La meilleure sécurité est celle que vous ne remarquez pas.",
+  "Réinitialisation": "Réinitialisation",
+  "enter_email": "Entrez votre email pour recevoir un lien sécurisé",
+  "email_add": "Adresse email",
+  "link_2": "Nous enverrons un lien de réinitialisation sécurisé à cette adresse.",
+  "back_connex": "Retour à la connexion",
+  "security": "Securité",
+  "duration": "Le lien de réinitialisation est valable 1 heure pour votre sécurité. ",
+  "duration1": "Nous ne partagerons jamais votre email avec des tiers.",
+  "welcomeMessage1": "Reconnectez-vous à votre espace d'apprentissage des langues. Reprenez votre voyage linguistique là où vous l'avez laissé.",
+  "continueWithGoogle": "Continuer avec Google",
+  "charlemagneQuote": "\"La maîtrise d'une nouvelle langue est comme une autre âme.\"",
+  "charlemagne": "- Charlemagne",
+  "loginTitle": "Connexion",
+  "loginSubtitle": "Accédez à votre compte personnel",
+  "emailLabel": "Adresse email",
+  "emailPlaceholder": "votre@email.com",
+  "passwordLabel": "Mot de passe",
+  "passwordPlaceholder": "Votre mot de passe",
+  "loginButton": "Se connecter",
+  "loggingIn": "Connexion en cours...",
+  "noAccount": "Pas encore de compte ?",
+  "createAccount": "Créer un compte",
+  "invalidCredentials": "❌ Email ou mot de passe incorrect !",
+  "loginError": "❌ Erreur de connexion :",
+  "googleLoginError": "❌ Erreur de connexion Google. Veuillez réessayer.",
+  "googleSuccess": "✅ Connexion Google réussie !",
+  "loginSuccess": "✅ Connexion réussie !",
+  "accountNotFound": "Compte non trouvé pour",
+  "createAccountWithGoogle": "Voulez-vous créer un compte avec votre compte Google ?",
+  "loading_p": "Chargement du profil...",
+  "accessRequired": "Accès requis",
+  "loginToAccess": "Connectez-vous pour accéder à votre profil",
+  "level": "Niv.",
+  "xp": "XP",
+  "levels": "Niveaux",
+  "progressTo": "Progression vers",
+  "completed": "Complétés",
+  "days": "Jours",
+  "currentStreak": "Streak actuel",
+  "certificates": "Certificats",
+  "obtained": "Obtenus",
+  "courses": "Cours",
+  "progressAndLevel": "Progression & Niveau",
+  "currentLevel": "Niveau actuel",
+  "totalXP": "XP total",
+  "nextLevel": "Prochain niveau",
+  "xpRequired": "XP requis",
+  "currentRank": "Rang actuel",
+  "loadingStats": "Chargement des statistiques...",
+  "personalInfo": "Informations personnelles",
+  "memberSince": "Membre depuis",
+  "levelProgress": "Progression par Niveau",
+  "chapters": "chapitres",
+  "moreLevels": "autres niveaux...",
+  "ranks": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert",
+    "master": "Master"
+  },
+  "rankRequirements": {
+    "beginner": "Complétez 25% des niveaux pour devenir Intermediate",
+    "intermediate": "Complétez 50% des niveaux pour devenir Advanced",
+    "advanced": "Complétez 75% des niveaux pour devenir Expert",
+    "expert": "Complétez 100% des niveaux pour devenir Master",
+    "default": "Continuez à apprendre !"
+  },
+  
+  "welcome_r": {
+    "title": "Commencez votre voyage !",
+    "description": "Rejoignez notre communauté d'apprenants en langues. Accédez à des cours personnalisés, suivez votre progression et maîtrisez de nouvelles langues à votre rythme."
+  },
+  "benefits": {
+    "personalized": "Cours personnalisés",
+    "progress": "Suivi de progression détaillé",
+    "community": "Communauté internationale",
+    "pace": "Apprentissage à votre rythme"
+  },
+  "alreadyMember": "Déjà membre ?",
+  "loginLink": "Se connecter",
+  "quote": {
+    "text": "\"Les limites de ma langue sont les limites de mon monde.\"",
+    "author": "- Ludwig Wittgenstein"
+  },
+  "form": {
+    "title": "Créer un compte",
+    "subtitle": "Rejoignez notre communauté d'apprenants",
+    "username": "Nom d'utilisateur",
+    "usernamePlaceholder": "Votre nom d'utilisateur",
+    "email": "Adresse email",
+    "emailPlaceholder": "votre@email.com",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Votre mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
+    "createAccount": "Créer mon compte",
+    "creatingAccount": "Création du compte..."
+  },
+  "passwordStrength": {
+    "title": "Force du mot de passe",
+    "levels": {
+      "0": "Non évalué",
+      "1": "Très faible",
+      "2": "Faible",
+      "3": "Moyen",
+      "4": "Fort",
+      "5": "Très fort"
+    },
+    "requirements": "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial."
+  },
+  "formErrors": {
+    "correctErrors": "Veuillez corriger les erreurs dans le formulaire",
+    "checkInfo": "Vérifiez vos informations d'inscription.",
+    "passwordsMismatch": "Les mots de passe ne correspondent pas",
+    "passwordsMatch": "Les mots de passe correspondent"
+  },
+  "errors": {
+    "error": "Erreur",
+    "registrationError": "Une erreur est survenue lors de l'inscription.",
+    "connectionError": "Erreur de connexion. Vérifiez votre connexion internet."
+  },
+  "registrationSuccess": "Inscription réussie ! Vérifiez vos emails pour confirmer votre compte et vous connecter après.",
+
+
+
+  "success_f": {
+    "title": "Mot de passe mis à jour !",
+    "description": "Votre sécurité est renforcée. Votre nouveau mot de passe a été enregistré avec succès et vous pouvez maintenant vous connecter.",
+    "benefits": {
+      "secure": "Mot de passe sécurisé",
+      "protected": "Compte protégé",
+      "redirect": "Redirection automatique"
+    },
+    "quote": {
+      "text": "\"La sécurité commence par un bon mot de passe.\"",
+      "author": "- Bonne pratique"
+    },
+    "resetSuccess": "Réinitialisation réussie !",
+    "passwordChanged": "Votre mot de passe a été modifié avec succès",
+    "accountSecure": "Compte sécurisé",
+    "accountProtected": "Votre compte est maintenant protégé par votre nouveau mot de passe",
+    "autoRedirect": "Vous serez redirigé automatiquement vers la page de connexion dans quelques secondes.",
+    "loginNow": "Se connecter maintenant"
+  },
+  "form_f": {
+    "title": "Nouveau mot de passe",
+    "description": "Choisissez un mot de passe sécurisé pour protéger votre compte. Un bon mot de passe est essentiel pour votre sécurité en ligne.",
+    "requirements": {
+      "minLength": "Minimum 8 caractères",
+      "case": "Majuscules et minuscules",
+      "special": "Chiffres et caractères spéciaux"
+    },
+    "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
+    "loginLink": "Se connecter",
+    "quote": {
+      "text": "\"Un bon mot de passe est comme une bonne clé : unique et complexe.\"",
+      "author": "- Expert en sécurité"
+    },
+    "formTitle": "Nouveau mot de passe",
+    "formSubtitle": "Choisissez un mot de passe sécurisé",
+    "newPassword": "Nouveau mot de passe",
+    "newPasswordPlaceholder": "Votre nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
+    "resetting": "Réinitialisation...",
+    "resetButton": "Réinitialiser le mot de passe",
+    "backToLogin": "Retour à la connexion"
+  },
+  "passwordStrength_f": {
+    "title": "Force du mot de passe",
+    "levels": {
+      "0": "Non évalué",
+      "1": "Très faible",
+      "2": "Faible",
+      "3": "Moyen",
+      "4": "Fort",
+      "5": "Très fort"
+    }
+  },
+  "formErrors_f": {
+    "passwordsMismatch": "Les mots de passe ne correspondent pas",
+    "passwordTooWeak": "Le mot de passe est trop faible",
+    "passwordsMatch": "Les mots de passe correspondent"
+  },
+  "errors_f": {
+    "resetError": "Erreur lors de la réinitialisation",
+    "networkError": "Erreur réseau. Réessayez."
+  },
+  "security_f": {
+    "tip": "Conseil de sécurité",
+    "advice": "Utilisez un mot de passe unique que vous n'utilisez nulle part ailleurs. Évitez les informations personnelles facilement devinables."
+  },
+
+  
+  "loading_v": {
+    "title": "Vérification en cours",
+    "description": "Nous vérifions votre adresse email pour sécuriser votre compte. Cette opération ne prendra que quelques instants.",
+    "steps": {
+      "email": "Vérification de l'email",
+      "activation": "Activation du compte",
+      "preparation": "Préparation de votre espace"
+    },
+    "quote": {
+      "text": "\"La patience est la clé de la réussite.\"",
+      "author": "- Proverbe"
+    },
+    "verification": "Vérification",
+    "validating": "Nous validons votre adresse email...",
+    "validationInProgress": "Validation en cours",
+    "pleaseWait": "Veuillez patienter pendant que nous vérifions votre email"
+  },
+  "error_v": {
+    "title": "Oups !",
+    "description": "Nous n'avons pas pu vérifier votre adresse email. Le lien peut être expiré ou invalide.",
+    "issues": {
+      "expired": "Lien expiré ou invalide",
+      "verification": "Erreur de vérification",
+      "newRequest": "Nécessite une nouvelle demande"
+    },
+    "quote": {
+      "text": "\"L'erreur est humaine, mais la persévérance est divine.\"",
+      "author": "- Proverbe"
+    },
+    "verificationFailed": "Échec de la vérification",
+    "actionRequired": "Action requise",
+    "newVerificationRequired": "Vous devez demander un nouveau lien de vérification",
+    "goToLogin": "Aller à la connexion",
+    "createNewAccount": "Créer un nouveau compte"
+  },
+  "success_v": {
+    "title": "Félicitations !",
+    "description": "Votre compte est maintenant activé et sécurisé. Vous pouvez commencer votre voyage linguistique dès maintenant !",
+    "benefits": {
+      "emailVerified": "Email vérifié avec succès",
+      "accountActivated": "Compte entièrement activé",
+      "fullAccess": "Accès à toutes les fonctionnalités"
+    },
+    "quote": {
+      "text": "\"Le savoir des langues est la porte de la sagesse.\"",
+      "author": "- Roger Bacon"
+    },
+    "emailVerified": "Email vérifié !",
+    "message": "Votre email a été vérifié avec succès !",
+    "defaultMessage": "Email vérifié avec succès",
+    "accountSecure": "Compte sécurisé",
+    "accountProtected": "Votre compte est maintenant vérifié et protégé",
+    "autoRedirect": "Vous serez redirigé automatiquement vers la page de connexion dans quelques secondes.",
+    "startNow": "Commencer maintenant"
+  },
+  "errors_v": {
+    "generic": "Erreur {{status}}",
+    "verificationError": "Erreur {{status}} lors de la vérification",
+    "networkError": "Erreur réseau. Veuillez réessayer.",
+    "missingToken": "Token de vérification manquant."
+  }
+
+
+
+
+
+
 
 }

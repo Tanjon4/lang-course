@@ -87,5 +87,377 @@
   
   "contact_address_label": "Adiresy",
   "contact_phone_label": "Telefaonina",
-  "contact_email_label": "Mailaka"
+  "contact_email_label": "Mailaka",
+  "valeur_title": "Soatoavintsika",
+  "notre": "Ny",
+  "parcours": "Dingana",
+  "p_decouvrez": "Fantaro ireo dingana lehibe izay nanamarika ny fitomboanay sy ny fahombiazantsika.",
+  "h2_nous": "Izay",
+  "span_d": "maha samy hafa antsika",
+  "pos": "Toerana mafy orina miaraka amin’ny tolotra vaovao",
+  "ouverture": "Fanokafana ny birao voalohany",
+  "inno": "Loka momba ny fanavaozana sy fitomboana haingana",
+  "dev": "Fampivoarana ny teknolojia manokana an’ny orinasa",
+  "lancement": "Fanombohana miaraka amin’ny ekipa kely feno finiavana",
+  "fondementaux": "Ireo foto-kevitra fototra izay mitarika ny asa sy ny fanapahan-kevitray rehetra.",
+  "h2_vision": "Vonona hanova ny nofinao ho zava-misy ve ianao ?",
+  "Découvrir_services": "Fantaro ny tolotra anay",
+  "Rencontrer": "Hihaona amin’ny ekipa",
+  "depuis": "Hatramin’ny 2023",
+  "Pays_desservis": "Firenena ampiasaina",
+  "actif_user": "Mpampiasa mavitrika",
+  "Satisfaction": "Fahafaham-po amin’ny mpanjifa",
+  "Ans_expérience": "Taona niainana",
+  "Fondation": "Nananganana ny orinasa",
+  "start": "Atombohy ny fianarana",
+  "innovation_majeure": "Fanavaozana lehibe voalohany",
+  "Expansion": "Fampivelarana iraisam-pirenena",
+  "Reconnaissance": "Fankasitrahana ny orinasa",
+  "aprentissage_langue": "Sehatra fianarana teny tsara indrindra",
+  "p_rej": "Midira ao amin’ireo mpanjifa an’arivony izay matoky anay amin’ny tetikasa lehibe indrindra ananany.",
+  "contact_subtitle": "Eto izahay hanampy anao amin’ny dianao amin’ny fianarana teny. Manana fanontaniana ve ianao? Tetikasa iray? Andeha hiresaka!",
+  "email_title": "Mailaka",
+  "email_desc": "Mamaly ao anatin’ny 24 ora izahay",
+  "phone_title": "Telefaona",
+  "phone_desc": "Alatsinainy–Zoma 9h–18h",
+  "address_title": "Adiresy",
+  "address_desc": "75001 Paris, Frantsa",
+  "support_title": "Fanohanana",
+  "support_desc": "Chat mivantana",
+  "community_title": "Vondrom-piarahamonina Mavitrika",
+  "community_text": "Midira amin’ireo mpianatra mihoatra ny {{count}} efa mahafehy teny vaovao amin’ny alalan’ny fomba fianarana manavao anay.",
+  "community_rating": "4.9/5 (2.4k famerenana)",
+  "why_choose_us": "Nahoana no misafidy anay?",
+  "feature_native": "Mpampianatra teratany",
+  "feature_native_desc": "Mianara amin’ny manampahaizana amin’ny teny",
+  "feature_visio": "Fampianarana amin’ny vidéo",
+  "feature_visio_desc": "Fivoriana mivantana sy ifampiresahana",
+  "feature_resources": "Loharano tsy voafetra",
+  "feature_resources_desc": "Fidirana amin’ny votoaty rehetra",
+  "form_title": "Andeha Hiresaka Momba ny Tetikasa",
+  "form_subtitle": "Fenoy ity taratasy etsy ambany ity dia hifandray aminao manokana ny ekipanay manampahaizana amin’ny teny.",
+  "label_name": "Anarana feno *",
+  "placeholder_name": "Ampidiro ny anaranao feno",
+  "label_email": "Mailaka *",
+  "placeholder_email": "mailakao@ohatra.com",
+  "label_subject": "Lohahevitra *",
+  "placeholder_subject": "Lohahevitry ny hafatrao",
+  "label_language": "Teny mahaliana anao",
+  "select_language": "Misafidiana teny iray",
+  "label_message": "Hafatra *",
+  "placeholder_message": "Hazavao ny tetikasanao, tanjonao amin’ny fianarana teny, na fanontaniana tianao hapetraka...",
+  "btn_sending": "Mandefa...",
+  "btn_send": "Alefa ny hafatra",
+  "sent_title": "Voaray ny hafatrao!",
+  "sent_text": "Misaotra amin’ny hafatrao. Ny ekipanay dia hamaly anao haingana hanampy amin’ny tetikasanao amin’ny fianarana teny.",
+  "btn_new_message": "Hafatra vaovao",
+  "faq_title": "Fanontaniana Miverimberina",
+  "faq_1_q": "Inona avy ireo teny omenareo?",
+  "faq_1_a": "Teny 12: anglisy, espaniola, frantsay, alemà, italiana, japoney, sinoa, arabo, portogey, rosiana, sns.",
+  "faq_2_q": "Ahoana ny fomba fiasan’ny taranja an-tserasera?",
+  "faq_2_a": "Fampianarana amin’ny vidéo mivantana miaraka amin’ny mpampianatra teratany, sehatra ifampiresahana, fanazaran-tena, sy fanaraha-maso manokana.",
+  "faq_3_q": "Manome fitsapana maimaimpoana ve ianareo?",
+  "faq_3_a": "Eny, afaka manao fivoriana maimaimpoana miaraka amin’ny iray amin’ireo mpampianatra anay ianao mba hahafantarana ny fomba fiasanay.",
+  "faq_4_q": "Hafiriana ny faharetan’ny fiofanana?",
+  "faq_4_a": "Fiofanana flexible mandritra ny 1 ka hatramin’ny 12 volana, mifanaraka amin’ny tanjonao sy ny hafainganam-pianaranao.",
+  "see_less": "Asehoy kely kokoa",
+  "see_more": "Asehoy bebe kokoa",
+  "get_started": "Atombohy",
+  "requise": "Fidirana ilaina",
+  "chargement": "Eo am-pakana ny taranja...",
+  "Rafraîchir": "Havaozy",
+  "langures": "Fiteny misy eto amin’ny sehatra",
+  "salutations": "Taranja misy - Tongasoa",
+  
+  "cours_langue": "Fampianarana fiteny",
+  "securité": "Fiarovana azo antoka!",
+  "p1_securité": "Ny fiarovanao no laharam-pahamehanay. Nandefa rohy voaaro izahay ",
+  "p2_securité": "hamerenana ny tenimiafinao am-pilaminana tanteraka.",
+  "sp_securité": "Rohy fiarovana nalefa",
+  "sp_heure": "Manan-kery adiny 1",
+  "garatie": "Fiarovana tsiambaratelo azo antoka",
+  "citations": "Ny fiarovana dia tsy vokatra, fa dingana.",
+  "envoyé": "Nalefa ny mailaka!",
+  "p_renitialisation": "Rohy fiarovana hamerenana tenimiafina nalefa tany amin’i",
+  "p1_link": "Jereo ny boaty fandraisana mailakao ary araho ny toromarika ",
+  "p2_link": "hamerenana ny tenimiafinao soa aman-tsara.",
+  "conseil": "Torohevitra:",
+  "verify_spam": "Jereo koa ny lahatahiry spam ",
+  "si": "raha tsy hita ny mailakay.",
+  "return_login": "Miverena amin’ny fidirana",
+  "forgot_password": "Hadino ny tenimiafina?",
+  "p_text": "Aza manahy! Hanampy anao izahay hahazo indray ",
+  "p1_text": "ny fidirana amin’ny kaontinao am-pilaminana.",
+  "sp_link": "Rohy hamerenana tenimiafina azo antoka",
+  "instruction": "Toromarika tsotra arahina",
+  "acces_rappide": "Fidirana haingana amin’ny kaontinao",
+  "souvenez_mdp": "Tsaroanao ve ny tenimiafinao?",
+  "citation2": "Ny fiarovana tsara indrindra dia ilay tsy tsapanao akory.",
+  "Réinitialisation": "Famerenana",
+  "enter_email": "Ampidiro ny mailakao mba handraisana rohy fiarovana",
+  "email_add": "Adiresy mailaka",
+  "link_2": "Handefasanay rohy fiarovana hamerenana tenimiafina amin’ity adiresy ity.",
+  "back_connex": "Miverena amin’ny fidirana",
+  "security": "Fiarovana",
+  "duration": "Manan-kery adiny 1 ny rohy hamerenana tenimiafina ho fiarovanao.",
+  "duration1": "Tsy hizara mihitsy ny mailakao amin’olona fahatelo izahay.",
+  "welcomeMessage1": "Hiverena any amin'ny efitrano fianarana teny anao. Avereno ny dia fianarana teny nataonao.",
+  "continueWithGoogle": "Tohizo miaraka amin'ny Google",
+  "charlemagneQuote": "\"Ny fahazarana teny vaovao dia toy ny manana fanahy hafa.\"",
+  "charlemagne": "- Charlemagne",
+  "loginTitle": "Hiditra",
+  "loginSubtitle": "Ampidiro ny kaontinao manokana",
+  "emailLabel": "Adiresy mailaka",
+  "emailPlaceholder": "ny@mailakanao.com",
+  "passwordLabel": "Tenimiafina",
+  "passwordPlaceholder": "Ny tenimiafinanao",
+  "loginButton": "Hiditra",
+  "loggingIn": "Miditra...",
+  "noAccount": "Mbola tsy manana kaonty?",
+  "createAccount": "Hanonta kaonty",
+  "invalidCredentials": "❌ Diso ny mailaka na ny tenimiafina!",
+  "loginError": "❌ Hadisoana fidirana:",
+  "googleLoginError": "❌ Hadisoana fidirana Google. Andramo indray azafady.",
+  "googleSuccess": "✅ Tafiditra soa aman-tsara tamin'ny Google!",
+  "loginSuccess": "✅ Tafiditra soa aman-tsara!",
+  "accountNotFound": "Tsy hita kaonty ho an'ny",
+  "createAccountWithGoogle": "Te-hanonta kaonty miaraka amin'ny kaonty Google anao ve ianao?",
+  
+  "loading_p": "Eo am-pampidirana ny mombamomba...",
+  "accessRequired": "Mila fidirana",
+  "loginToAccess": "Hidira ianao mba ahafahana miditra amin'ny mombamomba anao",
+  "level": "La.",
+  "xp": "XP",
+  "levels": "Ambaratonga",
+  "progressTo": "Fandrosoana mankany",
+  "completed": "Vita",
+  "days": "Andro",
+  "currentStreak": "Andro mifandimby ankehitriny",
+  "certificates": "Fahazoan-dàlana",
+  "obtained": "Azo",
+  "courses": "Cours",
+  "progressAndLevel": "Fandrosoana & Ambaratonga",
+  "currentLevel": "Ambaratonga ankehitriny",
+  "totalXP": "XP totaliny",
+  "nextLevel": "Ambaratonga manaraka",
+  "xpRequired": "XP ilaina",
+  "currentRank": "Laharana ankehitriny",
+  "loadingStats": "Eo am-pampidirana ny statistiky...",
+  "personalInfo": "Antony manokana",
+  "memberSince": "Mpikambana nanomboka",
+  "levelProgress": "Fandrosoan'ny Ambaratonga",
+  "chapters": "toko",
+  "moreLevels": "ambarantonga hafa...",
+  "ranks": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert",
+    "master": "Master"
+  },
+  "rankRequirements": {
+    "beginner": "Ataovy vita 25%n'ny ambaratonga mba hahazoana ny Intermediate",
+    "intermediate": "Ataovy vita 50%n'ny ambaratonga mba hahazoana ny Advanced",
+    "advanced": "Ataovy vita 75%n'ny ambaratonga mba hahazoana ny Expert",
+    "expert": "Ataovy vita 100%n'ny ambaratonga mba hahazoana ny Master",
+    "default": "Tohizo ny fianarana!"
+  },
+
+  
+  "welcome_r": {
+    "title": "Atomboy ny dia-nao!",
+    "description": "Miaraha amin'ny fiarahamonin'ny mpianatra teny. Mahazoa cours natao ho anao manokana, araho ny fandrosoanao, ary zarao ny teny vaovao amin'ny hafainganam-pianaranao."
+  },
+  "benefits": {
+    "personalized": "Cours natao ho anao",
+    "progress": "Fandinihana ny fandrosoana",
+    "community": "Fiarahamonina iraisam-pirenena",
+    "pace": "Fianarana amin'ny hafainganam-pianaranao"
+  },
+  "alreadyMember": "Efa mpikambana?",
+  "loginLink": "Hiditra",
+  "quote": {
+    "text": "\"Ny fetran'ny teniko dia fetran'ny tontoloko.\"",
+    "author": "- Ludwig Wittgenstein"
+  },
+  "form": {
+    "title": "Hanonta kaonty",
+    "subtitle": "Miaraha amin'ny fiarahamonin'ny mpianatra",
+    "username": "Anaran'ny mpampiasa",
+    "usernamePlaceholder": "Ny anaran'ny mpampiasa anao",
+    "email": "Adiresy mailaka",
+    "emailPlaceholder": "ny@mailakanao.com",
+    "password": "Tenimiafina",
+    "passwordPlaceholder": "Ny tenimiafinanao",
+    "confirmPassword": "Hamarinina ny tenimiafina",
+    "confirmPasswordPlaceholder": "Hamarinina ny tenimiafinanao",
+    "createAccount": "Hanonta ny kaontiko",
+    "creatingAccount": "Eo am-pamoronana kaonty..."
+  },
+  "passwordStrength": {
+    "title": "Hery ny tenimiafina",
+    "levels": {
+      "0": "Tsy voamarina",
+      "1": "Malemilemy be",
+      "2": "Malemilemy",
+      "3": "Antonony",
+      "4": "Mafy",
+      "5": "Mafy be"
+    },
+    "requirements": "Tsy maintsy misy farafahakeliny litera 8, litera lehibe iray, litera madinika iray, isa iray, ary marika manokana iray ny tenimiafina."
+  },
+  "formErrors": {
+    "correctErrors": "Hanitsy ny fahadisoana ao amin'ny fomba fangatahana azafady",
+    "checkInfo": "Jereo ny fampahalalana fisoratana anarana.",
+    "passwordsMismatch": "Tsy mitovy ny tenimiafina",
+    "passwordsMatch": "Mifanaraka ny tenimiafina"
+  },
+  "errors": {
+    "error": "Hadisoana",
+    "registrationError": "Nisy olana nitranga tamin'ny fisoratana anarana.",
+    "connectionError": "Hadisoana fifandraisana. Jereo ny fifandraisana Internet anao azafady."
+  },
+  "registrationSuccess": "Tafiditra soa aman-tsara ny fisoratana anarana! Jereo ny mailaka anao mba hanamafisana ny kaonty ary hidira aorian'izay.",
+
+
+
+  "success_f": {
+    "title": "Nohavaozina ny tenimiafina!",
+    "description": "Nohamafisina ny fiarovanao. Voatahiry soa aman-tsara ny tenimiafinao vaovao ary afaka miditra ianao izao.",
+    "benefits": {
+      "secure": "Tenimiafina azo antoka",
+      "protected": "Kaonty voaro",
+      "redirect": "Famindrana mandeha ho azy"
+    },
+    "quote": {
+      "text": "\"Ny fiarovana dia manomboka amin'ny tenimiafina tsara.\"",
+      "author": "- Fomba tsara indrindra"
+    },
+    "resetSuccess": "Tafiditra soa aman-tsara ny fanavaozana!",
+    "passwordChanged": "Novana soa aman-tsara ny tenimiafinanao",
+    "accountSecure": "Voaro ny kaonty",
+    "accountProtected": "Voaro amin'ny tenimiafinao vaovao izao ny kaontinao",
+    "autoRedirect": "Hodina ho any amin'ny pejy fidirana mandeha ho azy ianao afaka segondra vitsivitsy.",
+    "loginNow": "Hiditra izao"
+  },
+  "form_f": {
+    "title": "Tenimiafina vaovao",
+    "description": "Misafidia tenimiafina azo antoka hanadiovana ny kaontinao. Zava-dehibe ho an'ny fiarovanao an-tserasera ny tenimiafina tsara.",
+    "requirements": {
+      "minLength": "Farafahakeliny litera 8",
+      "case": "Litera lehibe sy litera madinika",
+      "special": "Isa sy marika manokana"
+    },
+    "rememberPassword": "Tsaroanao ve ny tenimiafinanao?",
+    "loginLink": "Hiditra",
+    "quote": {
+      "text": "\"Ny tenimiafina tsara dia tahaka ny lakile tsara: tokana sy sarotra.\"",
+      "author": "- Manam-pahaizana momba ny fiarovana"
+    },
+    "formTitle": "Tenimiafina vaovao",
+    "formSubtitle": "Misafidia tenimiafina azo antoka",
+    "newPassword": "Tenimiafina vaovao",
+    "newPasswordPlaceholder": "Ny tenimiafinao vaovao",
+    "confirmPassword": "Hamarinina ny tenimiafina",
+    "confirmPasswordPlaceholder": "Hamarinina ny tenimiafinanao",
+    "resetting": "Eo am-panavaozana...",
+    "resetButton": "Hanavao ny tenimiafina",
+    "backToLogin": "Hiverina any amin'ny fidirana"
+  },
+  "passwordStrength_f": {
+    "title": "Hery ny tenimiafina",
+    "levels": {
+      "0": "Tsy voamarina",
+      "1": "Malemilemy be",
+      "2": "Malemilemy",
+      "3": "Antonony",
+      "4": "Mafy",
+      "5": "Mafy be"
+    }
+  },
+  "formErrors_f": {
+    "passwordsMismatch": "Tsy mitovy ny tenimiafina",
+    "passwordTooWeak": "Malemilemy be ny tenimiafina",
+    "passwordsMatch": "Mifanaraka ny tenimiafina"
+  },
+  "errors_f": {
+    "resetError": "Nisy hadisoana tamin'ny fanavaozana",
+    "networkError": "Hadisoana tambajotra. Andramo indray azafady."
+  },
+  "security_f": {
+    "tip": "Torolalana momba ny fiarovana",
+    "advice": "Ampiasao tenimiafina tokana tsy ampiasainao any amin'ny toerana hafa. Ario ny fampahalalana manokana azo vinavinaina mora."
+  },
+
+  
+  "loading_v": {
+    "title": "Eo am-panamarinana",
+    "description": "Manamarinina ny adiresy mailakao izahay mba hiarovana ny kaontinao. Hisy fotoana vitsivitsy fotsiny io hetsika io.",
+    "steps": {
+      "email": "Fanamarinana ny mailaka",
+      "activation": "Famahana ny kaonty",
+      "preparation": "Fanomanana ny toerana anao"
+    },
+    "quote": {
+      "text": "\"Ny faharetana no lakile mankany amin'ny fahombiazana.\"",
+      "author": "- Ohabolana"
+    },
+    "verification": "Fanamarinana",
+    "validating": "Eo am-panamarinana ny adiresy mailakao...",
+    "validationInProgress": "Eo am-panamarinana",
+    "pleaseWait": "Andraso kely raha mbola manamarinina ny mailakao izahay"
+  },
+  "error_v": {
+    "title": "Oopsy!",
+    "description": "Tsy afaka namarinina ny adiresy mailakao izahay. Mety efa lany daty na tsy mety ny rohy.",
+    "issues": {
+      "expired": "Rohy lany daty na tsy mety",
+      "verification": "Hadisoana fanamarinana",
+      "newRequest": "Mila fangatahana vaovao"
+    },
+    "quote": {
+      "text": "\"Mety hadiso ny olombelona, fa ny faharetana kosa dia avy amin'Andriamanitra.\"",
+      "author": "- Ohabolana"
+    },
+    "verificationFailed": "Tsy nahomby ny fanamarinana",
+    "actionRequired": "Mila hetsika",
+    "newVerificationRequired": "Mila mangataka rohy fanamarinana vaovao ianao",
+    "goToLogin": "Handeha any amin'ny fidirana",
+    "createNewAccount": "Hanonta kaonty vaovao"
+  },
+  "success_v": {
+    "title": "Arahabaina!",
+    "description": "Voahidy sy voaro izao ny kaontinao. Afaka manomboka ny dia fianarana teny anao izao ianao!",
+    "benefits": {
+      "emailVerified": "Voamarina soa aman-tsara ny mailaka",
+      "accountActivated": "Voahidy tanteraka ny kaonty",
+      "fullAccess": "Fidirana amin'ny endri-javatra rehetra"
+    },
+    "quote": {
+      "text": "\"Ny fahalalana ny teny no varavaran'ny fahendrena.\"",
+      "author": "- Roger Bacon"
+    },
+    "emailVerified": "Voamarina ny mailaka!",
+    "message": "Voamarina soa aman-tsara ny mailakao!",
+    "defaultMessage": "Voamarina soa aman-tsara ny mailaka",
+    "accountSecure": "Voaro ny kaonty",
+    "accountProtected": "Voamarina sy voaro izao ny kaontinao",
+    "autoRedirect": "Hodina ho any amin'ny pejy fidirana mandeha ho azy ianao afaka segondra vitsivitsy.",
+    "startNow": "Atombohy izao"
+  },
+  "errors_v": {
+    "generic": "Hadisoana {{status}}",
+    "verificationError": "Hadisoana {{status}} tamin'ny fanamarinana",
+    "networkError": "Hadisoana tambajotra. Andramo indray azafady.",
+    "missingToken": "Tsy ampy ny token fanamarinana."
+  }
+
+
+
+
+
+
+
+
+
 }

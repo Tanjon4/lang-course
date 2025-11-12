@@ -27,6 +27,7 @@ export default function Contact() {
     message: '',
     language: ''
   });
+  const {t} = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -62,30 +63,30 @@ export default function Contact() {
   const contactInfo = [
     {
       icon: Mail,
-      title: 'Email',
+      title: t('email_title'),
       content: 'contact@langueapp.com',
-      description: 'Nous répondons sous 24h',
+      description: t('email_desc'),
       color: 'from-blue-500 to-blue-600'
     },
     {
       icon: Phone,
-      title: 'Téléphone',
-      content: '+33 1 23 45 67 89',
-      description: 'Lun-Ven 9h-18h',
+      title: t('phone_title'),
+      content: '+261 34 12 145 13',
+      description: t('phone_desc'),
       color: 'from-green-500 to-green-600'
     },
     {
       icon: MapPin,
-      title: 'Adresse',
-      content: '123 Rue des Langues',
-      description: '75001 Paris, France',
+      title: t("address_title"),
+      content: '123 Rue',
+      description: t('address_desc'),
       color: 'from-purple-500 to-purple-600'
     },
     {
       icon: Clock,
-      title: 'Support',
-      content: '24/7 disponible',
-      description: 'Chat en direct',
+      title: t('support_title'),
+      content: t('content_title'),
+      description: t('support_desc'),
       color: 'from-orange-500 to-orange-600'
     }
   ];
@@ -106,18 +107,18 @@ export default function Contact() {
   const features = [
     {
       icon: Globe,
-      title: 'Professeurs Natifs',
-      description: 'Apprenez avec des experts de la langue'
+      title: t('feature_native'),
+      description: t('feature_native_desc')
     },
     {
       icon: Video,
-      title: 'Cours en Visio',
-      description: 'Sessions interactives en direct'
+      title: t('feature_visio'),
+      description: t('feature_visio_desc')
     },
     {
       icon: BookOpen,
-      title: 'Ressources Illimitées',
-      description: 'Accès à tous nos contenus'
+      title: t('feature_resources'),
+      description: t('feature_resources_desc')
     }
   ];
 
@@ -248,7 +249,7 @@ export default function Contact() {
               <div className="relative z-10">
                 <div className="flex items-center space-x-3 mb-4">
                   <Users className="w-8 h-8" />
-                  <h3 className="font-bold text-lg">Communauté Dynamique</h3>
+                  <h3 className="font-bold text-lg">{t("community_title")}</h3>
                 </div>
                 <p className="text-gray-500 leading-relaxed">
                   Rejoignez plus de <span className="font-bold text-white">50,000 apprenants</span> passionnés 
@@ -258,7 +259,7 @@ export default function Contact() {
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star key={star} className="w-4 h-4 fill-current text-yellow-300" />
                   ))}
-                  <span className="text-blue-100 text-sm ml-2">4.9/5 (2.4k avis)</span>
+                  <span className="text-blue-100 text-sm ml-2">{t("community_rating")}</span>
                 </div>
               </div>
             </motion.div>
@@ -268,7 +269,7 @@ export default function Contact() {
               variants={fadeInUp}
               className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100"
             >
-              <h3 className="font-bold text-gray-900 text-lg mb-4">Pourquoi Nous Choisir ?</h3>
+              <h3 className="font-bold text-gray-900 text-lg mb-4">{t("why_choose_us")}</h3>
               <div className="space-y-4">
                 {features.map((feature, index) => (
                   <motion.div
@@ -313,11 +314,10 @@ export default function Contact() {
                       <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
                     </motion.div>
                     <h3 className="text-3xl font-bold text-gray-900 mb-4">
-                      Message Envoyé !
+                      {t("sent_title")}
                     </h3>
                     <p className="text-gray-600 text-lg max-w-md mx-auto">
-                      Merci pour votre message. Notre équipe pédagogique vous répondra 
-                      dans les plus brefs délais pour vous accompagner dans votre projet linguistique.
+                      {t("sent_text")}
                     </p>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
@@ -325,7 +325,7 @@ export default function Contact() {
                       onClick={() => setIsSubmitted(false)}
                       className="mt-6 px-8 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:border-orange-400 hover:text-amber-600 transition-all duration-300"
                     >
-                      Nouveau message
+                      {t("btn_new_message")}
                     </motion.button>
                   </motion.div>
                 ) : (
@@ -336,11 +336,10 @@ export default function Contact() {
                       transition={{ delay: 0.3 }}
                     >
                       <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                        Parlons de Votre Projet
+                        {t("form_title")}
                       </h2>
                       <p className="text-gray-600 text-lg mb-8">
-                        Remplissez le formulaire ci-dessous et notre équipe d'experts linguistiques 
-                        vous contactera personnellement.
+                        {t("form_subtitle")}
                       </p>
                     </motion.div>
 
@@ -351,7 +350,7 @@ export default function Contact() {
                           className="group"
                         >
                           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                            Nom complet *
+                            {t("label_name")}
                           </label>
                           <input
                             type="text"
@@ -361,7 +360,7 @@ export default function Contact() {
                             onChange={handleChange}
                             required
                             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 group-hover:border-blue-300"
-                            placeholder="Votre nom complet"
+                            placeholder={t("placeholder_name")}
                           />
                         </motion.div>
 
@@ -370,7 +369,7 @@ export default function Contact() {
                           className="group"
                         >
                           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                            Email *
+                            {t("label_email")}
                           </label>
                           <input
                             type="email"
@@ -380,7 +379,7 @@ export default function Contact() {
                             onChange={handleChange}
                             required
                             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 group-hover:border-blue-300"
-                            placeholder="votre@email.com"
+                            placeholder={t("placeholder_email")}
                           />
                         </motion.div>
                       </div>
@@ -388,7 +387,7 @@ export default function Contact() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <motion.div whileFocus={{ scale: 1.02 }} className="group">
                           <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                            Sujet *
+                            {t("label_subject")}
                           </label>
                           <input
                             type="text"
@@ -398,13 +397,13 @@ export default function Contact() {
                             onChange={handleChange}
                             required
                             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 group-hover:border-blue-300"
-                            placeholder="Sujet de votre message"
+                            placeholder={t("placeholder_subject")}
                           />
                         </motion.div>
 
                         <motion.div whileFocus={{ scale: 1.02 }} className="group">
                           <label htmlFor="language" className="block text-sm font-medium text-gray-700 mb-2">
-                            Langue d'intérêt
+                            {t("label_language")}
                           </label>
                           <select
                             id="language"
@@ -413,7 +412,7 @@ export default function Contact() {
                             onChange={handleChange}
                             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 group-hover:border-blue-300 bg-white"
                           >
-                            <option value="">Sélectionnez une langue</option>
+                            <option value="">{t("select_language")}</option>
                             {languages.map((lang) => (
                               <option key={lang} value={lang}>{lang}</option>
                             ))}
@@ -423,7 +422,7 @@ export default function Contact() {
 
                       <motion.div whileFocus={{ scale: 1.02 }} className="group">
                         <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                          Message *
+                          {t("label_message")}
                         </label>
                         <textarea
                           id="message"
@@ -433,7 +432,7 @@ export default function Contact() {
                           required
                           rows={6}
                           className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none group-hover:border-blue-300"
-                          placeholder="Décrivez votre projet, vos objectifs linguistiques, ou toute question que vous pourriez avoir..."
+                          placeholder={t("placeholder_message")}
                         />
                       </motion.div>
 
@@ -447,12 +446,12 @@ export default function Contact() {
                         {isSubmitting ? (
                           <>
                             <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                            <span>Envoi en cours...</span>
+                            <span>{t("btn_sending")}</span>
                           </>
                         ) : (
                           <>
                             <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-                            <span>Envoyer le message</span>
+                            <span>{t("btn_send")}</span>
                           </>
                         )}
                       </motion.button>
@@ -470,25 +469,26 @@ export default function Contact() {
               className="mt-8 bg-white rounded-2xl shadow-lg p-8 border border-gray-100"
             >
               <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Questions Fréquentes
+                {t("faq_title")}
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
                   {
-                    question: "Quelles langues proposez-vous ?",
-                    answer: "12 langues dont anglais, espagnol, français, allemand, italien, japonais, chinois, arabe, portugais, russe, et plus encore."
+                    question: t("faq_1_q"),
+                    answer: t("faq_1_a")
                   },
                   {
-                    question: "Comment fonctionnent les cours en ligne ?",
-                    answer: "Cours en visio avec professeurs natifs, plateforme interactive, exercices pratiques, et suivi personnalisé."
+                    question: t("faq_2_q"),
+                    answer: t("faq_2_a")
+                  },
+    
+                  {
+                    question: t("faq_3_q"),
+                    answer: t("faq_3_a"),
                   },
                   {
-                    question: "Proposez-vous des essais gratuits ?",
-                    answer: "Oui, profitez d'une séance d'essai gratuite avec un de nos professeurs pour découvrir notre méthode."
-                  },
-                  {
-                    question: "Quelle est la durée des formations ?",
-                    answer: "Formations flexibles de 1 à 12 mois, adaptées à vos objectifs et votre rythme d'apprentissage."
+                    question: t("faq_4_q"),
+                    answer: t("faq_4_a")
                   }
                 ].map((item, index) => (
                   <motion.div

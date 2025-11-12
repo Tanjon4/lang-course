@@ -53,9 +53,36 @@
   "about_title": "Who are we?",
   "about_description": "Hoavi is an edtech startup reinventing language learning by combining online courses, in-person training (from middle to high school), and immersive technologies such as mobile and virtual reality (VR). Our programs are certification-based, allowing each learner to earn verifiable digital certificates and badges that prove real linguistic and professional skills.",
 
+ "valeur_title": "Our Values",
+  "notre": "Our",
+  "parcours": "Journey",
+  "p_decouvrez": "Discover the key milestones that have marked our growth and success.",
+  "h2_nous": "What",
+  "span_d": "sets us apart",
+  "pos": "Strong positioning with new services",
+  "ouverture": "Opening of our first offices",
+  "inno": "Innovation award and accelerated growth",
+  "dev": "Development of our proprietary technology",
+  "lancement": "Launch with a small passionate team",
+  "fondementaux": "The core principles that guide each of our actions and decisions.",
+  "h2_vision": "Ready to turn your vision into reality?",
+  "Découvrir_services": "Discover our services",
+  "Rencontrer": "Meet the team",
+  "depuis": "Since 2023",
+  "Pays_desservis": "Countries Served",
+  "actif_user": "Active Users",
+  "Satisfaction": "Customer Satisfaction",
+  "Ans_expérience": "Years of Experience",
+  "Fondation": "Company Founded",
+  "start": "Start Learning",
+  "innovation_majeure": "First Major Innovation",
+  "Expansion": "International Expansion",
+  "Reconnaissance": "Company Recognition",
+  "aprentissage_langue": "Best language learning platform",
   "section_histoire_title": "History",
   "section_histoire_content": "Launched in late August 2025 by a passionate team, Hoavi was born from the ambition to make linguistic and academic education more useful, modern, and accessible. Its goal is to provide practical and certified learning paths that open real academic and career opportunities.",
-
+  "p_rej": "Join thousands of clients who trust us with their most ambitious projects.",
+  
   "section_vision_title": "Vision",
   "section_vision_content": "Our vision is to become the global reference for a hybrid educational model where learning goes hand in hand with accreditation. Hoavi aligns its programs with international frameworks — such as the CEFR for languages — recognized by academic partners and companies, preparing learners for real-world and rewarding careers.",
 
@@ -70,7 +97,6 @@
 
   "section_role_title": "Role of Hoavi",
   "section_role_content": "Hoavi designs, implements, and evaluates certified learning programs while issuing verifiable and recognized credentials. The company supports learners in showcasing their skills, ensuring each certificate becomes a true gateway to employment and career growth.",
-  "contact_title": "Contact Us",
   "contact_description": "Have a question, collaboration idea, or partnership proposal? We’d love to hear from you.",
   
   "form_name_label": "Full Name",
@@ -86,5 +112,347 @@
   
   "contact_address_label": "Address",
   "contact_phone_label": "Phone",
-  "contact_email_label": "Email"
+  "contact_email_label": "Email",
+    "contact_title": "Contact Us",
+  "contact_subtitle": "We’re here to support you on your language journey. Have a question? A project? Let’s talk!",
+  "email_title": "Email",
+  "email_desc": "We reply within 24h",
+  "phone_title": "Phone",
+  "phone_desc": "Mon-Fri 9am–6pm",
+  "address_title": "Address",
+  "address_desc": "75001 Paris, France",
+  "support_title": "Support",
+  "support_desc": "Live chat available",
+  "community_title": "Dynamic Community",
+  "community_text": "Join over {{count}} passionate learners already mastering a new language with our innovative method.",
+  "community_rating": "4.9/5 (2.4k reviews)",
+  "why_choose_us": "Why Choose Us?",
+  "feature_native": "Native Teachers",
+  "feature_native_desc": "Learn with expert native speakers",
+  "feature_visio": "Live Classes",
+  "feature_visio_desc": "Interactive live video sessions",
+  "feature_resources": "Unlimited Resources",
+  "feature_resources_desc": "Access all our learning materials",
+  "form_title": "Let's Talk About Your Project",
+  "form_subtitle": "Fill out the form below and our team of language experts will contact you personally.",
+  "label_name": "Full Name *",
+  "placeholder_name": "Your full name",
+  "label_email": "Email *",
+  "placeholder_email": "your@email.com",
+  "label_subject": "Subject *",
+  "placeholder_subject": "Subject of your message",
+  "label_language": "Language of Interest",
+  "select_language": "Select a language",
+  "label_message": "Message *",
+  "placeholder_message": "Describe your project, language goals, or any questions you may have...",
+  "btn_sending": "Sending...",
+  "btn_send": "Send Message",
+  "sent_title": "Message Sent!",
+  "sent_text": "Thank you for your message. Our teaching team will get back to you as soon as possible to assist with your language project.",
+  "btn_new_message": "New Message",
+  "faq_title": "Frequently Asked Questions",
+  "faq_1_q": "Which languages do you offer?",
+  "faq_1_a": "12 languages including English, Spanish, French, German, Italian, Japanese, Chinese, Arabic, Portuguese, Russian, and more.",
+  "faq_2_q": "How do online lessons work?",
+  "faq_2_a": "Live video sessions with native teachers, interactive platform, practical exercises, and personalized follow-up.",
+  "faq_3_q": "Do you offer free trials?",
+  "faq_3_a": "Yes, enjoy a free trial session with one of our teachers to discover our method.",
+  "faq_4_q": "How long are the courses?",
+  "faq_4_a": "Flexible courses from 1 to 12 months, adapted to your goals and learning pace.",
+  "see_less": "Show less",
+  "see_more": "Show more",
+  "get_started": "Get started",
+  "requise": "Login required",
+  "chargement": "Loading courses...",
+  "Rafraîchir": "Refresh",
+  "langures": "Our Available Languages",
+  "salutations": "Available courses - Welcome",
+
+  "cours_langue": "Language Courses",
+  "securité": "Security ensured!",
+  "p1_securité": "Your security is our priority. We have sent a secure link ",
+  "p2_securité": "to reset your password safely and confidentially.",
+  "sp_securité": "Secure link sent",
+  "sp_heure": "Valid for 1 hour",
+  "garatie": "Confidentiality guaranteed",
+  "citations": "Security is not a product, but a process.",
+  "envoyé": "Email sent!",
+  "p_renitialisation": "A secure reset link has been sent to",
+  "p1_link": "Check your inbox and follow the instructions ",
+  "p2_link": "to safely reset your password.",
+  "conseil": "Tip:",
+  "verify_spam": "Also check your spam folder ",
+  "si": "if you don’t see our email.",
+  "return_login": "Back to login",
+  "forgot_password": "Forgot password?",
+  "p_text": "Don’t worry! We’ll help you regain access ",
+  "p1_text": "to your account securely.",
+  "sp_link": "Secure reset link",
+  "instruction": "Simple instructions to follow",
+  "acces_rappide": "Quick access to your account",
+  "souvenez_mdp": "Remember your password?",
+  "citation2": "The best security is the one you don't notice.",
+  "Réinitialisation": "Reset",
+  "enter_email": "Enter your email to receive a secure link",
+  "email_add": "Email address",
+  "link_2": "We’ll send a secure reset link to this address.",
+  "back_connex": "Back to login",
+  "security": "Security",
+  "duration": "The reset link is valid for 1 hour for your safety.",
+  "duration1": "We will never share your email with third parties.",
+  "welcomeMessage1": "Log back into your language learning space. Resume your language journey where you left off.",
+  "continueWithGoogle": "Continue with Google",
+  "charlemagneQuote": "\"Mastering a new language is like having another soul.\"",
+  "charlemagne": "- Charlemagne",
+  "loginTitle": "Login",
+  "loginSubtitle": "Access your personal account",
+  "emailLabel": "Email address",
+  "emailPlaceholder": "your@email.com",
+  "passwordLabel": "Password",
+  "passwordPlaceholder": "Your password",
+  "loginButton": "Login",
+  "loggingIn": "Logging in...",
+  "noAccount": "Don't have an account yet?",
+  "createAccount": "Create account",
+  "invalidCredentials": "❌ Email or password incorrect!",
+  "loginError": "❌ Login error:",
+  "googleLoginError": "❌ Google login error. Please try again.",
+  "googleSuccess": "✅ Google login successful!",
+  "loginSuccess": "✅ Login successful!",
+  "accountNotFound": "Account not found for",
+  "createAccountWithGoogle": "Would you like to create an account with your Google account?",
+  "loading_p": "Loading profile...",
+  "accessRequired": "Access Required",
+  "loginToAccess": "Log in to access your profile",
+  "level": "Lvl.",
+  "xp": "XP",
+  "levels": "Levels",
+  "progressTo": "Progress to",
+  "completed": "Completed",
+  "days": "Days",
+  "currentStreak": "Current streak",
+  "certificates": "Certificates",
+  "obtained": "Obtained",
+  "courses": "Courses",
+  "progressAndLevel": "Progress & Level",
+  "currentLevel": "Current level",
+  "totalXP": "Total XP",
+  "nextLevel": "Next level",
+  "xpRequired": "XP required",
+  "currentRank": "Current rank",
+  "loadingStats": "Loading statistics...",
+  "personalInfo": "Personal Information",
+  "memberSince": "Member since",
+  "levelProgress": "Level Progress",
+  "chapters": "chapters",
+  "moreLevels": "more levels...",
+  "ranks": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert",
+    "master": "Master"
+  },
+  "rankRequirements": {
+    "beginner": "Complete 25% of levels to become Intermediate",
+    "intermediate": "Complete 50% of levels to become Advanced",
+    "advanced": "Complete 75% of levels to become Expert",
+    "expert": "Complete 100% of levels to become Master",
+    "default": "Keep learning!"
+  },
+  
+  "welcome_r": {
+    "title": "Start your journey!",
+    "description": "Join our community of language learners. Access personalized courses, track your progress, and master new languages at your own pace."
+  },
+  "benefits": {
+    "personalized": "Personalized courses",
+    "progress": "Detailed progress tracking",
+    "community": "International community",
+    "pace": "Learn at your own pace"
+  },
+  "alreadyMember": "Already a member?",
+  "loginLink": "Log in",
+  "quote": {
+    "text": "\"The limits of my language are the limits of my world.\"",
+    "author": "- Ludwig Wittgenstein"
+  },
+  "form": {
+    "title": "Create an account",
+    "subtitle": "Join our learning community",
+    "username": "Username",
+    "usernamePlaceholder": "Your username",
+    "email": "Email address",
+    "emailPlaceholder": "your@email.com",
+    "password": "Password",
+    "passwordPlaceholder": "Your password",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "createAccount": "Create my account",
+    "creatingAccount": "Creating account..."
+  },
+  "passwordStrength": {
+    "title": "Password strength",
+    "levels": {
+      "0": "Not evaluated",
+      "1": "Very weak",
+      "2": "Weak",
+      "3": "Medium",
+      "4": "Strong",
+      "5": "Very strong"
+    },
+    "requirements": "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character."
+  },
+  "formErrors": {
+    "correctErrors": "Please correct the errors in the form",
+    "checkInfo": "Check your registration information.",
+    "passwordsMismatch": "Passwords do not match",
+    "passwordsMatch": "Passwords match"
+  },
+  "errors": {
+    "error": "Error",
+    "registrationError": "An error occurred during registration.",
+    "connectionError": "Connection error. Please check your internet connection."
+  },
+  "registrationSuccess": "Registration successful! Check your emails to confirm your account and log in afterwards.",
+
+
+  
+  "success_f": {
+    "title": "Password updated!",
+    "description": "Your security is enhanced. Your new password has been successfully saved and you can now log in.",
+    "benefits": {
+      "secure": "Secure password",
+      "protected": "Protected account",
+      "redirect": "Automatic redirect"
+    },
+    "quote": {
+      "text": "\"Security starts with a good password.\"",
+      "author": "- Best practice"
+    },
+    "resetSuccess": "Reset successful!",
+    "passwordChanged": "Your password has been changed successfully",
+    "accountSecure": "Account secured",
+    "accountProtected": "Your account is now protected by your new password",
+    "autoRedirect": "You will be automatically redirected to the login page in a few seconds.",
+    "loginNow": "Log in now"
+  },
+  "form_f": {
+    "title": "New password",
+    "description": "Choose a secure password to protect your account. A good password is essential for your online security.",
+    "requirements": {
+      "minLength": "Minimum 8 characters",
+      "case": "Uppercase and lowercase letters",
+      "special": "Numbers and special characters"
+    },
+    "rememberPassword": "Remember your password?",
+    "loginLink": "Log in",
+    "quote": {
+      "text": "\"A good password is like a good key: unique and complex.\"",
+      "author": "- Security expert"
+    },
+    "formTitle": "New password",
+    "formSubtitle": "Choose a secure password",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "Your new password",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "resetting": "Resetting...",
+    "resetButton": "Reset password",
+    "backToLogin": "Back to login"
+  },
+  "passwordStrength_f": {
+    "title": "Password strength",
+    "levels": {
+      "0": "Not evaluated",
+      "1": "Very weak",
+      "2": "Weak",
+      "3": "Medium",
+      "4": "Strong",
+      "5": "Very strong"
+    }
+  },
+  "formErrors_f": {
+    "passwordsMismatch": "Passwords do not match",
+    "passwordTooWeak": "Password is too weak",
+    "passwordsMatch": "Passwords match"
+  },
+  "errors_f": {
+    "resetError": "Error during reset",
+    "networkError": "Network error. Please try again."
+  },
+  "security_f": {
+    "tip": "Security tip",
+    "advice": "Use a unique password that you don't use anywhere else. Avoid easily guessable personal information."
+  },
+
+
+  "loading_v": {
+    "title": "Verification in progress",
+    "description": "We are verifying your email address to secure your account. This operation will only take a few moments.",
+    "steps": {
+      "email": "Email verification",
+      "activation": "Account activation",
+      "preparation": "Preparing your space"
+    },
+    "quote": {
+      "text": "\"Patience is the key to success.\"",
+      "author": "- Proverb"
+    },
+    "verification": "Verification",
+    "validating": "We are validating your email address...",
+    "validationInProgress": "Validation in progress",
+    "pleaseWait": "Please wait while we verify your email"
+  },
+  "error_v": {
+    "title": "Oops!",
+    "description": "We couldn't verify your email address. The link may be expired or invalid.",
+    "issues": {
+      "expired": "Expired or invalid link",
+      "verification": "Verification error",
+      "newRequest": "Requires a new request"
+    },
+    "quote": {
+      "text": "\"To err is human, to persevere is divine.\"",
+      "author": "- Proverb"
+    },
+    "verificationFailed": "Verification failed",
+    "actionRequired": "Action required",
+    "newVerificationRequired": "You need to request a new verification link",
+    "goToLogin": "Go to login",
+    "createNewAccount": "Create a new account"
+  },
+  "success_v": {
+    "title": "Congratulations!",
+    "description": "Your account is now activated and secured. You can start your language journey right now!",
+    "benefits": {
+      "emailVerified": "Email successfully verified",
+      "accountActivated": "Account fully activated",
+      "fullAccess": "Access to all features"
+    },
+    "quote": {
+      "text": "\"Knowledge of languages is the doorway to wisdom.\"",
+      "author": "- Roger Bacon"
+    },
+    "emailVerified": "Email verified!",
+    "message": "Your email has been successfully verified!",
+    "defaultMessage": "Email verified successfully",
+    "accountSecure": "Account secured",
+    "accountProtected": "Your account is now verified and protected",
+    "autoRedirect": "You will be automatically redirected to the login page in a few seconds.",
+    "startNow": "Start now"
+  },
+  "errors_v": {
+    "generic": "Error {{status}}",
+    "verificationError": "Error {{status}} during verification",
+    "networkError": "Network error. Please try again.",
+    "missingToken": "Missing verification token."
+  }
+
+
+  
+
+
+
+
 }

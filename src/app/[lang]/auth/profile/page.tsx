@@ -24,6 +24,7 @@ import { useAuth } from '@/app/contexts/AuthContext';
 import { useParams } from 'next/navigation';
 import { courseService } from '@/services/courseService';
 import { UserProgressOverview, CourseGlobal } from '@/types/course';
+import { useTranslation } from 'react-i18next';
 
 // Types pour les données utilisateur étendues
 interface UserStats {
@@ -54,6 +55,7 @@ export default function ProfilePage() {
   const { user, isAuthenticated, loading } = useAuth();
   const params = useParams();
   const lang = params.lng;
+  const { t } = useTranslation();
   const [overviewProgress, setOverviewProgress] = useState<UserProgressOverview | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
   const [courses, setCourses] = useState<CourseGlobal[]>([]);
@@ -178,26 +180,26 @@ export default function ProfilePage() {
     
     if (progressPercentage < 25) {
       return {
-        currentRank: "Beginner",
-        nextRank: "Intermediate",
+        currentRank: t('ranks.beginner'),
+        nextRank: t('ranks.intermediate'),
         progressToNextRank: Math.round((progressPercentage / 25) * 100)
       };
     } else if (progressPercentage < 50) {
       return {
-        currentRank: "Intermediate",
-        nextRank: "Advanced",
+        currentRank: t('ranks.intermediate'),
+        nextRank: t('ranks.advanced'),
         progressToNextRank: Math.round(((progressPercentage - 25) / 25) * 100)
       };
     } else if (progressPercentage < 75) {
       return {
-        currentRank: "Advanced",
-        nextRank: "Expert",
+        currentRank: t('ranks.advanced'),
+        nextRank: t('ranks.expert'),
         progressToNextRank: Math.round(((progressPercentage - 50) / 25) * 100)
       };
     } else {
       return {
-        currentRank: "Expert",
-        nextRank: "Master",
+        currentRank: t('ranks.expert'),
+        nextRank: t('ranks.master'),
         progressToNextRank: Math.round(((progressPercentage - 75) / 25) * 100)
       };
     }
@@ -209,8 +211,8 @@ export default function ProfilePage() {
     xpToNextLevel: 100,
     streak: 0,
     certificatesCount: 0,
-    currentRank: "Beginner",
-    nextRank: "Intermediate",
+    currentRank: t('ranks.beginner'),
+    nextRank: t('ranks.intermediate'),
     progressToNextRank: 0,
     completedLevels: 0,
     totalLevels: 0,
@@ -231,15 +233,15 @@ export default function ProfilePage() {
   const getLevelRequirements = (currentRank: string) => {
     switch (currentRank.toLowerCase()) {
       case 'beginner':
-        return "Complétez 25% des niveaux pour devenir Intermediate";
+        return t('rankRequirements.beginner');
       case 'intermediate':
-        return "Complétez 50% des niveaux pour devenir Advanced";
+        return t('rankRequirements.intermediate');
       case 'advanced':
-        return "Complétez 75% des niveaux pour devenir Expert";
+        return t('rankRequirements.advanced');
       case 'expert':
-        return "Complétez 100% des niveaux pour devenir Master";
+        return t('rankRequirements.expert');
       default:
-        return "Continuez à apprendre !";
+        return t('rankRequirements.default');
     }
   };
 
@@ -248,7 +250,7 @@ export default function ProfilePage() {
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-50 to-amber-50">
         <div className="flex flex-col items-center space-y-4">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-amber-500"></div>
-          <p className="text-amber-600 font-medium">Chargement du profil...</p>
+          <p className="text-amber-600 font-medium">{t('loading')}</p>
         </div>
       </div>
     );
@@ -263,13 +265,13 @@ export default function ProfilePage() {
             <div className="w-20 h-20 bg-gradient-to-r from-orange-200 to-amber-200 rounded-full flex items-center justify-center mx-auto mb-6">
               <UserIcon className="h-10 w-10 text-white" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Accès requis</h2>
-            <p className="text-gray-600 mb-6">Connectez-vous pour accéder à votre profil</p>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">{t('accessRequired')}</h2>
+            <p className="text-gray-600 mb-6">{t('loginToAccess')}</p>
             <a 
               href="/auth/login"
               className="bg-gradient-to-r from-orange-500 to-amber-500 text-white px-8 py-3 rounded-xl hover:from-orange-600 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-xl font-medium inline-block w-full sm:w-auto"
             >
-              Se connecter
+              {t('loginButton')}
             </a>
           </div>
         </div>
@@ -307,7 +309,7 @@ export default function ProfilePage() {
                     {userStats && (
                       <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full p-2 border-2 border-white shadow-lg">
                         <div className="text-xs font-bold whitespace-nowrap">
-                          Niv. {userStats.level}
+                          {t('level')} {userStats.level}
                         </div>
                       </div>
                     )}
@@ -326,11 +328,11 @@ export default function ProfilePage() {
                         </span>
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-500 text-white border border-amber-600">
                           <Zap className="h-3 w-3 mr-1" />
-                          {userStats.xp} XP
+                          {userStats.xp} {t('xp')}
                         </span>
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-500 text-white border border-green-600">
                           <GraduationCap className="h-3 w-3 mr-1" />
-                          {userStats.completedLevels}/{userStats.totalLevels} Niveaux
+                          {userStats.completedLevels}/{userStats.totalLevels} {t('levels')}
                         </span>
                       </div>
                     )}
@@ -351,7 +353,7 @@ export default function ProfilePage() {
               {userStats && (
                 <div className="mt-6 bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium">Progression vers {userStats.nextRank}</span>
+                    <span className="text-sm font-medium">{t('progressTo')} {userStats.nextRank}</span>
                     <span className="text-sm font-bold">{userStats.progressToNextRank}%</span>
                   </div>
                   <div className="w-full bg-white/20 rounded-full h-3">
@@ -380,8 +382,8 @@ export default function ProfilePage() {
                 <GraduationCap className="h-8 w-8" />
                 <span className="text-2xl font-bold">{userStats?.completedLevels || 0}</span>
               </div>
-              <h3 className="font-semibold text-white/90">Niveaux</h3>
-              <p className="text-sm text-white/70 mt-1">Complétés</p>
+              <h3 className="font-semibold text-white/90">{t('levels')}</h3>
+              <p className="text-sm text-white/70 mt-1">{t('completed')}</p>
             </div>
 
             {/* Streak */}
@@ -390,8 +392,8 @@ export default function ProfilePage() {
                 <Flame className="h-8 w-8" />
                 <span className="text-2xl font-bold">{userStats?.streak || 0}</span>
               </div>
-              <h3 className="font-semibold text-white/90">Jours</h3>
-              <p className="text-sm text-white/70 mt-1">Streak actuel</p>
+              <h3 className="font-semibold text-white/90">{t('days')}</h3>
+              <p className="text-sm text-white/70 mt-1">{t('currentStreak')}</p>
             </div>
 
             {/* Certificats */}
@@ -400,8 +402,8 @@ export default function ProfilePage() {
                 <FileText className="h-8 w-8" />
                 <span className="text-2xl font-bold">{userStats?.certificatesCount || 0}</span>
               </div>
-              <h3 className="font-semibold text-white/90">Certificats</h3>
-              <p className="text-sm text-white/70 mt-1">Obtenus</p>
+              <h3 className="font-semibold text-white/90">{t('certificates')}</h3>
+              <p className="text-sm text-white/70 mt-1">{t('obtained')}</p>
             </div>
 
             {/* Cours complétés */}
@@ -410,8 +412,8 @@ export default function ProfilePage() {
                 <Target className="h-8 w-8" />
                 <span className="text-2xl font-bold">{overviewProgress?.completed_courses || 0}</span>
               </div>
-              <h3 className="font-semibold text-white/90">Cours</h3>
-              <p className="text-sm text-white/70 mt-1">Terminés</p>
+              <h3 className="font-semibold text-white/90">{t('courses')}</h3>
+              <p className="text-sm text-white/70 mt-1">{t('completed')}</p>
             </div>
           </div>
 
@@ -424,26 +426,26 @@ export default function ProfilePage() {
                 <div className="p-3 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl group-hover:scale-110 transition-transform duration-300">
                   <BarChart3 className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900">Progression & Niveau</h3>
+                <h3 className="text-xl font-semibold text-gray-900">{t('progressAndLevel')}</h3>
               </div>
               <div className="space-y-4">
                 {userStats ? (
                   <>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-gray-600">Niveau actuel</span>
-                      <span className="text-lg font-bold text-gray-900">Niv. {userStats.level}</span>
+                      <span className="text-sm font-medium text-gray-600">{t('currentLevel')}</span>
+                      <span className="text-lg font-bold text-gray-900">{t('level')} {userStats.level}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-gray-600">XP total</span>
-                      <span className="text-lg font-bold text-amber-600">{userStats.xp} XP</span>
+                      <span className="text-sm font-medium text-gray-600">{t('totalXP')}</span>
+                      <span className="text-lg font-bold text-amber-600">{userStats.xp} {t('xp')}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-gray-600">Prochain niveau</span>
-                      <span className="text-sm font-medium text-gray-900">{userStats.xpToNextLevel} XP requis</span>
+                      <span className="text-sm font-medium text-gray-600">{t('nextLevel')}</span>
+                      <span className="text-sm font-medium text-gray-900">{userStats.xpToNextLevel} {t('xpRequired')}</span>
                     </div>
                     <div className="pt-4 border-t border-orange-50">
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-gray-600">Rang actuel</span>
+                        <span className="text-sm font-medium text-gray-600">{t('currentRank')}</span>
                         <span className={`text-sm font-bold px-2 py-1 rounded ${getRankColor(userStats.currentRank)}`}>
                           {userStats.currentRank}
                         </span>
@@ -461,7 +463,7 @@ export default function ProfilePage() {
                   </>
                 ) : (
                   <div className="text-center py-4 text-gray-500">
-                    Chargement des statistiques...
+                    {t('loadingStats')}
                   </div>
                 )}
               </div>
@@ -473,19 +475,19 @@ export default function ProfilePage() {
                 <div className="p-3 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl group-hover:scale-110 transition-transform duration-300">
                   <UserIcon className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900">Informations personnelles</h3>
+                <h3 className="text-xl font-semibold text-gray-900">{t('personalInfo')}</h3>
               </div>
               <dl className="space-y-4">
                 <div className="pb-4 border-b border-orange-50">
-                  <dt className="text-sm font-medium text-gray-500 mb-2">Nom d'utilisateur</dt>
+                  <dt className="text-sm font-medium text-gray-500 mb-2">{t('username')}</dt>
                   <dd className="text-gray-900 font-medium text-lg">{user.username}</dd>
                 </div>
                 <div className="pb-4 border-b border-orange-50">
-                  <dt className="text-sm font-medium text-gray-500 mb-2">Email</dt>
+                  <dt className="text-sm font-medium text-gray-500 mb-2">{t('email')}</dt>
                   <dd className="text-gray-900 font-medium text-base break-words">{user.email}</dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-gray-500 mb-2">Membre depuis</dt>
+                  <dt className="text-sm font-medium text-gray-500 mb-2">{t('memberSince')}</dt>
                   <dd className="text-gray-900 font-medium text-base">
                     {user.date_joined ? new Date(user.date_joined).toLocaleDateString('fr-FR', {
                       year: 'numeric',
@@ -504,21 +506,21 @@ export default function ProfilePage() {
                   <div className="p-3 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl group-hover:scale-110 transition-transform duration-300">
                     <Target className="h-6 w-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900">Progression par Niveau</h3>
+                  <h3 className="text-xl font-semibold text-gray-900">{t('levelProgress')}</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {levelProgress.slice(0, 6).map((level) => (
                     <div key={level.levelId} className="border border-orange-100 rounded-lg p-4 hover:shadow-md transition-shadow">
                       <div className="flex justify-between items-center mb-2">
-                        <span className="font-medium text-gray-900">Niveau {level.levelNumber}</span>
+                        <span className="font-medium text-gray-900">{t('level')} {level.levelNumber}</span>
                         {level.completed ? (
                           <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                             <Award className="h-3 w-3 mr-1" />
-                            Terminé
+                            {t('completed')}
                           </span>
                         ) : (
                           <span className="text-xs text-gray-500">
-                            {level.completedChapters}/{level.totalChapters} chapitres
+                            {level.completedChapters}/{level.totalChapters} {t('chapters')}
                           </span>
                         )}
                       </div>
@@ -538,7 +540,7 @@ export default function ProfilePage() {
                 </div>
                 {levelProgress.length > 6 && (
                   <p className="text-center text-gray-500 mt-4">
-                    +{levelProgress.length - 6} autres niveaux...
+                    +{levelProgress.length - 6} {t('moreLevels')}
                   </p>
                 )}
               </div>

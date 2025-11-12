@@ -5,11 +5,13 @@ import { CheckCircle, XCircle, Mail, Sparkles, Languages, ArrowRight, Shield } f
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import Layout from '@/components/layout/BaseLayout';
+import { useTranslation } from 'react-i18next';
 
 export default function EmailVerifiedPage() {
     const router = useRouter();
     const { token, lang } = useParams() as { token: string; lang: string };
     const decodedToken = decodeURIComponent(token);
+    const { t } = useTranslation();
 
     const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
     const [message, setMessage] = useState<string>('');
@@ -30,37 +32,36 @@ export default function EmailVerifiedPage() {
             data = await res.json();
           } else {
             const text = await res.text();
-            try { data = JSON.parse(text); } catch { data = { message: res.ok ? 'Email vérifié avec succès' : `Erreur ${res.status}` }; }
+            try { data = JSON.parse(text); } catch { data = { message: res.ok ? t('success_v.defaultMessage') : t('errors_v.generic', { status: res.status }) }; }
           }
 
           if (!isMounted) return;
 
           if (res.ok) {
             setStatus('success');
-            setMessage(data.message || 'Votre email a été vérifié avec succès !');
+            setMessage(data.message || t('success_v.message'));
             setTimeout(() => router.push(`/${lang}/auth/login`), 3000);
           } else {
             setStatus('error');
-            setMessage(data.error || data.message || `Erreur ${res.status} lors de la vérification`);
+            setMessage(data.error || data.message || t('errors_v.verificationError', { status: res.status }));
           }
         } catch (err) {
           if (!isMounted) return;
           console.error(err);
           setStatus('error');
-          setMessage('Erreur réseau. Veuillez réessayer.');
+          setMessage(t('errors_v.networkError'));
         }
       };
 
       if (token) verifyEmail();
       else {
         setStatus('error');
-        setMessage('Token de vérification manquant.');
+        setMessage(t('errors_v.missingToken'));
       }
 
       return () => { isMounted = false; };
-    }, [decodedToken, router, lang, token]);
+    }, [decodedToken, router, lang, token, t]);
 
-  // Reste du code inchangé...
   if (status === 'loading') {
     return (
       <Layout>
@@ -81,11 +82,10 @@ export default function EmailVerifiedPage() {
                 <div className="space-y-4">
                   <div className="flex items-center space-x-2">
                     <Sparkles className="h-6 w-6 text-yellow-300" />
-                    <h2 className="text-4xl font-bold">Vérification en cours</h2>
+                    <h2 className="text-4xl font-bold">{t('loading_v.title')}</h2>
                   </div>
                   <p className="text-indigo-100 text-lg leading-relaxed">
-                    Nous vérifions votre adresse email pour sécuriser votre compte. 
-                    Cette opération ne prendra que quelques instants.
+                    {t('loading_v.description')}
                   </p>
                 </div>
 
@@ -93,23 +93,23 @@ export default function EmailVerifiedPage() {
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3">
                       <div className="w-5 h-5 border-2 border-white/50 border-t-white rounded-full animate-spin"></div>
-                      <span className="text-indigo-100">Vérification de l'email</span>
+                      <span className="text-indigo-100">{t('loading_v.steps.email')}</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-5 h-5 border-2 border-white/50 border-t-white rounded-full animate-spin"></div>
-                      <span className="text-indigo-100">Activation du compte</span>
+                      <span className="text-indigo-100">{t('loading_v.steps.activation')}</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-5 h-5 border-2 border-white/50 border-t-white rounded-full animate-spin"></div>
-                      <span className="text-indigo-100">Préparation de votre espace</span>
+                      <span className="text-indigo-100">{t('loading_v.steps.preparation')}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="pt-8 border-t border-white/20">
                   <p className="text-indigo-200 text-sm">
-                    "La patience est la clé de la réussite."<br />
-                    <span className="italic">- Proverbe</span>
+                    {t('loading_v.quote.text')}<br />
+                    <span className="italic">{t('loading_v.quote.author')}</span>
                   </p>
                 </div>
               </div>
@@ -119,8 +119,8 @@ export default function EmailVerifiedPage() {
             <div className="lg:w-1/2 p-12 flex flex-col justify-center">
               <div className="text-center mb-8">
                 <div className="w-20 h-20 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mx-auto mb-6"></div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-3">Vérification</h2>
-                <p className="text-gray-600">Nous validons votre adresse email...</p>
+                <h2 className="text-3xl font-bold text-gray-900 mb-3">{t('loading_v.verification')}</h2>
+                <p className="text-gray-600">{t('loading_v.validating')}</p>
               </div>
 
               <div className="space-y-6 text-center">
@@ -128,9 +128,9 @@ export default function EmailVerifiedPage() {
                   <div className="flex items-center justify-center space-x-3">
                     <Mail className="h-8 w-8 text-blue-600" />
                     <div>
-                      <p className="text-blue-800 font-semibold">Validation en cours</p>
+                      <p className="text-blue-800 font-semibold">{t('loading_v.validationInProgress')}</p>
                       <p className="text-blue-700 text-sm mt-1">
-                        Veuillez patienter pendant que nous vérifions votre email
+                        {t('loading_v.pleaseWait')}
                       </p>
                     </div>
                   </div>
@@ -171,11 +171,10 @@ export default function EmailVerifiedPage() {
                 <div className="space-y-4">
                   <div className="flex items-center space-x-2">
                     <XCircle className="h-6 w-6 text-yellow-300" />
-                    <h2 className="text-4xl font-bold">Oups !</h2>
+                    <h2 className="text-4xl font-bold">{t('error_v.title')}</h2>
                   </div>
                   <p className="text-red-100 text-lg leading-relaxed">
-                    Nous n'avons pas pu vérifier votre adresse email. 
-                    Le lien peut être expiré ou invalide.
+                    {t('error_v.description')}
                   </p>
                 </div>
 
@@ -183,23 +182,23 @@ export default function EmailVerifiedPage() {
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3">
                       <XCircle className="h-5 w-5 text-yellow-300" />
-                      <span className="text-red-100">Lien expiré ou invalide</span>
+                      <span className="text-red-100">{t('error_v.issues.expired')}</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <XCircle className="h-5 w-5 text-yellow-300" />
-                      <span className="text-red-100">Erreur de vérification</span>
+                      <span className="text-red-100">{t('error_v.issues.verification')}</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <XCircle className="h-5 w-5 text-yellow-300" />
-                      <span className="text-red-100">Nécessite une nouvelle demande</span>
+                      <span className="text-red-100">{t('error_v.issues.newRequest')}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="pt-8 border-t border-white/20">
                   <p className="text-red-200 text-sm">
-                    "L'erreur est humaine, mais la persévérance est divine."<br />
-                    <span className="italic">- Proverbe</span>
+                    {t('error_v.quote.text')}<br />
+                    <span className="italic">{t('error_v.quote.author')}</span>
                   </p>
                 </div>
               </div>
@@ -210,7 +209,7 @@ export default function EmailVerifiedPage() {
               <div className="text-center mb-8">
                 <XCircle className="h-20 w-20 text-red-500 mx-auto mb-6" />
                 <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                  Échec de la vérification
+                  {t('error_v.verificationFailed')}
                 </h2>
                 <p className="text-gray-600">{message}</p>
               </div>
@@ -220,9 +219,9 @@ export default function EmailVerifiedPage() {
                   <div className="flex items-center justify-center space-x-3">
                     <Shield className="h-8 w-8 text-red-600" />
                     <div>
-                      <p className="text-red-800 font-semibold">Action requise</p>
+                      <p className="text-red-800 font-semibold">{t('error_v.actionRequired')}</p>
                       <p className="text-red-700 text-sm mt-1">
-                        Vous devez demander un nouveau lien de vérification
+                        {t('error_v.newVerificationRequired')}
                       </p>
                     </div>
                   </div>
@@ -234,7 +233,7 @@ export default function EmailVerifiedPage() {
                     className="inline-flex items-center justify-center space-x-3 w-full bg-gradient-to-r from-red-600 to-orange-600 text-white py-4 px-6 rounded-xl hover:from-red-700 hover:to-orange-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
                   >
                     <ArrowRight className="h-5 w-5" />
-                    <span className="font-semibold">Aller à la connexion</span>
+                    <span className="font-semibold">{t('error_v.goToLogin')}</span>
                   </Link>
 
                   <Link
@@ -242,7 +241,7 @@ export default function EmailVerifiedPage() {
                     className="inline-flex items-center justify-center space-x-3 w-full bg-gray-100 text-gray-700 py-4 px-6 rounded-xl hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-300 border border-gray-300"
                   >
                     <Mail className="h-5 w-5" />
-                    <span className="font-semibold">Créer un nouveau compte</span>
+                    <span className="font-semibold">{t('error_v.createNewAccount')}</span>
                   </Link>
                 </div>
               </div>
@@ -273,11 +272,10 @@ export default function EmailVerifiedPage() {
               <div className="space-y-4">
                 <div className="flex items-center space-x-2">
                   <Sparkles className="h-6 w-6 text-yellow-300" />
-                  <h2 className="text-4xl font-bold">Félicitations !</h2>
+                  <h2 className="text-4xl font-bold">{t('success_v.title')}</h2>
                 </div>
                 <p className="text-green-100 text-lg leading-relaxed">
-                  Votre compte est maintenant activé et sécurisé. 
-                  Vous pouvez commencer votre voyage linguistique dès maintenant !
+                  {t('success_v.description')}
                 </p>
               </div>
 
@@ -285,23 +283,23 @@ export default function EmailVerifiedPage() {
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-yellow-300" />
-                    <span className="text-green-100">Email vérifié avec succès</span>
+                    <span className="text-green-100">{t('success_v.benefits.emailVerified')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-yellow-300" />
-                    <span className="text-green-100">Compte entièrement activé</span>
+                    <span className="text-green-100">{t('success_v.benefits.accountActivated')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-yellow-300" />
-                    <span className="text-green-100">Accès à toutes les fonctionnalités</span>
+                    <span className="text-green-100">{t('success_v.benefits.fullAccess')}</span>
                   </div>
                 </div>
               </div>
 
               <div className="pt-8 border-t border-white/20">
                 <p className="text-green-200 text-sm">
-                  "Le savoir des langues est la porte de la sagesse."<br />
-                  <span className="italic">- Roger Bacon</span>
+                  {t('success_v.quote.text')}<br />
+                  <span className="italic">{t('success_v.quote.author')}</span>
                 </p>
               </div>
             </div>
@@ -312,7 +310,7 @@ export default function EmailVerifiedPage() {
             <div className="text-center mb-8">
               <CheckCircle className="h-20 w-20 text-green-500 mx-auto mb-6" />
               <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                Email vérifié !
+                {t('success_v.emailVerified')}
               </h2>
               <p className="text-gray-600 text-lg">{message}</p>
             </div>
@@ -322,16 +320,16 @@ export default function EmailVerifiedPage() {
                 <div className="flex items-center justify-center space-x-3">
                   <Shield className="h-8 w-8 text-green-600" />
                   <div>
-                    <p className="text-green-800 font-semibold">Compte sécurisé</p>
+                    <p className="text-green-800 font-semibold">{t('success_v.accountSecure')}</p>
                     <p className="text-green-700 text-sm mt-1">
-                      Votre compte est maintenant vérifié et protégé
+                      {t('success_v.accountProtected')}
                     </p>
                   </div>
                 </div>
               </div>
 
               <p className="text-gray-600 mb-6">
-                Vous serez redirigé automatiquement vers la page de connexion dans quelques secondes.
+                {t('success_v.autoRedirect')}
               </p>
 
               <Link
@@ -339,7 +337,7 @@ export default function EmailVerifiedPage() {
                 className="inline-flex items-center justify-center space-x-3 w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 px-6 rounded-xl hover:from-green-700 hover:to-emerald-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <ArrowRight className="h-5 w-5" />
-                <span className="font-semibold">Commencer maintenant</span>
+                <span className="font-semibold">{t('success_v.startNow')}</span>
               </Link>
 
               <div className="pt-4">
