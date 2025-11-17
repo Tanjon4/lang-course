@@ -1,28 +1,50 @@
-/* custom */
+/* custom
 :root{
   --bg: #f7faf9;
   --card: #ffffff;
   --muted: #6b7280;
   --accent: linear-gradient(135deg,#0a8a40,#6fbf82);
-}
+} */
 
 /* dark overrides when .dark on html */
-html.dark {
+/* html.dark {
   --bg: #0b1020;
   --card: #0f1724;
   --muted: #9aa4b2;
-}
+} */
 
-body {
+/* body {
   background: var(--bg);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
+} */
 
 /* small helpers */
-.card-surface{
+/* .card-surface{
   background: var(--card);
   box-shadow: var(--tw-shadow, 0 6px 18px rgba(15,23,42,0.06));
   border-radius: 12px;
+} */
+
+@import "tailwindcss";
+
+:root {
+  --color-bg-dark: #0F172A;
+  --color-sidebar-dark: #1E293B;
+  --color-card-dark: #1E293B;
+  --color-text-dark: #F8FAFC;
+  --color-text-secondary-dark: #94A3B8;
+  --color-accent: #3B82F6;
+
+  --color-bg-light: #F8FAFC;
+  --color-sidebar-light: #FFFFFF;
+  --color-card-light: #FFFFFF;
+  --color-text-light: #0F172A;
+  --color-text-secondary-light: #64748B;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  transition: background 0.3s, color 0.3s;
 }
