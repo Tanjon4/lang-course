@@ -47,7 +47,7 @@ export default function ForgotPasswordPage() {
           <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
             
             {/* Section de confirmation - Côté gauche */}
-            <div className="lg:w-1/2 bg-linear-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
+            <div className="lg:w-1/2 bg-linear-to-br from-gray-400 to-zinc-600 text-white p-12 flex flex-col justify-center">
               <div className="space-y-8">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white/20 rounded-xl">
@@ -123,7 +123,7 @@ export default function ForgotPasswordPage() {
 
                 <Link
                   href={`/${lang}/auth/login`}
-                  className="inline-flex items-center justify-center space-x-3 w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center justify-center space-x-3 w-full bg-linear-to-r from-gray-400 to-zinc-600 text-white py-4 px-6 rounded-xl hover:from-amber-400 hover:to-orange-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
                   <ArrowLeft className="h-5 w-5" />
                   <span className="font-semibold">{t("return_login")}</span>
@@ -144,7 +144,7 @@ export default function ForgotPasswordPage() {
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
           {/* Section de bienvenue - Côté gauche */}
-          <div className="lg:w-1/2 bg-linear-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
+          <div className="lg:w-1/2 bg-linear-to-br from-gray-400 to-zinc-600 text-white p-12 flex flex-col justify-center">
             <div className="space-y-8">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-white/20 rounded-xl">

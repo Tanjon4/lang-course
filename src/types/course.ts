@@ -3,6 +3,8 @@ export interface CourseGlobal {
   id: number;
   title: string;
   description: string;
+  // pour le dem
+
   language_code: string;
   thumbnail_url?: string;
   levels: Level[];

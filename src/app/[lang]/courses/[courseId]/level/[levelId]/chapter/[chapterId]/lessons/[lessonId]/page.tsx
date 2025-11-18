@@ -149,7 +149,7 @@ export default function LessonPage() {
   const handleBack = () => {
     router.push(`/courses/${courseId}`);
   };
-  // Dans votre page lesson - Version COMPLÈTE
+
   const handleCompleteLesson = async () => {
     if (!lesson) return;
     
@@ -168,7 +168,7 @@ export default function LessonPage() {
       // Message de succès
       alert('Félicitations! Vous avez terminé cette leçon.');
       
-      // Navigation automatique
+      // Navigation automatique - LOGIQUE VAOVAO
       if (result.next_content_unlocked && result.next_content) {
         // Utiliser les infos du next_content retourné par l'API
         const next = result.next_content;
@@ -184,7 +184,9 @@ export default function LessonPage() {
         // Utiliser la logique frontend de calcul
         router.push(`/courses/${nextLesson.courseId}/level/${nextLesson.levelId}/chapter/${nextLesson.chapterId}/lessons/${nextLesson.lessonId}`);
       } else {
-        handleBack();
+        // TSY MISY LESONA MANARAKA - MANDEHANY ANY AMIN'NY EXAMEN
+        console.log('🎯 Toutes les leçons terminées - redirection vers l\'examen');
+        router.push(`/courses/${courseId}/examen`);
       }
     } catch (error: any) {
       console.error('❌ Erreur lors de la complétion:', error);
@@ -199,6 +201,9 @@ export default function LessonPage() {
       router.push(
         `/courses/${nextLesson.courseId}/level/${nextLesson.levelId}/chapter/${nextLesson.chapterId}/lessons/${nextLesson.lessonId}`
       );
+    } else {
+      // Mandeha any amin'ny pejy examen raha tsy misy lesona manaraka
+      router.push(`/courses/${courseId}/examen`);
     }
   };
 
@@ -425,7 +430,7 @@ export default function LessonPage() {
             className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg hover:from-green-600 hover:to-green-700 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <CheckCircle className="h-5 w-5" />
-            {completing ? 'Sauvegarde...' : (nextLesson && nextLesson.exists ? 'Terminer et continuer' : 'Terminer la leçon')}
+            {completing ? 'Sauvegarde...' : (nextLesson && nextLesson.exists ? 'Terminer et continuer' : 'Terminer et passer à l\'examen')}
           </button>
 
           <button
@@ -433,7 +438,7 @@ export default function LessonPage() {
             disabled={!nextLesson || !nextLesson.exists}
             className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {nextLesson && nextLesson.exists ? 'Leçon suivante' : 'Dernière leçon'}
+            {nextLesson && nextLesson.exists ? 'Leçon suivante' : 'Passer à l\'examen'}
             <ArrowLeft className="h-5 w-5 rotate-180" />
           </button>
         </div>
@@ -444,7 +449,7 @@ export default function LessonPage() {
             {nextLesson.exists ? (
               <p>Prochaine leçon disponible après complétion</p>
             ) : (
-              <p>Félicitations! Vous avez terminé tous les contenus de ce cours.</p>
+              <p>Félicitations! Vous avez terminé tous les contenus. Vous allez être redirigé vers l'examen final.</p>
             )}
           </div>
         )}

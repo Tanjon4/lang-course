@@ -2,9 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { Award, ArrowRight } from "lucide-react";
+import { useAuth } from "@/app/contexts/AuthContext";
 
 export default function CertificatePage() {
   const router = useRouter();
+  const { user, isAuthenticated } = useAuth();
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-white text-center p-6">

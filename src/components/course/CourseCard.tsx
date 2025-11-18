@@ -161,11 +161,11 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onSelect, onEnroll }) =
         <div className="flex items-center justify-between mb-6 animate-stagger-children">
           <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-md animate-slide-in-left">
             <BookOpen className="h-4 w-4 text-orange-500 animate-pulse" />
-            <span className="text-gray-700 text-sm font-medium">{totalLessons} leçons</span>
+            <span className="text-gray-700 text-sm font-medium">{totalLessons} {t("lessons")}</span>
           </div>
           <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-md animate-slide-in-right">
             <Users className="h-4 w-4 text-amber-500 animate-pulse" />
-            <span className="text-gray-700 text-sm font-medium">{totalLevels} niveaux</span>
+            <span className="text-gray-700 text-sm font-medium">{totalLevels} {t("levels")}</span>
           </div>
         </div>
 
@@ -184,7 +184,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onSelect, onEnroll }) =
           ) : (
             <>
               <Star className="h-5 w-5 animate-bounce" />
-              <span>{t("Get_Started")}</span>
+              <span>{t("get_started")}</span>
             </>
           )}
         </button>

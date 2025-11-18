@@ -70,13 +70,13 @@ export default function EmailVerifiedPage() {
           <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
             
             {/* Section de chargement - Côté gauche */}
-            <div className="lg:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
+            <div className="lg:w-1/2 bg-gradient-to-br from-gray-500 to-zinc-600 text-white p-12 flex flex-col justify-center">
               <div className="space-y-8">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white/20 rounded-xl">
                     <Languages className="h-8 w-8" />
                   </div>
-                  <h1 className="text-2xl font-bold">LangCourses</h1>
+                  <h1 className="text-2xl font-bold">{t("cours_langue")}</h1>
                 </div>
                 
                 <div className="space-y-4">
@@ -165,7 +165,7 @@ export default function EmailVerifiedPage() {
                   <div className="p-2 bg-white/20 rounded-xl">
                     <Languages className="h-8 w-8" />
                   </div>
-                  <h1 className="text-2xl font-bold">LangCourses</h1>
+                  <h1 className="text-2xl font-bold">{t("cours_langue")}</h1>
                 </div>
                 
                 <div className="space-y-4">
@@ -266,7 +266,7 @@ export default function EmailVerifiedPage() {
                 <div className="p-2 bg-white/20 rounded-xl">
                   <Languages className="h-8 w-8" />
                 </div>
-                <h1 className="text-2xl font-bold">LangCourses</h1>
+                <h1 className="text-2xl font-bold">{t("cours_langue")}</h1>
               </div>
               
               <div className="space-y-4">

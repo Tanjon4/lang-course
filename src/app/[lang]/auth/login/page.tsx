@@ -174,13 +174,13 @@ export default function LoginPage() {
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
           {/* Section de bienvenue - Côté gauche */}
-          <div className="lg:w-1/2 bg-gradient-to-br from-indigo-400 to-purple-500 text-white p-12 flex flex-col justify-center">
+          <div className="lg:w-1/2 bg-gradient-to-br from-zinc-600 to-gray-400 text-white p-12 flex flex-col justify-center">
             <div className="space-y-8">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-white/20 rounded-xl">
                   <Languages className="h-8 w-8" />
                 </div>
-                <h1 className="text-2xl font-bold">LangCourses</h1>
+                <h1 className="text-2xl font-bold">{t("cours_langue")}</h1>
               </div>
               
               <div className="space-y-4">
@@ -292,7 +292,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
+                className="w-full bg-gradient-to-r from-gray-400 to-zinc-600 text-white py-4 px-6 rounded-xl hover:from-amber-300 hover:to-orange-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
               >
                 <LogIn className="h-5 w-5" />
                 <span className="font-semibold">
@@ -306,7 +306,7 @@ export default function LoginPage() {
                   {t('noAccount')}{' '}
                   <Link 
                     href={`/${lang}/auth/register`}
-                    className="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors duration-300 inline-flex items-center space-x-1"
+                    className="font-semibold text-indigo-600 hover:text-orange-500 transition-colors duration-300 inline-flex items-center space-x-1"
                   >
                     <span>{t('createAccount')}</span>
                     <span>→</span>

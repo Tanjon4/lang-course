@@ -96,13 +96,13 @@ export default function ResetPasswordPage() {
           <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
             
             {/* Section de confirmation - Côté gauche */}
-            <div className="lg:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
+            <div className="lg:w-1/2 bg-gradient-to-br from-gray-400 to-zinc-600 text-white p-12 flex flex-col justify-center">
               <div className="space-y-8">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white/20 rounded-xl">
                     <Languages className="h-8 w-8" />
                   </div>
-                  <h1 className="text-2xl font-bold">LangCourses</h1>
+                  <h1 className="text-2xl font-bold">{t("cours_langue")}</h1>
                 </div>
                 
                 <div className="space-y-4">
@@ -172,7 +172,7 @@ export default function ResetPasswordPage() {
 
                 <Link
                   href={`/${lang}/auth/login`}
-                  className="inline-flex items-center justify-center space-x-3 w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center justify-center space-x-3 w-full bg-gradient-to-r from-gray-500 to-zinc-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
                   <ArrowLeft className="h-5 w-5" />
                   <span className="font-semibold">{t('success.loginNow')}</span>
@@ -192,13 +192,13 @@ export default function ResetPasswordPage() {
         <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
           
           {/* Section de bienvenue - Côté gauche */}
-          <div className="lg:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-12 flex flex-col justify-center">
+          <div className="lg:w-1/2 bg-gradient-to-br from-gray-400 to-zinc-600 text-white p-12 flex flex-col justify-center">
             <div className="space-y-8">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-white/20 rounded-xl">
                   <Languages className="h-8 w-8" />
                 </div>
-                <h1 className="text-2xl font-bold">LangCourses</h1>
+                <h1 className="text-2xl font-bold">{t("cours_langue")}</h1>
               </div>
               
               <div className="space-y-4">
@@ -347,7 +347,7 @@ export default function ResetPasswordPage() {
               <button
                 type="submit"
                 disabled={isLoading || passwordStrength < 3 || password !== password2}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
+                className="w-full bg-gradient-to-r from-gray-500 to-zinc-600 text-white py-4 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
               >
                 <Key className="h-5 w-5" />
                 <span className="font-semibold">
