@@ -64,7 +64,7 @@ export default function Contact() {
     {
       icon: Mail,
       title: t('email_title'),
-      content: 'contact@langueapp.com',
+      content: 'NancyaBodonandrasana@gmail.com',
       description: t('email_desc'),
       color: 'from-blue-500 to-blue-600'
     },
@@ -78,8 +78,8 @@ export default function Contact() {
     {
       icon: MapPin,
       title: t("address_title"),
-      content: '123 Rue',
-      description: t('address_desc'),
+      content: 'Antananarivo Madagascar',
+      // description: t('address_desc'),
       color: 'from-purple-500 to-purple-600'
     },
     {
