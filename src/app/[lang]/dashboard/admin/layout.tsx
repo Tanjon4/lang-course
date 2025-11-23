@@ -1,28 +1,46 @@
-// import "../admin/global.css";
-// import { ThemeProvider } from "../admin/composants/lib/ThemeProvider";
+// app/[lang]/dashboard/layout.tsx
+"use client";
 
-// export const metadata = {
-//   title: "Dashboard Demo",
-//   description: "Dashboard replicating the provided design",
-// };
+import React, { useState, useEffect } from "react";
+import Sidebar from "./composants/Sidebar";
 
-// export default function RootLayout({ children }: { children: React.ReactNode }) {
-//   return (
-//     <html lang="fr">
-//       <body>
-//         <ThemeProvider>
-//           {children}
-//         </ThemeProvider>
-//       </body>
-//     </html>
-//   );
-// }
+interface DashboardLayoutProps {
+  children: React.ReactNode;
+}
 
-// ✅ src/app/[lang]/layout.tsx
-export default function LangLayout({ children }: { children: React.ReactNode }) {
+const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
+  const [theme, setTheme] = useState<"light" | "dark" | "system">("system");
+  const [active, setActive] = useState("Dashboard");
+
+  // Appliquer le thème à l'html
+  useEffect(() => {
+    const root = document.documentElement;
+
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else if (theme === "light") {
+      root.classList.remove("dark");
+    } else {
+      // system
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        root.classList.add("dark");
+      } else {
+        root.classList.remove("dark");
+      }
+    }
+  }, [theme]);
+
   return (
-    <div className="lang-layout">
-      {children}
+    <div className="flex bg-gray-100 dark:bg-gray-900 min-h-screen">
+      <Sidebar
+        active={active}
+        setActive={setActive}
+        theme={theme}
+        setTheme={setTheme}
+      />
+      <main className="flex-1 p-6">{children}</main>
     </div>
   );
-}
+};
+
+export default DashboardLayout;
