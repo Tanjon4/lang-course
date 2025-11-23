@@ -5,5 +5,5 @@ export const getMention = (score: number, total: number) => {
   if (percentage >= 75) return "Very Good ";
   if (percentage >= 60) return "Good ";
   if (percentage >= 45) return "Needs Improvement";
-  return "Try Again 🔁 — Study the lesson and attempt the quiz once more.";
+  return "You did not pass, try again";
 };

@@ -10,7 +10,6 @@ import Certificate from "@/components/exam/Certificate";
 import { qcmQuestions, inputQuestions } from "@/data/quizData";
 import { useAuth } from "@/app/contexts/AuthContext";
 
-
 export default function QuizPage() {
   const [phase, setPhase] = useState<"qcm" | "input" | "finished">("qcm");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -22,14 +21,12 @@ export default function QuizPage() {
   const { user, isAuthenticated, loading } = useAuth();
   const router = useRouter();
 
-  // Vérification d'authentification
   useEffect(() => {
     if (!loading) {
       if (!isAuthenticated || !user) {
         router.push('/auth/login');
         return;
       }
-      // Animation de chargement délayée pour un effet plus fluide
       setTimeout(() => setIsLoading(false), 800);
     }
   }, [isAuthenticated, user, loading, router]);
@@ -38,15 +35,11 @@ export default function QuizPage() {
     const currentQuestion = phase === "qcm" ? qcmQuestions[currentIndex] : inputQuestions[currentIndex];
     const correct = userAnswer.trim().toLowerCase() === currentQuestion.answer.toLowerCase();
     
-    // Animation de feedback
     setIsCorrect(correct);
     setShowFeedback(true);
     
-    if (correct) {
-      setScore(score + 1);
-    }
+    if (correct) setScore(score + 1);
 
-    // Délai pour l'animation avant de passer à la suite
     setTimeout(() => {
       setShowFeedback(false);
       setUserAnswer("");
@@ -54,44 +47,34 @@ export default function QuizPage() {
       const nextIndex = currentIndex + 1;
       const currentArray = phase === "qcm" ? qcmQuestions : inputQuestions;
 
-      if (nextIndex < currentArray.length) {
-        setCurrentIndex(nextIndex);
-      } else {
+      if (nextIndex < currentArray.length) setCurrentIndex(nextIndex);
+      else {
         if (phase === "qcm") {
           setPhase("input");
           setCurrentIndex(0);
-        } else {
-          setPhase("finished");
-        }
+        } else setPhase("finished");
       }
     }, 1200);
   };
 
-  // Animation de chargement élégante
   if (loading || isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           className="text-center"
         >
           <motion.div
-            animate={{ 
-              rotate: 360,
-              scale: [1, 1.2, 1]
-            }}
-            transition={{ 
-              rotate: { duration: 2, repeat: Infinity, ease: "linear" },
-              scale: { duration: 1.5, repeat: Infinity }
-            }}
-            className="w-16 h-16 border-4 border-indigo-200 border-t-indigo-600 rounded-full mx-auto mb-4"
+            animate={{ rotate: 360, scale: [1, 1.2, 1] }}
+            transition={{ rotate: { duration: 2, repeat: Infinity, ease: "linear" }, scale: { duration: 1.5, repeat: Infinity } }}
+            className="w-12 sm:w-16 h-12 sm:h-16 border-4 border-indigo-200 border-t-indigo-600 rounded-full mx-auto mb-4"
           />
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-lg text-gray-600 font-medium"
+            className="text-base sm:text-lg text-gray-600 font-medium"
           >
             Vérification de l'authentification...
           </motion.p>
@@ -102,16 +85,16 @@ export default function QuizPage() {
 
   if (!isAuthenticated || !user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center"
         >
-          <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-2xl">⏳</span>
+          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span className="text-2xl sm:text-3xl">⏳</span>
           </div>
-          <p className="text-lg text-gray-600">Redirection en cours...</p>
+          <p className="text-base sm:text-lg text-gray-600">Redirection en cours...</p>
         </motion.div>
       </div>
     );
@@ -126,58 +109,58 @@ export default function QuizPage() {
   const progress = ((currentIndex + 1) / currentArray.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="max-w-2xl mx-auto"
+        className="max-w-xl sm:max-w-2xl mx-auto"
       >
-        {/* Header avec informations utilisateur */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mb-8 p-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20"
+          className="mb-6 sm:mb-8 p-4 sm:p-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20"
         >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+          <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-4 sm:gap-0">
+            <div className="flex items-center space-x-3 sm:space-x-4">
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg"
+                className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg text-sm sm:text-base"
               >
                 {user.email?.charAt(0).toUpperCase()}
               </motion.div>
               <div>
-                <p className="text-sm text-gray-500">Connecté en tant que</p>
-                <p className="font-semibold text-gray-800">{user.email}</p>
+                <p className="text-xs sm:text-sm text-gray-500">Connecté en tant que</p>
+                <p className="font-semibold text-gray-800 truncate max-w-[150px] sm:max-w-[200px]">{user.email}</p>
               </div>
             </div>
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full text-sm font-medium shadow-lg"
+              className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full text-xs sm:text-sm font-medium shadow-lg"
             >
               {phase === "qcm" ? "QCM" : "Questions écrites"}
             </motion.div>
           </div>
         </motion.div>
 
-        {/* Progress Bar améliorée */}
+        {/* Progress Bar */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="mb-8"
+          className="mb-6 sm:mb-8"
         >
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-gray-600">
+          <div className="flex justify-between items-center mb-1">
+            <span className="text-xs sm:text-sm font-medium text-gray-600">
               Question {currentIndex + 1} sur {currentArray.length}
             </span>
-            <span className="text-sm font-bold text-indigo-600">
+            <span className="text-xs sm:text-sm font-bold text-indigo-600">
               {Math.round(progress)}%
             </span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+          <div className="w-full bg-gray-200 rounded-full h-2 sm:h-3 overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
@@ -187,7 +170,7 @@ export default function QuizPage() {
           </div>
         </motion.div>
 
-        {/* Carte de question avec animations */}
+        {/* Question Card */}
         <AnimatePresence mode="wait">
           <motion.div
             key={`${phase}-${currentIndex}`}
@@ -205,39 +188,36 @@ export default function QuizPage() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Feedback d'animation */}
+        {/* Feedback */}
         <AnimatePresence>
           {showFeedback && (
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              className="fixed inset-0 flex items-center justify-center z-50"
+              className="fixed inset-0 flex items-center justify-center z-50 px-4"
             >
               <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
               <motion.div
                 initial={{ y: 50 }}
                 animate={{ y: 0 }}
-                className={`p-8 rounded-2xl shadow-2xl ${
+                className={`p-6 sm:p-8 rounded-2xl shadow-2xl ${
                   isCorrect 
                     ? 'bg-gradient-to-r from-green-400 to-emerald-500' 
                     : 'bg-gradient-to-r from-red-400 to-pink-500'
-                } text-white text-center z-10`}
+                } text-white text-center z-10 max-w-xs sm:max-w-md`}
               >
                 <motion.div
-                  animate={{ 
-                    scale: [1, 1.2, 1],
-                    rotate: [0, 10, -10, 0]
-                  }}
+                  animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }}
                   transition={{ duration: 0.6 }}
-                  className="text-6xl mb-4"
+                  className="text-5xl sm:text-6xl mb-3 sm:mb-4"
                 >
                   {isCorrect ? "🎉" : "💡"}
                 </motion.div>
-                <h3 className="text-2xl font-bold mb-2">
+                <h3 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">
                   {isCorrect ? "Bonne réponse !" : "Presque !"}
                 </h3>
-                <p className="text-lg opacity-90">
+                <p className="text-sm sm:text-lg opacity-90">
                   {isCorrect ? "Continuez comme ça !" : "La bonne réponse était : " + 
                     (phase === "qcm" 
                       ? qcmQuestions[currentIndex]?.answer 
@@ -248,32 +228,21 @@ export default function QuizPage() {
           )}
         </AnimatePresence>
 
-        {/* Bouton Next amélioré */}
+        {/* Next Button */}
         <motion.button
           onClick={handleNext}
           disabled={!userAnswer.trim() || showFeedback}
-          whileHover={!userAnswer.trim() || showFeedback ? {} : { 
-            scale: 1.02,
-            boxShadow: "0 10px 30px -10px rgba(99, 102, 241, 0.5)"
-          }}
+          whileHover={!userAnswer.trim() || showFeedback ? {} : { scale: 1.02, boxShadow: "0 10px 30px -10px rgba(99, 102, 241, 0.5)" }}
           whileTap={!userAnswer.trim() || showFeedback ? {} : { scale: 0.98 }}
-          className={`mt-8 w-full py-4 px-6 text-lg font-semibold rounded-xl transition-all duration-300 ${
+          className={`mt-6 sm:mt-8 w-full py-3 sm:py-4 px-4 sm:px-6 text-base sm:text-lg font-semibold rounded-xl transition-all duration-300 ${
             !userAnswer.trim() || showFeedback
               ? "bg-gray-300 text-gray-500 cursor-not-allowed"
               : "bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg hover:shadow-xl"
           }`}
         >
           <motion.span
-            animate={!userAnswer.trim() || showFeedback ? {} : {
-              x: [0, 5, 0]
-            }}
-            transition={{
-              x: {
-                duration: 1.5,
-                repeat: Infinity,
-                repeatType: "reverse"
-              }
-            }}
+            animate={!userAnswer.trim() || showFeedback ? {} : { x: [0, 5, 0] }}
+            transition={{ x: { duration: 1.5, repeat: Infinity, repeatType: "reverse" } }}
             className="flex items-center justify-center"
           >
             {currentIndex === currentArray.length - 1 
@@ -285,15 +254,15 @@ export default function QuizPage() {
           </motion.span>
         </motion.button>
 
-        {/* Indicateur de score */}
+        {/* Score */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="mt-6 text-center"
+          className="mt-4 sm:mt-6 text-center"
         >
-          <div className="inline-flex items-center space-x-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 shadow-sm">
-            <span className="text-sm text-gray-600">Score actuel :</span>
+          <div className="inline-flex items-center space-x-2 bg-white/60 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/20 shadow-sm">
+            <span className="text-xs sm:text-sm text-gray-600">Score actuel :</span>
             <span className="font-bold text-indigo-600">{score}</span>
             <motion.span
               animate={{ scale: [1, 1.1, 1] }}
