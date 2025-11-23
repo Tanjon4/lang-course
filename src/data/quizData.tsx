@@ -8,7 +8,7 @@ export type Question = {
 
 // QCM Questions
 export const qcmQuestions: Question[] = [
-  { id: 1, question: "How do you say 'Hello' to greet someone?", options: ["Goodbye", "Hello", "Thank you", "Excuse me"], answer: "Hello" },
+  { id: 1, question: "Which one is a greeting?", options: ["Goodbye", "Hello", "Thank you", "Excuse me"], answer: "Hello" },
   { id: 2, question: "Which greeting is used in the morning?", options: ["Good evening", "Good morning", "Good night", "See you"], answer: "Good morning" },
   { id: 3, question: "What do you say when you meet someone for the first time?", options: ["Nice to meet you", "See you later", "Take care", "Good night"], answer: "Nice to meet you" },
   { id: 4, question: "Which greeting is used in the afternoon?", options: ["Good afternoon", "Good morning", "Good night", "Hello"], answer: "Good afternoon" },
